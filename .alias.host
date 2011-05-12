@@ -14,3 +14,5 @@ alias cdb='popd'
 alias dir='ls  --format=vertical'
 alias vdir='ls --format=long'
 alias mod='ls -lAGFrt | tail'
+
+alias less='/usr/share/vim/vim74/macros/less.sh'
