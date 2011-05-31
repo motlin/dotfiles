@@ -1,0 +1,34 @@
+alias h='history | grep'
+alias f='find . -iname'
+alias x='exit'
+alias v='vim'
+alias vi='vim'
+alias vd='vim -d'
+
+# ls aliases
+alias ls='ls --color=auto'
+alias l='ls -lAGF'
+alias la='ls -AFG'
+alias lt='ls -lAGFrt'
+
+# Compress the cd, ls -l series of commands.
+function c() {
+	cd "$@" && ls;
+}
+
+alias up='cd ..'
+alias up2='cd ../..'
+alias up3='cd ../../..'
+alias up4='cd ../../../..'
+alias up5='cd ../../../../..'
+alias up6='cd ../../../../../..'
+alias up7='cd ../../../../../../..'
+alias up8='cd ../../../../../../../..'
+
+# Aliases that are not to be shared between different hosts/environments
+if [ -e ~/.alias.host ]; then
+	. ~/.alias.host
+fi
+
+alias now='date +"%Y-%m-%d %H:%M:%S"'
+alias gitk='gitk --all'

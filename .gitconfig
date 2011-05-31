@@ -1,0 +1,29 @@
+[user]
+	name = Craig P. Motlin
+	email = cmotlin@gmail.com
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+	ui = auto
+	interactive = auto
+	pager = true
+[alias]
+	ci = commit
+	co = checkout
+	st = status
+	w = whatchanged
+	cp = cherry-pick
+	ri = rebase --interactive --autosquash
+[core]
+	filemode = false
+	autocrlf = true
+[http]
+	sslVerify = false
+[diff]
+	renames = copies
+	renameLimit = 100000
+[rerere]
+	enabled = 1
+[branch]
+	autosetuprebase = always

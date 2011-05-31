@@ -1,0 +1,35 @@
+term xterm
+
+#kill startup message
+startup_message off
+
+# define a bigger scrollback, default is 100 lines
+defscrollback 32768
+
+# 256 color xterm
+attrcolor b ".I"
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+defbce "on"
+  
+shell bash
+
+# Use backtick instead of Ctrl+A
+escape ``
+
+vbell off
+
+shelltitle "$ |bash"
+
+# change the hardstatus settings to give an window list at the bottom of the
+# screen, with the time and date and with the current window highlighted
+hardstatus alwayslastline
+hardstatus string '%{= kK}%-Lw%{= KW}%50>%n%f* %t%{= kK}%+Lw%<'
+
+# If a window goes unresponsive, don't block the whole session waiting for it.
+defnonblock on
+
+# Window numbering starts at 1, not 0.
+bind c screen 1
+bind 0 select 10
+
+screen 1   bash

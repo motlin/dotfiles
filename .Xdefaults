@@ -1,0 +1,7 @@
+rxvt*background:        black
+rxvt*foreground:        white
+rxvt*saveLines:         100000
+
+XTerm*saveLines:        5000
+XTerm*scrollBar:        false
+XTerm*visualBell:       true

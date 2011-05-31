@@ -1,0 +1,1 @@
+cdpath=(. ~/dev ~/dev/snippets)
