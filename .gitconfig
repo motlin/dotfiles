@@ -15,6 +15,7 @@
 	w = whatchanged
 	cp = cherry-pick
 	ri = rebase --interactive --autosquash
+	l = log --oneline --graph --decorate --all
 [core]
 	filemode = false
 	autocrlf = true
