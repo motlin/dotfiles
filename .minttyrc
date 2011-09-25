@@ -1,0 +1,12 @@
+Transparency=Low
+OpaqueWhenFocused=no
+Font=Lucida Console
+FontHeight=14
+AllowBlinking=no
+ClipShortcuts=yes
+CopyAsRTF=yes
+CopyOnSelect=yes
+ClicksPlaceCursor=no
+RightClickAction=menu
+BellSound=no
+Scrollbar=no
