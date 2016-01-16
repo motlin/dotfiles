@@ -2,7 +2,7 @@
 " particular settings cause vim to use tabs not spaces
 " vim: tabstop=4:shiftwidth=4:autoindent:smartindent:noexpandtab:softtabstop=0:cino=g0
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim behavior, not vi
@@ -117,6 +117,8 @@ set smartindent
 " indentation level
 set cino=g0
 
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Key mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -186,7 +188,6 @@ autocmd BufReadPost *
 runtime! macros/matchit.vim
 
 :au Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
-:au Filetype html set noignorecase
 
 " Tab completion
 function InsertTabWrapper()
@@ -217,3 +218,19 @@ set diffopt+=vertical
 
 " Highlight whitespace at the end of the line in ugly yellow
 match Todo /\s\+$/
+
+" Don't ignore case in search patterns.
+set noignorecase
+
+" tell VIM to always put a status line in, even if there is only one window
+set laststatus=2
+
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
