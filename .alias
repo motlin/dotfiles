@@ -6,10 +6,13 @@ alias vi='vim'
 alias vd='vim -d'
 
 # ls aliases
-alias ls='ls --color=auto'
+alias ls='ls -GF'
 alias l='ls -lAGF'
 alias la='ls -AFG'
 alias lt='ls -lAGFrt'
+alias ll='git ll'
+alias lg='git lg'
+alias lgb='git lgb'
 
 # Compress the cd, ls -l series of commands.
 function c() {
