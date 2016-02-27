@@ -65,7 +65,7 @@ else
 	export MYCOLOR=$L_PURPLE
 fi
 
-PROMPT="${RED}\u${GRAY}@${L_BLUE}\H${GRAY}:${MYCOLOR}\w${NONE} \`git symbolic-ref HEAD 2> /dev/null | cut -b 12-\`\n${L_GREEN}\$${NONE} "
+PROMPT="${RED}\u${GRAY}@${L_BLUE}\H${GRAY}:${MYCOLOR}\w${NONE} \`git symbolic-ref --short HEAD 2> /dev/null\`\n${L_GREEN}\$${NONE} "
 TITLEBAR="\[\e]2;\W\a\]"
 PS1=$TITLEBAR$PROMPT
 
