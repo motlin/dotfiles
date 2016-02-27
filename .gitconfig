@@ -15,16 +15,35 @@
 	w = whatchanged
 	cp = cherry-pick
 	ri = rebase --interactive --autosquash
+	ss = status -s
+	unstage = reset HEAD --
+	br = branch
+	f = fetch --all --prune
+	rp = rebase --committer-date-is-author-date --preserve-merges
+	tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15 --reverse"
 	l = log --oneline --graph --decorate --all
+	ll = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)'
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)' --all
+	lgb = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)' --branches
 [core]
 	filemode = false
-	autocrlf = true
+	autocrlf = input
+	editor = vim
 [http]
 	sslVerify = false
 [diff]
 	renames = copies
 	renameLimit = 100000
 [rerere]
-	enabled = 1
+	enabled = true
 [branch]
 	autosetuprebase = always
+	autosetupmerge = always
+[push]
+	default = simple
+[merge]
+	tool = intellij
+[clean]
+	requireForce = false
+[log]
+	decorate = short
