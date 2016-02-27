@@ -25,7 +25,7 @@ set history=1000
 set undolevels=1000
 
 " Ignore these file extensions when completing names by pressing Tab
-set wildignore=*.swp,*.bak,*.class
+set wildignore+=*.swp,*.bak,*.class
 
 " Disable these characters as word dividers
 set iskeyword+=_
@@ -111,7 +111,7 @@ set autoindent
 set smartindent
 
 " But just in case I'm working on a file with a more evil form of indentation
-" set expandtab
+set noexpandtab
 
 " C-indenting option to make public and private labels not increase the
 " indentation level
@@ -216,4 +216,4 @@ set tags=./tags,tags,../tags,../../tags,../../../tags,../../../../tags
 set diffopt+=vertical
 
 " Highlight whitespace at the end of the line in ugly yellow
-match Todo /\s\+$/
+" match Todo /\s\+$/
