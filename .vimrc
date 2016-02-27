@@ -13,7 +13,7 @@ set nocompatible
 " " the ~/.vim/bundle directory
 filetype off " force reloading *after* pathogen loaded
 call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+execute pathogen#infect()
 
 " Enable loading the plugin files and indent file for specific file types
 filetype plugin indent on
