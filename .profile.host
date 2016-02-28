@@ -1,2 +1,26 @@
+export ME=Craig
+
+export ANT_HOME=~/tools/apache-ant-1.9.3
+export MAVEN_HOME=~/tools/apache-maven-3.2.1
+export CABAL_HOME=/Users/Craig/Library/Haskell/ghc-7.6.3/lib/cabal-install-1.20.0.3
+# export JAVA_HOME=/Users/Craig/tools/valhalla/build/macosx-x86_64-normal-server-release/images/jdk
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/
+
+# export PATH=$JAVA_HOME/bin:$PATH
+export PATH=$PATH:$ANT_HOME/bin
+export PATH=$PATH:$MAVEN_HOME/bin
+export PATH=$CABAL_HOME/bin:$PATH
+export PATH=$PATH:/Users/Craig/projects/haskell-kata/.cabal-sandbox/bin
+export PATH=/Applications/MacVim.app/Contents/MacOS:$PATH
+export PATH=$PATH:/Users/Craig/scripts
+
 export MAVEN_OPTS='-Xmx512m'
 
+# added by travis gem
+[ -f /Users/Craig/.travis/travis.sh ] && source /Users/Craig/.travis/travis.sh
+
+PATH="/Users/Craig/perl5/bin${PATH+:}${PATH}"; export PATH;
+PERL5LIB="/Users/Craig/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/Craig/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/Craig/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/Craig/perl5"; export PERL_MM_OPT;
