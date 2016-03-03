@@ -14,6 +14,20 @@ alias ll='git ll'
 alias lg='git lg'
 alias lgb='git lgb'
 
+# git aliases
+alias s='git st'
+alias ss='git ss'
+alias gl='git gl'
+alias gb='git gb'
+alias ga='git ga'
+alias gf='git f'
+alias ri='git ri'
+alias co='git co'
+alias ci='git ci'
+alias m='git m'
+alias di='git diff'
+alias add='git add'
+
 # Compress the cd, ls -l series of commands.
 function c() {
 	cd "$@" && ls;
