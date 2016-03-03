@@ -12,19 +12,19 @@
 	ci = commit
 	co = checkout
 	st = status
-	w = whatchanged
 	cp = cherry-pick
 	ri = rebase --interactive --autosquash
 	ss = status -s
-	unstage = reset HEAD --
 	br = branch
-	f = fetch --all --prune
+	f  = fetch --all --prune
 	rp = rebase --committer-date-is-author-date --preserve-merges
+	unstage = reset HEAD --
 	tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15 --reverse"
-	l = log --oneline --graph --decorate --all
-	ll = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)'
-	lg = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)' --all
-	lgb = log --graph --abbrev-commit --decorate --format=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(dim white)%an%C(reset) %C(dim blue)(%ar)%C(reset)' --branches
+	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)'
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)' --all
+	l  = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)' --all
+	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)' --branches
+	m = mergetool --no-prompt --tool=vimdiff
 [core]
 	filemode = false
 	autocrlf = input
