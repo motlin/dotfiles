@@ -5,11 +5,15 @@ export MAVEN_HOME=~/tools/apache-maven-3.2.1
 export CABAL_HOME=/Users/Craig/Library/Haskell/ghc-7.6.3/lib/cabal-install-1.20.0.3
 # export JAVA_HOME=/Users/Craig/tools/valhalla/build/macosx-x86_64-normal-server-release/images/jdk
 # export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+export JAVA_HOME=`/usr/libexec/java_home`
+export POSTGRES_HOME=/Applications/Postgres.app/Contents/Versions/9.5/
 
 # export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$PATH:$ANT_HOME/bin
 export PATH=$PATH:$MAVEN_HOME/bin
 export PATH=$CABAL_HOME/bin:$PATH
+export PATH=$POSTGRES_HOME/bin:$PATH
 export PATH=$PATH:/Users/Craig/projects/haskell-kata/.cabal-sandbox/bin
 export PATH=/Applications/MacVim.app/Contents/MacOS:$PATH
 export PATH=$PATH:/Users/Craig/scripts
