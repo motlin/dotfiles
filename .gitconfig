@@ -1,6 +1,6 @@
 [user]
 	name = Craig P. Motlin
-	email = cmotlin@gmail.com
+	useconfigonly = true
 [color]
 	branch = auto
 	diff = auto
@@ -25,10 +25,12 @@
 	l  = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)' --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset)' --branches
 	m = mergetool --no-prompt --tool=vimdiff
+	detach = checkout --detach
 [core]
 	filemode = false
 	autocrlf = input
 	editor = vim
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [http]
 	sslVerify = false
 [diff]
@@ -47,3 +49,10 @@
 	requireForce = false
 [log]
 	decorate = short
+[interactive]
+	diffFilter = diff-highlight
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
