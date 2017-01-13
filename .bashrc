@@ -25,11 +25,6 @@ if [ -e ~/.alias ]; then
 	. ~/.alias
 fi
 
-# colors for ls, etc.
-if [ -f ~/.dircolors ]; then
-	eval `dircolors -b ~/.dircolors`
-fi
-
 # bash history configuration
 shopt -s histappend
 shopt -s cdspell
