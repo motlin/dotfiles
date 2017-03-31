@@ -1,18 +1,14 @@
 ME=Craig
 
-export ANT_HOME=~/apache-ant-1.8.0
-export MAVEN_HOME=~/apache-maven-3.0.3
-export JAVA_HOME=/cygdrive/c/Program\ Files/Java/jdk1.6.0_25
+export JAVA_HOME='/cygdrive/c/Program Files/Java/jdk1.8.0_111'
+export MAVEN_HOME='/cygdrive/c/tools/apache-maven-3.3.3'
+export POSTGRES_HOME='/cygdrive/c/Program Files/PostgreSQL/9.5'
 
-export PATH=$PATH:$ANT_HOME/bin
-export PATH=$PATH:$MAVEN_HOME/bin
 export PATH=$PATH:$JAVA_HOME/bin
-export PATH=$PATH:$SCALA_HOME/bin
-export PATH=$PATH:~/bindir
+export PATH=$PATH:$MAVEN_HOME/bin
+export PATH=$PATH:$POSTGRES_HOME/bin
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ANT_HOME/lib
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MAVEN_HOME/lib
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_HOME/lib
+export PATH=$PATH:~/bindir
 
 export MAVEN_OPTS='-Xmx512m'
 
