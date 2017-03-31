@@ -58,3 +58,5 @@
 	newHighlight = green bold 22
 [mergetool]
 	keepBackup = false
+[help]
+	autocorrect = 1
