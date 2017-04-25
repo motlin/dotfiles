@@ -4,15 +4,16 @@ alias x='exit'
 alias v='vim'
 alias vi='vim'
 alias vd='vim -d'
+alias grep='grep --color'
 
 # ls aliases
-alias ls='ls -GF'
-alias l='ls -lAGF'
-alias la='ls -AFG'
-alias lt='ls -lAGFrt'
-alias ll='git ll'
-alias lg='git lg'
-alias lgb='git lgb'
+alias ls='ls -GF --color'
+alias l='ls -lAGF --color'
+alias la='ls -AFG --color'
+alias lt='ls -lAGFrt --color'
+alias ll='git ll --color'
+alias lg='git lg --color'
+alias lgb='git lgb --color'
 
 # git aliases
 alias s='git st'
