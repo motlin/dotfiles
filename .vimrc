@@ -234,3 +234,6 @@ if has("multi_byte")
   "setglobal bomb
   set fileencodings=ucs-bom,utf-8,latin1
 endif
+
+au BufRead,BufNewFile *.g4 set filetype=antlr4
+

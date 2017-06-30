@@ -14,3 +14,5 @@ alias cdb='popd'
 alias dir='ls  --format=vertical'
 alias vdir='ls --format=long'
 alias mod='ls -lAGFrt | tail'
+
+alias antlr4='java -Xmx500M -cp ~/binaries/antlr-4.6-complete.jar org.antlr.v4.Tool'
