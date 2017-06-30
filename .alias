@@ -26,7 +26,8 @@ alias ri='git ri'
 alias co='git co'
 alias ci='git ci'
 alias m='git m'
-alias di='git diff'
+alias dif='git diff'
+alias cached='git diff --cached'
 alias add='git add'
 
 # Compress the cd, ls -l series of commands.
