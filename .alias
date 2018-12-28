@@ -29,11 +29,9 @@ alias m='git m'
 alias dif='git diff'
 alias cached='git diff --cached'
 alias add='git add'
-
-# Compress the cd, ls -l series of commands.
-function c() {
-	cd "$@" && ls;
-}
+alias skip='git rebase --skip'
+alias cont='git rebase --continue'
+alias pushf='git push --force'
 
 alias up='cd ..'
 alias up2='cd ../..'
