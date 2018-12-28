@@ -1,13 +1,6 @@
 [user]
 	name = Craig P. Motlin
 	useconfigonly = true
-[color]
-	branch = auto
-	diff = auto
-	status = auto
-	ui = auto
-	interactive = auto
-	pager = true
 [alias]
 	ci = commit
 	co = checkout
@@ -35,6 +28,9 @@
 [diff]
 	renames = copies
 	renameLimit = 100000
+	submodule = diff
+# https://git-scm.com/book/en/v2/Git-Tools-Rerere
+# https://stackoverflow.com/questions/5519244/are-there-any-downsides-to-enabling-git-rerere
 [rerere]
 	enabled = true
 [branch]
@@ -48,8 +44,9 @@
 	requireForce = false
 [log]
 	decorate = short
-[interactive]
-	diffFilter = diff-highlight
+# https://github.com/so-fancy/diff-so-fancy/issues/35
+# [interactive]
+	# diffFilter = "diff-so-fancy"
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
@@ -59,3 +56,10 @@
 	keepBackup = false
 [help]
 	autocorrect = 1
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
