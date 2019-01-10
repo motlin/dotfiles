@@ -19,7 +19,6 @@
 	m = mergetool --no-prompt --tool=vimdiff
 	detach = checkout --detach
 [core]
-	filemode = false
 	autocrlf = input
 	editor = vim
 	pager = diff-so-fancy | less --tabs=4 -RFX
@@ -33,6 +32,7 @@
 # https://stackoverflow.com/questions/5519244/are-there-any-downsides-to-enabling-git-rerere
 [rerere]
 	enabled = true
+	autoUpdate = true
 [branch]
 	autosetuprebase = always
 	autosetupmerge = always
@@ -43,7 +43,6 @@
 [clean]
 	requireForce = false
 [log]
-	decorate = short
 # https://github.com/so-fancy/diff-so-fancy/issues/35
 # [interactive]
 	# diffFilter = "diff-so-fancy"
@@ -55,7 +54,7 @@
 [mergetool]
 	keepBackup = false
 [help]
-	autocorrect = 1
+	autoCorrect = 20
 [color "diff"]
 	meta = yellow
 	frag = magenta bold
