@@ -11,9 +11,6 @@ alias ls='ls -GF'
 alias l='ls -lAGF'
 alias la='ls -AFG'
 alias lt='ls -lAGFrt'
-alias ll='git ll'
-alias lg='git lg'
-alias lgb='git lgb'
 
 # git aliases
 alias s='git st'
