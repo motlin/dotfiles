@@ -25,6 +25,11 @@ if [ -e ~/.alias ]; then
 	. ~/.alias
 fi
 
+# Aliases that are not to be shared between different hosts/environments
+if [ -e ~/.alias.host ]; then
+	. ~/.alias.host
+fi
+
 # bash history configuration
 shopt -s histappend
 shopt -s cdspell
@@ -67,4 +72,4 @@ PS1=$TITLEBAR$PROMPT
 stty erase 
 
 source ~/.bash_completion.d/git-completion.bash
-source ~/.bash_completion.d/git-flow-completion.bash
+

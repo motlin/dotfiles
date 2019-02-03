@@ -39,10 +39,5 @@ alias up6='cd ../../../../../..'
 alias up7='cd ../../../../../../..'
 alias up8='cd ../../../../../../../..'
 
-# Aliases that are not to be shared between different hosts/environments
-if [ -e ~/.alias.host ]; then
-	. ~/.alias.host
-fi
-
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias gitk='gitk --all'
