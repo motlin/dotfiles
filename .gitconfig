@@ -12,10 +12,25 @@
 	f  = fetch --all --prune
 	rp = rebase --committer-date-is-author-date --preserve-merges
 	unstage = reset HEAD --
+
+# https://git-scm.com/docs/pretty-formats#Documentation/pretty-formats.txt-h
+# %h abbreviated commit hash
+# %ad author date (format respects --date= option)
+# %d ref names, like the --decorate option of git-log[1]
+# %D ref names without the " (", ")" wrapping.
+# %s subject
+# %an author name
+# %ar author date, relative
+# %<(<N>[,trunc|ltrunc|mtrunc]) make the next placeholder take at least N columns, padding spaces on the right if necessary. Optionally truncate at the beginning (ltrunc), the middle (mtrunc) or the end (trunc) if the output is longer than N columns. Note that truncating only works correctly with N >= 2.
+
 	tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15 --reverse"
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
+	glc = log --graph --decorate --date=short --format=format:'%C(yellow)%>|(12)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<(60,mtrunc)%s%C(reset) %C(magenta)%<(12,trunc)%an%C(reset) %C(auto)%<(32,trunc)%D%C(reset)'
 	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
+	gac = log --graph --decorate --date=short --format=format:'%C(yellow)%>|(16)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<(58,mtrunc)%s%C(reset) %C(magenta)%an%C(reset)%C(auto)%+d%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
+    # https://stackoverflow.com/a/17369548/23572
+	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(cyan)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
 	m = mergetool --no-prompt --tool=vimdiff
 	detach = checkout --detach
 	# https://gist.github.com/DuaelFr/5663854
@@ -24,22 +39,37 @@
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	ignored = !git ls-files -v | grep '^h'
+	first = rev-list --max-parents=0 HEAD
 	last = log -1 HEAD
+
 	# https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
 	# Friendly wording is easier to remember.
 	# Thanks to http://gggritso.com/human-git-aliases
 	branches = branch -a
 	tags = tag -n1 --list
 	stashes = stash list
+	worktrees = worktree list
+	remotes = remote -v
+
 	churn = !git log --all --find-copies --find-renames --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}' | sort -g
-	pruner = !"git prune --expire=now; git reflog expire --expire-unreachable=now --rewrite --all"
+	pruner = !git prune --expire=now && git reflog expire --expire-unreachable=now --rewrite --all
 	repacker = repack -a -d -f --depth=300 --window=300 --window-memory=1g
-	optimize = !git pruner; git repacker; git prune-packed
+	optimize = !git gc && git pruner && git repacker && git prune-packed
 	oops = commit --amend --no-edit
+	root = rev-parse --show-toplevel
+	exec = "!exec "
+	# https://stackoverflow.com/a/3338774/23572
+	# Show most recent commit on each branch that isn't pushed
+	local = "log --branches --not --remotes --simplify-by-decoration --decorate --oneline"
+	# https://stackoverflow.com/a/7067489/23572
+	# List all aliases
+	aliases = config --get-regexp ^alias\\.
+	pushf = push --force-with-lease
 [core]
 	autocrlf = input
 	editor = vim
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	commitGraph = true
 [http]
 	sslVerify = false
 [diff]
@@ -83,8 +113,15 @@
 	submoduleSummary = true
 [fetch]
 	recurseSubmodules = true
+	writeCommitGraph = true
 [rebase]
 	autoStash = true
 	missingCommitsCheck = error
 [stash]
 	showPatch = true
+[gc]
+	writeCommitGraph = true
+[push]
+	recurseSubmodules = on-demand
+[pack]
+	useSparse = true
