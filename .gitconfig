@@ -1,127 +1,223 @@
 [user]
 	name = Craig P. Motlin
-	useconfigonly = true
+	email = cmotlin@gmail.com
+	# Instruct Git to avoid trying to guess defaults for user.email and user.name, and instead retrieve the values only from the configuration.
+	# For example, if you have multiple email addresses and would like to use a different one for each repository, then with this configuration option set to true in the global config along with a name, Git will prompt you to set up an email before making new commits in a newly cloned repository.
+	# Defaults to false.
+	# https://blog.github.com/2016-03-28-git-2-8-has-been-released/#dont-guess-my-identity
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-useruseConfigOnly
+	useConfigOnly = true
 [alias]
-	ci = commit
+	# Aliases from the git-scm book https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
 	co = checkout
-	st = status
-	cp = cherry-pick
-	ri = rebase --interactive --autosquash
-	ss = status -s
 	br = branch
-	f  = fetch --all --prune
-	rp = rebase --committer-date-is-author-date --preserve-merges
+	ci = commit
+	st = status
 	unstage = reset HEAD --
+	last = log -1 HEAD
+	# Aliases of my own that seem to be pretty common
+	cp = cherry-pick
+	oops = commit --amend --no-edit
 
-# https://git-scm.com/docs/pretty-formats#Documentation/pretty-formats.txt-h
-# %h abbreviated commit hash
-# %ad author date (format respects --date= option)
-# %d ref names, like the --decorate option of git-log[1]
-# %D ref names without the " (", ")" wrapping.
-# %s subject
-# %an author name
-# %ar author date, relative
-# %<(<N>[,trunc|ltrunc|mtrunc]) make the next placeholder take at least N columns, padding spaces on the right if necessary. Optionally truncate at the beginning (ltrunc), the middle (mtrunc) or the end (trunc) if the output is longer than N columns. Note that truncating only works correctly with N >= 2.
+	# Aliases for plurals. Otherwise, git has inconsistent commands to list all branches, tags, stashes, wortrees, remotes, aliases.
+	# Plurals from http://gggritso.com/human-git-aliases
+	branches = branch --all
+	tags = tag --list
+	stashes = stash list
+	# https://stackoverflow.com/a/22183573/23572
+	aliases = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+	# More plurals
+	worktrees = worktree list
+	remotes = remote --verbose
 
-	tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15 --reverse"
-	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	glc = log --graph --decorate --date=short --format=format:'%C(yellow)%>|(12)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<(60,mtrunc)%s%C(reset) %C(magenta)%<(12,trunc)%an%C(reset) %C(auto)%<(32,trunc)%D%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
-	gac = log --graph --decorate --date=short --format=format:'%C(yellow)%>|(16)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<(58,mtrunc)%s%C(reset) %C(magenta)%an%C(reset)%C(auto)%+d%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
-	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
-    # https://stackoverflow.com/a/17369548/23572
-	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(cyan)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
-	m = mergetool --no-prompt --tool=vimdiff
+	# there is no configuration available to tell git to always use `force-with-lease` instead of `force`
+	# https://stackoverflow.com/a/30567394/23572
+	pushf = push --force-with-lease
+
+	# My aliases that aren't too common
+	ri = rebase --interactive --autosquash
+	f = fetch --all --prune
+	# detach = switch --detach
 	detach = checkout --detach
+	ss = status --short
+	m = mergetool --no-prompt --tool=vimdiff
+	exec = "!exec "
+
+	# Git log --graph aliases
+	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
+	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
+
+	# reflog
+	# Some people alias 'rl' to just 'reflog' without all these options
+	# https://stackoverflow.com/a/17369548/23572
+	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(cyan)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
+
 	# https://gist.github.com/DuaelFr/5663854
-	# https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
 	who = shortlog --summary --numbered --email --no-merges
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	ignored = !git ls-files -v | grep '^h'
+
+	# repository root directory
+	# https://stackoverflow.com/a/957978/23572
+	root = rev-parse --show-toplevel
+
+	# initial commit(s)
+	# https://stackoverflow.com/a/1007545/23572
 	first = rev-list --max-parents=0 HEAD
-	last = log -1 HEAD
 
+	# Aggresive optimizations to save disk and time
 	# https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
-	# Friendly wording is easier to remember.
-	# Thanks to http://gggritso.com/human-git-aliases
-	branches = branch -a
-	tags = tag -n1 --list
-	stashes = stash list
-	worktrees = worktree list
-	remotes = remote -v
-
-	churn = !git log --all --find-copies --find-renames --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}' | sort -g
 	pruner = !git prune --expire=now && git reflog expire --expire-unreachable=now --rewrite --all
 	repacker = repack -a -d -f --depth=300 --window=300 --window-memory=1g
-	optimize = !git gc && git pruner && git repacker && git prune-packed
-	oops = commit --amend --no-edit
-	root = rev-parse --show-toplevel
-	exec = "!exec "
-	# https://stackoverflow.com/a/3338774/23572
+	optimize = !git gc --aggressive && git pruner && git repacker && git prune-packed
+
 	# Show most recent commit on each branch that isn't pushed
-	local = "log --branches --not --remotes --simplify-by-decoration --decorate --oneline"
-	# https://stackoverflow.com/a/7067489/23572
-	# List all aliases
-	aliases = config --get-regexp ^alias\\.
-	pushf = push --force-with-lease
+	# https://stackoverflow.com/a/3338774/23572
+	unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
 [core]
 	autocrlf = input
 	editor = vim
+	# https://github.com/so-fancy/diff-so-fancy
 	pager = diff-so-fancy | less --tabs=4 -RFX
-	commitGraph = true
-[http]
-	sslVerify = false
+	# Git 2.16 added support for a core.fsmonitor hook to allow an external tool to inform it which files have changed.
+	# blog.github.com/2018-04-05-git-217-released/#speeding-up-status-with-watchman
+	# On repositories with many files, this can be a dramatic speedup.
+	# https://git-scm.com/docs/githooks#_fsmonitor_watchman
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefsmonitor
+	# First install rs-git-fsmonitor, or a competitor
+	# https://github.com/jgavris/rs-git-fsmonitor
+	fsmonitor = rs-git-fsmonitor
+# [http]
+	# Unable to clone Git repository due to self signed certificate
+	# sslVerify = false
 [diff]
+	# Git should detect both renames and copies. Theoretically slows down git.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
+	# Change from 'true' to 'copies'
 	renames = copies
-	renameLimit = 100000
+	# renameLimit = 100000
+	# Diffs of submodules should show the changed contents rather than a list of commits.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffsubmodule
+	# Change from 'short' to 'diff'
 	submodule = diff
+	# git diff should use a prefix pair that is different from the standard "a/" and "b/" depending on what is being compared. Only relevant when not piping through a pager/formatter like diff-so-fancy.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffmnemonicPrefix
 	mnemonicPrefix = true
+	# When runing git diff --color-words, git uses this regex to determinate word boundaries.
+	# https://git-scm.com/docs/git-config#git-config-diffwordRegex
+	# https://medium.com/@porteneuve/30-git-cli-options-you-should-know-about-15423e8771df
 	wordRegex = .
-# https://git-scm.com/book/en/v2/Git-Tools-Rerere
-# https://stackoverflow.com/questions/5519244/are-there-any-downsides-to-enabling-git-rerere
 [rerere]
+	# The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you’ve resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
+	# https://git-scm.com/book/en/v2/Git-Tools-Rerere
+	# https://stackoverflow.com/questions/5519244/are-there-any-downsides-to-enabling-git-rerere
 	enabled = true
+	# rerere should update the index, not just the worktree.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rerereautoUpdate
 	autoUpdate = true
 [branch]
+	# When a new branch is created with git branch or git checkout that tracks another branch, git should set up pull to rebase instead of merge.
+	# Change from 'never' to 'always'
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchautoSetupRebase
 	autoSetupRebase = always
+	# git should always set up tracking for new branches, not just for remote branches.
+	# Change from 'true' to 'always'
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchautoSetupMerge
 	autoSetupMerge = always
 [merge]
-	tool = intellij
+	tool = idea
+	# Auto-stash before merge
+	# https://stackoverflow.com/a/30209750/23572
+	# Coming in Git 2.27. Current version at time of writing is 2.26.2.
+	autoStash = true
 [log]
+	# Print out the ref names of any commits that are shown by the log command.
+	# If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be printed.
+	# If full is specified, the full ref name (including prefix) will be printed.
+	# If auto is specified, then if the output is going to a terminal, the ref names are shown as if short were given, otherwise no ref names are shown.
+	# This is the same as the --decorate option of the git log.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logdecorate
 	decorate = full
+	# git log should act as if the --follow option was used when a single <path> is given
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
+	follow = true
+[mergetool]
+	# git should delete the .orig file after merge conflicts are resolved.
+	# It seems safer to keep the backup files, but git has so many other ways to recover work.
+	# After performing a merge, the original file with conflict markers can be saved as a file with a .orig extension.
+	# If this variable is set to false then this file is not preserved.
+	# Defaults to true (i.e. keep the backup files).
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergetoolkeepBackup
+	keepBackup = false
+[help]
+	# Automatically correct and execute mistyped commands after waiting for the given number of deciseconds (0.1 sec). For example:
+	# git helo
+	# WARNING: You called a Git command named 'helo', which does not exist.
+	# Continuing in 2.0 seconds, assuming that you meant 'help'.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect
+	autoCorrect = 20
+[status]
+	# git status should show a summary of commits for modified submodules.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-statussubmoduleSummary
+	submoduleSummary = true
+[fetch]
+	# Update commit graph during fetch
+	# Defaults to false, unless feature.experimental is true.
+	# Default to false at time of writing with git 2.26.2.
+	# https://github.blog/2019-11-03-highlights-from-git-2-24/
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-fetchwriteCommitGraph
+	writeCommitGraph = true
+[rebase]
+	# Auto-stash before rebase
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebaseautoStash
+	autoStash = true
+	# During `git rebase --interactive`, prevent (accidental) deletion of lines
+	# If set to "warn", git rebase -i will print a warning if some commits are removed (e.g. a line was deleted), however the rebase will still proceed.
+	# If set to "error", it will print the previous warning and stop the rebase, git rebase --edit-todo can then be used to correct the error.
+	# If set to "ignore", no checking is done.
+	# To drop a commit without warning or error, use the drop command in the todo list.
+	# Defaults to "ignore".
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebasemissingCommitsCheck
+	missingCommitsCheck = error
+	# TODO: instructionFormat seems to mess with rebase --rebase-merges
+	# instructionFormat = %d %s [by %an] (%ar)
+[stash]
+	# git stash show (without an option) should show the stash entry in patch form.
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowPatch
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowStat
+	showPatch = true
+[push]
+	# git push should recurse into submodules on-demand
+	# all submodules that changed in the revisions to be pushed will be pushed
+	# Change from 'no' to 'on-demand'
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushrecurseSubmodules
+	recurseSubmodules = on-demand
+[pack]
+	# Use sparse packs
+	# This can have significant performance benefits when computing a pack to send a small change.
+	# https://devblogs.microsoft.com/devops/exploring-new-frontiers-for-git-push-performance/
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-packuseSparse
+	# Default is false unless feature.experimental is enabled.
+	useSparse = true
+
 # https://github.com/so-fancy/diff-so-fancy/issues/35
 # [interactive]
 	# diffFilter = "diff-so-fancy"
+[color]
+	ui = true
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
-[mergetool]
-	keepBackup = false
-[help]
-	autoCorrect = 20
 [color "diff"]
-	meta = yellow
+	meta = 11
 	frag = magenta bold
 	commit = yellow bold
 	old = red bold
 	new = green bold
 	whitespace = red reverse
-[status]
-	submoduleSummary = true
-[fetch]
-	recurseSubmodules = true
-	writeCommitGraph = true
-[rebase]
-	autoStash = true
-	missingCommitsCheck = error
-[stash]
-	showPatch = true
-[gc]
-	writeCommitGraph = true
-[push]
-	recurseSubmodules = on-demand
-[pack]
-	useSparse = true
+[pager]
+	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
