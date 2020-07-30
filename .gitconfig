@@ -88,7 +88,7 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefsmonitor
 	# First install rs-git-fsmonitor, or a competitor
 	# https://github.com/jgavris/rs-git-fsmonitor
-	fsmonitor = rs-git-fsmonitor
+	# fsmonitor = rs-git-fsmonitor
 # [http]
 	# Unable to clone Git repository due to self signed certificate
 	# sslVerify = false
