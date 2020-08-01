@@ -36,7 +36,7 @@
 
 	# My aliases that aren't too common
 	ri = rebase --interactive --autosquash
-	f = fetch --all --prune
+	f = fetch --all --prune --jobs=8
 	# detach = switch --detach
 	detach = checkout --detach
 	ss = status --short
@@ -45,7 +45,7 @@
 
 	# Git log --graph aliases
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
 
 	# reflog
@@ -63,7 +63,7 @@
 	# https://stackoverflow.com/a/957978/23572
 	root = rev-parse --show-toplevel
 
-	# initial commit(s)
+	# initial commit(s) that are anscestors of HEAD
 	# https://stackoverflow.com/a/1007545/23572
 	first = rev-list --max-parents=0 HEAD
 
@@ -221,3 +221,5 @@
 	whitespace = red reverse
 [pager]
 	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+[init]
+	defaultBranch = main
