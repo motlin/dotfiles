@@ -47,6 +47,7 @@
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
 	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
+	decorate = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all --simplify-by-decoration
 
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
