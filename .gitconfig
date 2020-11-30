@@ -25,7 +25,7 @@
 	tags = tag --list
 	stashes = stash list
 	# https://stackoverflow.com/a/22183573/23572
-	aliases = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+	aliases = config --get-regexp ^alias\\.
 	# More plurals
 	worktrees = worktree list
 	remotes = remote --verbose
@@ -90,6 +90,7 @@
 	# First install rs-git-fsmonitor, or a competitor
 	# https://github.com/jgavris/rs-git-fsmonitor
 	fsmonitor = rs-git-fsmonitor
+	commitGraph = true
 # [http]
 	# Unable to clone Git repository due to self signed certificate
 	# sslVerify = false
@@ -224,3 +225,9 @@
 	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
 	defaultBranch = main
+[gc]
+	writeCommitGraph = true
+[protocol]
+	version = 2
+[remote]
+	pushDefault = origin
