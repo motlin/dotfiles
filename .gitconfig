@@ -25,7 +25,7 @@
 	tags = tag --list
 	stashes = stash list
 	# https://stackoverflow.com/a/22183573/23572
-	aliases = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+	aliases = config --get-regexp ^alias\\.
 	# More plurals
 	worktrees = worktree list
 	remotes = remote --verbose
@@ -36,17 +36,16 @@
 
 	# My aliases that aren't too common
 	ri = rebase --interactive --autosquash
-	f = fetch --all --prune
-	# detach = switch --detach
+	f = fetch --all --prune --jobs=16
 	detach = checkout --detach
 	ss = status --short
 	m = mergetool --no-prompt --tool=vimdiff
-	exec = "!exec "
 
 	# Git log --graph aliases
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/upstream/pr/*/merge --all
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
+	decorate = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --simplify-by-decoration
 
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
@@ -63,7 +62,7 @@
 	# https://stackoverflow.com/a/957978/23572
 	root = rev-parse --show-toplevel
 
-	# initial commit(s)
+	# initial commit(s) that are anscestors of HEAD
 	# https://stackoverflow.com/a/1007545/23572
 	first = rev-list --max-parents=0 HEAD
 
@@ -81,17 +80,7 @@
 	editor = vim
 	# https://github.com/so-fancy/diff-so-fancy
 	pager = diff-so-fancy | less --tabs=4 -RFX
-	# Git 2.16 added support for a core.fsmonitor hook to allow an external tool to inform it which files have changed.
-	# blog.github.com/2018-04-05-git-217-released/#speeding-up-status-with-watchman
-	# On repositories with many files, this can be a dramatic speedup.
-	# https://git-scm.com/docs/githooks#_fsmonitor_watchman
-	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefsmonitor
-	# First install rs-git-fsmonitor, or a competitor
-	# https://github.com/jgavris/rs-git-fsmonitor
-	# fsmonitor = rs-git-fsmonitor
-# [http]
-	# Unable to clone Git repository due to self signed certificate
-	# sslVerify = false
+	commitGraph = true
 [diff]
 	# Git should detect both renames and copies. Theoretically slows down git.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
@@ -139,7 +128,7 @@
 	# If auto is specified, then if the output is going to a terminal, the ref names are shown as if short were given, otherwise no ref names are shown.
 	# This is the same as the --decorate option of the git log.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logdecorate
-	decorate = full
+	decorate = auto
 	# git log should act as if the --follow option was used when a single <path> is given
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
 	follow = true
@@ -157,7 +146,7 @@
 	# WARNING: You called a Git command named 'helo', which does not exist.
 	# Continuing in 2.0 seconds, assuming that you meant 'help'.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect
-	autoCorrect = 20
+	autoCorrect = 15
 [status]
 	# git status should show a summary of commits for modified submodules.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-statussubmoduleSummary
@@ -181,8 +170,6 @@
 	# Defaults to "ignore".
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebasemissingCommitsCheck
 	missingCommitsCheck = error
-	# TODO: instructionFormat seems to mess with rebase --rebase-merges
-	# instructionFormat = %d %s [by %an] (%ar)
 [stash]
 	# git stash show (without an option) should show the stash entry in patch form.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowPatch
@@ -201,10 +188,8 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-packuseSparse
 	# Default is false unless feature.experimental is enabled.
 	useSparse = true
+	writeReverseIndex = true
 
-# https://github.com/so-fancy/diff-so-fancy/issues/35
-# [interactive]
-	# diffFilter = "diff-so-fancy"
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -221,3 +206,13 @@
 	whitespace = red reverse
 [pager]
 	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+[init]
+	defaultBranch = main
+[gc]
+	writeCommitGraph = true
+[protocol]
+	version = 2
+[remote]
+	pushDefault = origin
+[pull]
+	twohead = ort
