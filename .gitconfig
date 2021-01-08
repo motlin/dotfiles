@@ -36,7 +36,7 @@
 
 	# My aliases that aren't too common
 	ri = rebase --interactive --autosquash
-	f = fetch --all --prune
+	f = fetch --all --prune --jobs=4
 	# detach = switch --detach
 	detach = checkout --detach
 	ss = status --short
