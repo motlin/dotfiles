@@ -18,7 +18,7 @@ set output-meta on
 set convert-meta off
 
 # ask before displaying more than 100 completions
-set completion-query-item 100
+# set completion-query-item 100
 
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
