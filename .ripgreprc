@@ -1,0 +1,10 @@
+# Based on the example at:
+# https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md
+
+--max-columns=1024
+--max-columns-preview
+
+--type-add=web:*.{html,css,js,ts}*
+
+# Because who cares about case!?
+--smart-case
