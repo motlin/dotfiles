@@ -84,6 +84,8 @@ source $ZSH/oh-my-zsh.sh
 source ~/.alias
 bindkey -e
 
+# disable auto correct
+# https://superuser.com/a/516195
 # https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh
 unsetopt correct_all
 
