@@ -7,10 +7,10 @@ alias vd='vim -d'
 alias grep='grep --color'
 
 # ls aliases
-alias ls='ls -GF'
-alias l='ls -lAGF'
-alias la='ls -AFG'
-alias lt='ls -lAGFrt'
+alias ls='ls -GF --color'
+alias l='ls -lAGF --color'
+alias la='ls -AFG --color'
+alias lt='ls -lAGFrt --color'
 
 # git aliases
 alias s='git st'
