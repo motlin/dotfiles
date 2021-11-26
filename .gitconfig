@@ -225,4 +225,9 @@
 [remote]
 	pushDefault = origin
 [pull]
+	# https://github.blog/2021-08-16-highlights-from-git-2-33/#merge-ort-a-new-merge-strategy
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pulltwohead
 	twohead = ort
+	# `git pull` should imply --rebase
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
+	rebase = true
