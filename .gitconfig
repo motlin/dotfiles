@@ -75,6 +75,12 @@
 	# Show most recent commit on each branch that isn't pushed
 	# https://stackoverflow.com/a/3338774/23572
 	unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
+
+	# Find when commit has been merged into branch
+	# git find-merge <sha> <branch:-HEAD>
+	# https://stackoverflow.com/a/30998048
+	find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+	show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 [core]
 	autocrlf = input
 	editor = vim
