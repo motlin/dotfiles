@@ -84,6 +84,9 @@ source $ZSH/oh-my-zsh.sh
 source ~/.alias
 bindkey -e
 
+# https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh
+unsetopt correct_all
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
