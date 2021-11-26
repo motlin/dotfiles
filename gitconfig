@@ -222,6 +222,7 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+	func = 146 bold
 [pager]
 	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
@@ -241,3 +242,5 @@
 	rebase = true
 [advice]
 	skippedCherryPicks = false
+[credential "https://github.com"]
+	helper = !'C:\\Program Files (x86)\\GitHub CLI\\gh.exe' auth git-credential
