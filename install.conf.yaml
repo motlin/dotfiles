@@ -1,0 +1,18 @@
+- clean: ['~']
+
+- link:
+    ~/.Xdefaults: Xdefaults
+    ~/.alias: alias
+    ~/.antigen.zsh: antigen.zsh
+    ~/.bash_logout: bash_logout
+    ~/.bash_profile: bash_profile
+    ~/.bashrc: bashrc
+    ~/.gitconfig: gitconfig
+    ~/.minttyrc: minttyrc
+    ~/.profile: profile
+    ~/.ripgreprc: ripgreprc
+    ~/.screenrc: screenrc
+    ~/.vimrc: vimrc
+    ~/.zshenv: zshenv
+    ~/.zshrc.host: zshrc.host
+    ~/.zshrc: zshrc
