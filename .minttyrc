@@ -10,6 +10,6 @@ ClicksPlaceCursor=no
 RightClickAction=menu
 BellSound=no
 Scrollbar=none
-ThemeFile=
+ThemeFile=flat-ui
 FontWeight=500
 Term=xterm-256color
