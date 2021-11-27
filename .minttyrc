@@ -1,6 +1,6 @@
-Transparency=Low
+Transparency=low
 OpaqueWhenFocused=no
-Font=Lucida Console
+Font=Inconsolata for Powerline
 FontHeight=14
 AllowBlinking=no
 ClipShortcuts=yes
@@ -9,4 +9,7 @@ CopyOnSelect=yes
 ClicksPlaceCursor=no
 RightClickAction=menu
 BellSound=no
-Scrollbar=no
+Scrollbar=none
+ThemeFile=
+FontWeight=500
+Term=xterm-256color
