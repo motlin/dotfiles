@@ -132,7 +132,7 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 :map <F9> :set diffopt+=iwhite<CR>
 
 " Toggle paste mode.  Everything is inserted literally - no indending
-set pastetoggle=<F11>
+set pastetoggle=<F10>
 
 " Toggle line numbers
 :map <F12> :set number!<CR>

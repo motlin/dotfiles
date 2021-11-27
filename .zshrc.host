@@ -1,0 +1,3 @@
+path+=('/Users/Craig/tools/google-cloud-sdk/bin')
+path+=('/Users/Craig/projects/open-source/git-test/bin')
+path=('/Users/Craig/scripts' $path)
