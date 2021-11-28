@@ -21,6 +21,7 @@
     ~/.profile:
     ~/.ripgreprc:
     ~/.screenrc:
+    ~/.vim:
     ~/.vimrc:
     ~/.zshenv:
     ~/.zshrc.host:
