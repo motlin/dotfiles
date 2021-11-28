@@ -7,9 +7,6 @@ fi
 
 source ~/.antigen.zsh
 
-# User configuration
-source ~/.zshrc.host
-source ~/.alias
 bindkey -e
 
 # disable auto correct
@@ -123,7 +120,9 @@ ENABLE_CORRECTION="true"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/.zshrc.host
+# Enable git completion
+autoload -Uz compinit && compinit
 
-# heroku autocomplete setup
-HEROKU_AC_ZSH_SETUP_PATH=/Users/Craig/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+# User configuration
+source ~/.zshrc.host
+source ~/.alias
