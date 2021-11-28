@@ -5,24 +5,42 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+source ~/.antigen.zsh
 
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/Craig/.oh-my-zsh"
+# User configuration
+source ~/.zshrc.host
+source ~/.alias
+bindkey -e
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_MODE="nerdfont-complete"
+# disable auto correct
+# https://superuser.com/a/516195
+# https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh
+unsetopt correct_all
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+antigen use oh-my-zsh
+
+antigen bundle heroku
+antigen bundle brew
+antigen bundle yarn
+antigen bundle dirhistory
+antigen bundle command-not-found
+antigen bundle k
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+antigen theme romkatv/powerlevel10k
+
+case `uname` in
+  Darwin)
+    antigen bundle macos
+  ;;
+  Linux)
+  ;;
+esac
+
+antigen apply
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -76,18 +94,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew heroku yarn dirhistory zsh-autosuggestions zsh-syntax-highlighting k)
 
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-source ~/.alias
-bindkey -e
-
-# disable auto correct
-# https://superuser.com/a/516195
-# https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh
-unsetopt correct_all
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
