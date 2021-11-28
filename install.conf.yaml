@@ -10,6 +10,7 @@
     ~/.gitconfig:
     ~/.minttyrc:
     ~/.profile:
+    ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
     ~/.vimrc:
