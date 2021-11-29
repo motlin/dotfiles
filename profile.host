@@ -1,1 +1,8 @@
+ME=Craig
+
+export PATH=$PATH:~/bindir
 export PATH=/cygdrive/c/tools/diff-so-fancy:$PATH
+
+export MAVEN_OPTS='-Xmx512m'
+
+export LANG=C.ASCII

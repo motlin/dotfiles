@@ -1,6 +1,4 @@
-# term screen-256color
-# term xterm-256color
-# term xterm
+term xterm
 
 #kill startup message
 startup_message off
