@@ -1,7 +1,7 @@
 Transparency=low
 OpaqueWhenFocused=no
-Font=Inconsolata for Powerline
-FontHeight=14
+Font=MesloLGS NF
+FontHeight=12
 AllowBlinking=no
 ClipShortcuts=yes
 CopyAsRTF=yes
@@ -11,5 +11,5 @@ RightClickAction=menu
 BellSound=no
 Scrollbar=none
 ThemeFile=flat-ui
-FontWeight=500
+FontWeight=400
 Term=xterm-256color
