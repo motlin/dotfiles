@@ -127,6 +127,10 @@
 	# https://stackoverflow.com/a/30209750/23572
 	# Coming in Git 2.27. Current version at time of writing is 2.26.2.
 	autoStash = true
+	# Never create merge commits
+	# When set to only, only fast-forward merges are allowed (equivalent to giving the --ff-only option from the command line).
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
+	ff = only
 [log]
 	# Print out the ref names of any commits that are shown by the log command.
 	# If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be printed.
