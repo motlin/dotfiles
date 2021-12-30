@@ -186,11 +186,6 @@
 	# The default changed from 'matching' to 'simple' in Git 2.0
 	# 'simple' is better for beginners
 	default = matching
-	# git push should recurse into submodules on-demand
-	# all submodules that changed in the revisions to be pushed will be pushed
-	# Change from 'no' to 'on-demand'
-	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushrecurseSubmodules
-	recurseSubmodules = on-demand
 [pack]
 	# Use sparse packs
 	# This can have significant performance benefits when computing a pack to send a small change.
