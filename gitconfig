@@ -33,6 +33,7 @@
 	# there is no configuration available to tell git to always use `force-with-lease` instead of `force`
 	# https://stackoverflow.com/a/30567394/23572
 	pushf = push --force-with-lease
+	pf = push --force-with-lease
 
 	# My aliases that aren't too common
 	ri = rebase --interactive --autosquash
