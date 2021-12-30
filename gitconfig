@@ -11,7 +11,7 @@
 	# Aliases from the git-scm book https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
 	co = checkout
 	br = branch
-	ci = commit
+	ci = commit --verbose
 	st = --paginate status
 	unstage = reset HEAD --
 	last = log -1 HEAD
