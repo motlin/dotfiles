@@ -226,3 +226,5 @@
 	# `git pull` should imply --rebase
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
 	rebase = true
+[advice]
+	skippedCherryPicks = false
