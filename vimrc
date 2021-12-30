@@ -187,8 +187,6 @@ autocmd BufReadPost *
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
 
-:au Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
-
 " Tab completion
 function InsertTabWrapper()
 	let col = col('.') - 1
