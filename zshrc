@@ -126,3 +126,4 @@ autoload -Uz compinit && compinit
 # User configuration
 source ~/.zshrc.host
 source ~/.alias
+source ~/.alias.host
