@@ -44,7 +44,8 @@
 
 	# Git log --graph aliases
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/* --exclude=refs/remotes/upstream/pr/* --exclude=refs/remotes/origin/dependabot/* --all
+	gaa = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
 	decorate = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --simplify-by-decoration
 
@@ -82,12 +83,17 @@
 	# https://stackoverflow.com/a/30998048
 	find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
 	show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+
+	find-merged = "!git branch --merge upstream/master --remote --list 'origin/*' | sed 's#origin/##'"
+	delete-merged = "!git branch --merge upstream/master --remote --list 'origin/*' | sed 's#origin/##' | xargs git push --delete origin"
 [core]
 	autocrlf = input
 	editor = vim
 	# https://github.com/so-fancy/diff-so-fancy
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	commitGraph = true
+	fsmonitor = true
+	untrackedcache = true
 [diff]
 	# Git should detect both renames and copies. Theoretically slows down git.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
@@ -190,7 +196,7 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushdefault
 	# The default changed from 'matching' to 'simple' in Git 2.0
 	# 'simple' is better for beginners
-	default = matching
+	# default = matching
 [pack]
 	# Use sparse packs
 	# This can have significant performance benefits when computing a pack to send a small change.
