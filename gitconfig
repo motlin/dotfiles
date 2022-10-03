@@ -187,6 +187,8 @@
 	# Defaults to "ignore".
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebasemissingCommitsCheck
 	missingCommitsCheck = error
+	# https://github.blog/2022-10-03-highlights-from-git-2-38/#rebase-dependent-branches-with-update-refs
+	updateRefs = true
 [stash]
 	# git stash show (without an option) should show the stash entry in patch form.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowPatch
