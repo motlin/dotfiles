@@ -1,4 +1,4 @@
-term xterm
+term xterm-256color
 
 #kill startup message
 startup_message off
