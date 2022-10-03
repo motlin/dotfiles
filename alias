@@ -41,3 +41,4 @@ alias up8='cd ../../../../../../../..'
 
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias gitk='gitk --all'
+alias log="TZ='EST+5' ts '%Y-%m-%d %H:%M:%.S'"
