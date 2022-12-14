@@ -19,7 +19,6 @@ antigen use oh-my-zsh
 antigen bundle heroku
 antigen bundle brew
 antigen bundle yarn
-antigen bundle dirhistory
 antigen bundle command-not-found
 antigen bundle k
 
