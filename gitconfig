@@ -131,6 +131,11 @@
 	# Change from 'true' to 'always'
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchautoSetupMerge
 	autoSetupMerge = always
+	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+	sort = -committerdate
+[column]
+	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+	ui = auto
 [merge]
 	tool = idea
 	# Auto-stash before merge
