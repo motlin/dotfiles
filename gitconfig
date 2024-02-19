@@ -44,7 +44,7 @@
 
 	# Git log --graph aliases
 	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/* --exclude=refs/remotes/upstream/pr/* --exclude=refs/remotes/origin/dependabot/* --all
+	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/* --exclude=refs/remotes/upstream/pr/* --exclude=refs/remotes/origin/dependabot/* --exclude=refs/notes/tests/* --all
 	gaa = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --all
 	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
 	decorate = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --simplify-by-decoration
@@ -86,6 +86,9 @@
 
 	find-merged = "!git branch --merge upstream/master --remote --list 'origin/*' | sed 's#origin/##'"
 	delete-merged = "!git branch --merge upstream/master --remote --list 'origin/*' | sed 's#origin/##' | xargs git push --delete origin"
+
+	# https://www.colinodell.com/blog/201803/four-useful-git-aliases
+	children = "!bash -c 'c=${1:-HEAD}; set -- $(git rev-list --all --not \"$c\"^@ --children | grep $(git rev-parse \"$c\") ); shift; echo $1' -"
 [core]
 	autocrlf = input
 	editor = vim
