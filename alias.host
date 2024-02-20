@@ -2,3 +2,4 @@ alias l='exa --long --classify --header --color-scale --icons --no-permissions -
 alias la='l --all'
 alias lt='la --no-user --sort modified'
 alias cat='bat'
+alias rm='trash'
