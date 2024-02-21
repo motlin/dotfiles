@@ -114,6 +114,7 @@
 	# https://git-scm.com/docs/git-config#git-config-diffwordRegex
 	# https://medium.com/@porteneuve/30-git-cli-options-you-should-know-about-15423e8771df
 	wordRegex = .
+	algorithm = histogram
 [rerere]
 	# The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you’ve resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
 	# https://git-scm.com/book/en/v2/Git-Tools-Rerere
@@ -146,6 +147,8 @@
 	# When set to only, only fast-forward merges are allowed (equivalent to giving the --ff-only option from the command line).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
 	ff = only
+	conflictstyle = zdiff3
+	keepbackup = false
 [log]
 	# Print out the ref names of any commits that are shown by the log command.
 	# If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be printed.
@@ -157,6 +160,7 @@
 	# git log should act as if the --follow option was used when a single <path> is given
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
 	follow = true
+	date = iso
 [mergetool]
 	# git should delete the .orig file after merge conflicts are resolved.
 	# It seems safer to keep the backup files, but git has so many other ways to recover work.
@@ -207,6 +211,7 @@
 	# The default changed from 'matching' to 'simple' in Git 2.0
 	# 'simple' is better for beginners
 	# default = matching
+	default = current
 [pack]
 	# Use sparse packs
 	# This can have significant performance benefits when computing a pack to send a small change.
@@ -249,3 +254,7 @@
 	rebase = true
 [advice]
 	skippedCherryPicks = false
+[commit]
+	verbose = true
+[url "git@github.com:"]
+	pushInsteadOf = "https://github.com/"
