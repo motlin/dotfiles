@@ -43,11 +43,32 @@
 	m = mergetool --no-prompt --tool=vimdiff
 
 	# Git log --graph aliases
-	gl = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)'
-	ga = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/* --exclude=refs/remotes/upstream/pr/* --exclude=refs/remotes/origin/dependabot/* --exclude='refs/notes/tests/*' --exclude=refs/stash --all
-	gaa = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --all
-	gb = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --branches
-	decorate = log --graph --decorate --date=short --format=format:'%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset)%C(auto)%d%C(reset) %C(normal)%s%C(reset) %C(magenta)%an%C(reset) %C(green)%ar%C(reset)' --exclude=refs/remotes/origin/pr/*/merge --exclude=refs/remotes/upstream/pr/*/merge --simplify-by-decoration
+	# Several aliases for git log --decorate --graph --oneline, with nicer formatting
+		# `l` for specified branches or HEAD, as in `git l main`
+		# `la` for almost all branches and refs
+		# `laa` for all refs. The difference is `a` filters refs/notes, refs/stash, dependabot stuff, and pull requests
+		# decorate is like `l`, but with `--simplify-by-decoration`
+	# Common formatting
+		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option own line, like `* upstream/pr/123`
+		# %C(yellow)%h%C(reset)                                           abbreviated commit hash in yellow, like `63978b049`
+		# %C(cyan)%ad%C(reset)                                            author date, in cyan, like `2000-12-31`
+		# %C(normal)%<|(-38,trunc)%s%C(reset)                             subject (commit message) truncated 38 characters away from the right edge of the screen
+		# %C(magenta)%<(15,trunc)%an%C(reset)                             author name truncated to 15, in magenta
+		# %C(green)%ar%C(reset)%                                          author date, relative, in green, like `10 days ago`
+	l = log \
+		--graph \
+		--decorate \
+		--date=short \
+		--format=format:'%C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset)%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<|(-38,trunc)%s%C(reset) %C(magenta)%<(15,trunc)%an%C(reset) %C(green)%ar%C(reset)'
+	laa = l --all
+	la  = l \
+		--exclude=refs/remotes/origin/pr/* \
+		--exclude=refs/remotes/upstream/pr/* \
+		--exclude=refs/remotes/origin/dependabot/* \
+		--exclude=refs/notes/tests/* \
+		--exclude=refs/stash \
+		--all
+	decorate = la --simplify-by-decoration
 
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
