@@ -51,7 +51,7 @@
 	# Common formatting
 		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option own line, like `* upstream/pr/123`
 		# %C(yellow)%h%C(reset)                                           abbreviated commit hash in yellow, like `63978b049`
-		# %C(cyan)%ad%C(reset)                                            author date, in cyan, like `2000-12-31`
+		# %C(blue)%ad%C(reset)                                            author date, in blue, like `2000-12-31`
 		# %C(normal)%<|(-38,trunc)%s%C(reset)                             subject (commit message) truncated 38 characters away from the right edge of the screen
 		# %C(magenta)%<(15,trunc)%an%C(reset)                             author name truncated to 15, in magenta
 		# %C(green)%ar%C(reset)%                                          author date, relative, in green, like `10 days ago`
@@ -59,7 +59,7 @@
 		--graph \
 		--decorate \
 		--date=short \
-		--format=format:'%C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset)%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset) %C(normal)%<|(-38,trunc)%s%C(reset) %C(magenta)%<(15,trunc)%an%C(reset) %C(green)%ar%C(reset)'
+		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(normal)%<|(-38,trunc)%s%C(reset) %C(magenta)%<(15,trunc)%an%C(reset) %C(green)%ar%C(reset)'
 	laa = l --all
 	la  = l \
 		--exclude=refs/remotes/origin/pr/* \
@@ -73,7 +73,7 @@
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
 	# https://stackoverflow.com/a/17369548/23572
-	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(cyan)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
+	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(blue)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
 
 	# https://gist.github.com/DuaelFr/5663854
 	who = shortlog --summary --numbered --email --no-merges

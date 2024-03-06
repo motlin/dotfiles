@@ -31,6 +31,7 @@ alias pushf='git push --force'
 alias absorb='git absorb --base origin/master^ --force'
 alias onto='git rebase --onto HEAD HEAD^ master'
 alias fixup='git ci --fixup HEAD'
+alias test='git test run --retest --test '
 
 alias up='cd ..'
 alias up2='cd ../..'
