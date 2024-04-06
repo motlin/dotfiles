@@ -62,6 +62,7 @@
 		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(normal)%<|(-38,trunc)%s%C(reset) %C(magenta)%<(15,trunc)%an%C(reset) %C(green)%ar%C(reset)'
 	laa = l --all
 	la  = l \
+		--exclude=refs/prefetch/* \
 		--exclude=refs/remotes/origin/pr/* \
 		--exclude=refs/remotes/upstream/pr/* \
 		--exclude=refs/remotes/origin/dependabot/* \
