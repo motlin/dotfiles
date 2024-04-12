@@ -50,16 +50,16 @@
 		# decorate is like `l`, but with `--simplify-by-decoration`
 	# Common formatting
 		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option own line, like `* upstream/pr/123`
-		# %C(yellow)%h%C(reset)                                           abbreviated commit hash in yellow, like `63978b049`
-		# %C(blue)%ad%C(reset)                                            author date, in blue, like `2000-12-31`
-		# %C(normal)%<|(-38,trunc)%s%C(reset)                             subject (commit message) truncated 38 characters away from the right edge of the screen
-		# %C(magenta)%<(15,trunc)%an%C(reset)                             author name truncated to 15, in magenta
-		# %C(green)%ar%C(reset)%                                          author date, relative, in green, like `10 days ago`
+		# %C(brightyellow)%h%C(reset)                                     abbreviated commit hash in brightyellow, like `63978b049`
+		# %C(normal)%<|(-50,trunc)%s%C(reset)                             subject (commit message) truncated 50 characters away from the right edge of the screen
+		# %C(brightmagenta)%<(15,trunc)%an%C(reset)                       author name truncated to 15, in brightmagenta
+		# %C(brightblue)%ad%C(reset)                                      author date, in brightblue, like `2000-12-31`
+		# %C(brightcyan)%ar%C(reset)%                                     author date, relative, in brightcyan, like `10 days ago`
 	l = log \
 		--graph \
 		--decorate \
 		--date=short \
-		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(normal)%<|(-38,trunc)%s%C(reset) %C(magenta)%<(15,trunc)%an%C(reset) %C(green)%ar%C(reset)'
+		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(brightyellow)%h%C(reset) %C(normal)%<|(-50,trunc)%s%C(reset) %C(brightmagenta)%<(15,trunc)%an%C(reset) %C(brightblue)%ad%C(reset) %C(brightcyan)%ar%C(reset)'
 	laa = l --all
 	la  = l \
 		--exclude=refs/prefetch/* \
@@ -74,7 +74,7 @@
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
 	# https://stackoverflow.com/a/17369548/23572
-	rl = reflog @{now} --date=relative --format=format:'%C(yellow)%h%C(reset) %C(blue)%gd%C(reset) %C(green)%ar%C(reset)%C(auto)%d%C(reset) %C(magenta)%gs%C(reset) %C(normal)%s%C(reset)'
+	rl = reflog @{now} --date=relative --format=format:'%C(brightyellow)%h%C(reset) %C(brightblue)%gd%C(reset) %C(brightcyan)%ar%C(reset)%C(auto)%d%C(reset) %C(brightmagenta)%gs%C(reset) %C(normal)%s%C(reset)'
 
 	# https://gist.github.com/DuaelFr/5663854
 	who = shortlog --summary --numbered --email --no-merges
