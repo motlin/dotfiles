@@ -1,0 +1,9 @@
+[include]
+    path = /Users/Craig/projects/open-source/delta/themes.gitconfig
+
+[maintenance]
+    repo = /Users/Craig/projects/klass
+    repo = /Users/Craig/projects/liftwizard
+    repo = /Users/Craig/projects/eclipse-collections
+    repo = /Users/Craig/projects/klass-rewrite
+

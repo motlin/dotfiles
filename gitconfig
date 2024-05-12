@@ -42,6 +42,7 @@
 	detach = checkout --detach
 	ss = status --short
 	m = mergetool --no-prompt --tool=vimdiff
+	# m = mergetool --no-prompt --tool=idea1
 
 	# Git log --graph aliases
 	# Several aliases for git log --decorate --graph --oneline, with nicer formatting
@@ -116,7 +117,7 @@
 	autocrlf = input
 	editor = vim
 	# https://github.com/so-fancy/diff-so-fancy
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	# pager = diff-so-fancy | less --tabs=4 -RFX
 	commitGraph = true
 	fsmonitor = true
 	untrackedcache = true
@@ -259,7 +260,7 @@
 	new = green bold
 	whitespace = red reverse
 [pager]
-	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+	# diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
 	defaultBranch = main
 [gc]
@@ -281,3 +282,34 @@
 	verbose = true
 [url "git@github.com:"]
 	pushInsteadOf = "https://github.com/"
+
+[absorb]
+	maxStack=50
+	oneFixupPerCommit = true
+	autoStageIfNothingStaged = true
+	fixupTargetAlwaysSHA = false
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    # use n and N to move between diff sections
+    navigate = true
+    features = calochortus-lyallii
+
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    # light = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[include]
+    path = ~/.gitconfig.local
+

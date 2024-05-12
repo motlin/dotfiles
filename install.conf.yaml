@@ -7,22 +7,31 @@
 
 - link:
     ~/.Xdefaults:
-    ~/.alias.host:
+    ~/.asdfrc:
     ~/.alias:
+    ~/.alias.local:
+      if: '[ `uname` = Darwin ]'
+      path: alias.mac
     ~/.antigen.zsh:
-    ~/.bash_logout:
     ~/.bash_profile:
     ~/.bashrc:
+    ~/.env:
+    ~/.env.local:
+      if: '[ `uname` = Darwin ]'
+      path: env.mac
     ~/.gitconfig:
+    ~/.gitconfig.local:
+      if: '[ `uname` = Darwin ]'
+      path: gitconfig.mac
     ~/.minttyrc:
+    ~/.profile.local:
+      if: '[ `uname` = Darwin ]'
+      path: profile.mac
     ~/.p10k.zsh:
-    ~/.profile.env:
-    ~/.profile.host:
-    ~/.profile:
     ~/.ripgreprc:
     ~/.screenrc:
+    ~/.secrets:
     ~/.vim:
     ~/.vimrc:
     ~/.zshenv:
-    ~/.zshrc.host:
     ~/.zshrc:

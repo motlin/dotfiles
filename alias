@@ -7,9 +7,9 @@ alias vd='vim -d'
 alias grep='grep --color'
 
 # ls aliases
-alias l='ls -lGFh --color'
-alias la='l -A'
-alias lt='la -rt'
+alias l='exa --long --classify --header --color-scale --icons --no-permissions --time-style iso'
+alias la='l --all'
+alias lt='la --no-user --sort modified'
 
 # git aliases
 alias s='git st'
@@ -45,3 +45,5 @@ alias up8='cd ../../../../../../../..'
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias gitk='gitk --all'
 alias log="TZ='EST+5' ts '%Y-%m-%d %H:%M:%.S'"
+
+alias cat='bat'

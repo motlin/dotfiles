@@ -16,7 +16,6 @@ unsetopt correct_all
 
 antigen use oh-my-zsh
 
-antigen bundle heroku
 antigen bundle brew
 antigen bundle yarn
 antigen bundle command-not-found
@@ -91,7 +90,6 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -116,13 +114,34 @@ ENABLE_CORRECTION="true"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # Enable git completion
 autoload -Uz compinit && compinit
 
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+# https://github.com/bamos/zsh-history-analysis/blob/master/README.md#increasing-the-history-file-size
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
+setopt share_history
+setopt HIST_FIND_NO_DUPS
+
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # User configuration
-source ~/.zshrc.host
+. ~/.asdf/plugins/java/set-java-home.zsh
+
 source ~/.alias
-source ~/.alias.host
+source ~/.alias.local
+
+set -o allexport
+source ~/.env
+source ~/.env.local
+source ~/.secrets
+set +o allexport
+
+source ~/.profile.local

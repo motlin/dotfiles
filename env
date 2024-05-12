@@ -1,0 +1,9 @@
+EDITOR=vim
+PAGER="less -RFX"
+LESS="-RFX"
+
+TERM=xterm-256color
+
+RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+PATH=$PATH:~/bin
