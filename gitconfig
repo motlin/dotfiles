@@ -29,6 +29,7 @@
 	# More plurals
 	worktrees = worktree list
 	remotes = remote --verbose
+	configs = config --list --show-origin
 
 	# there is no configuration available to tell git to always use `force-with-lease` instead of `force`
 	# https://stackoverflow.com/a/30567394/23572
