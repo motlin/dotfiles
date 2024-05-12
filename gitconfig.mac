@@ -1,5 +1,15 @@
+[user]
+	name = Craig P. Motlin
+	email = cmotlin@gmail.com
+
+[alias]
+	m = mergetool --no-prompt --tool=idea1
+
 [include]
     path = /Users/Craig/projects/open-source/delta/themes.gitconfig
+
+[core]
+	autocrlf = input
 
 [maintenance]
     repo = /Users/Craig/projects/klass
@@ -7,3 +17,10 @@
     repo = /Users/Craig/projects/eclipse-collections
     repo = /Users/Craig/projects/klass-rewrite
 
+# https://gist.github.com/ffittschen/6d9be1720f30eb8dc0142cc0ed91c7d9
+[mergetool "intellij"]
+        cmd = /Users/Craig/bin/idea1 merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
+        trustExitCode = true
+
+[merge]
+	tool = intellij

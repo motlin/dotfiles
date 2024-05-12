@@ -1,6 +1,4 @@
 [user]
-	name = Craig P. Motlin
-	email = cmotlin@gmail.com
 	# Instruct Git to avoid trying to guess defaults for user.email and user.name, and instead retrieve the values only from the configuration.
 	# For example, if you have multiple email addresses and would like to use a different one for each repository, then with this configuration option set to true in the global config along with a name, Git will prompt you to set up an email before making new commits in a newly cloned repository.
 	# Defaults to false.
@@ -42,7 +40,6 @@
 	detach = checkout --detach
 	ss = status --short
 	m = mergetool --no-prompt --tool=vimdiff
-	# m = mergetool --no-prompt --tool=idea1
 
 	# Git log --graph aliases
 	# Several aliases for git log --decorate --graph --oneline, with nicer formatting
@@ -114,13 +111,11 @@
 	# https://www.colinodell.com/blog/201803/four-useful-git-aliases
 	children = "!bash -c 'c=${1:-HEAD}; set -- $(git rev-list --all --not \"$c\"^@ --children | grep $(git rev-parse \"$c\") ); shift; echo $1' -"
 [core]
-	autocrlf = input
 	editor = vim
 	# https://github.com/so-fancy/diff-so-fancy
 	# pager = diff-so-fancy | less --tabs=4 -RFX
-	commitGraph = true
 	fsmonitor = true
-	untrackedcache = true
+	untrackedCache = true
 [diff]
 	# Git should detect both renames and copies. Theoretically slows down git.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
@@ -162,7 +157,6 @@
 	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
 	ui = auto
 [merge]
-	tool = idea
 	# Auto-stash before merge
 	# https://stackoverflow.com/a/30209750/23572
 	# Coming in Git 2.27. Current version at time of writing is 2.26.2.
@@ -197,7 +191,7 @@
 	# Automatically correct and execute mistyped commands after waiting for the given number of deciseconds (0.1 sec). For example:
 	# git helo
 	# WARNING: You called a Git command named 'helo', which does not exist.
-	# Continuing in 2.0 seconds, assuming that you meant 'help'.
+	# Continuing in 1.5 seconds, assuming that you meant 'help'.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect
 	autoCorrect = 15
 [status]
@@ -237,28 +231,8 @@
 	# default = matching
 	default = current
 [pack]
-	# Use sparse packs
-	# This can have significant performance benefits when computing a pack to send a small change.
-	# https://devblogs.microsoft.com/devops/exploring-new-frontiers-for-git-push-performance/
-	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-packuseSparse
-	# Default is false unless feature.experimental is enabled.
-	useSparse = true
+	# This is the default starting in 2.41.0
 	writeReverseIndex = true
-
-[color]
-	ui = true
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
-[color "diff"]
-	meta = 11
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
 [pager]
 	# diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
