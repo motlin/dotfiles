@@ -1,0 +1,16 @@
+- defaults:
+    link:
+      relink: true
+      force: false
+
+- clean: ['~']
+
+- link:
+    ~/.alias.local:
+      path: alias.mac
+    ~/.env.local:
+      path: env.mac
+    ~/.gitconfig.local:
+      path: gitconfig.mac
+    ~/.profile.local:
+      path: profile.mac

@@ -9,24 +9,12 @@
     ~/.Xdefaults:
     ~/.asdfrc:
     ~/.alias:
-    ~/.alias.local:
-      if: '[ `uname` = Darwin ]'
-      path: alias.mac
     ~/.antigen.zsh:
     ~/.bash_profile:
     ~/.bashrc:
     ~/.env:
-    ~/.env.local:
-      if: '[ `uname` = Darwin ]'
-      path: env.mac
     ~/.gitconfig:
-    ~/.gitconfig.local:
-      if: '[ `uname` = Darwin ]'
-      path: gitconfig.mac
     ~/.minttyrc:
-    ~/.profile.local:
-      if: '[ `uname` = Darwin ]'
-      path: profile.mac
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
