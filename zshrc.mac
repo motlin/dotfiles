@@ -1,0 +1,9 @@
+bindkey "^[^[[D" backward-word
+bindkey "^[^[[C" forward-word
+
+eval "$(brew shellenv)"
+fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
+
+. ~/.asdf/plugins/java/set-java-home.zsh
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
