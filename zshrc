@@ -117,8 +117,8 @@ ENABLE_CORRECTION="true"
 # Enable git completion
 autoload -Uz compinit && compinit
 
-eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(fzf --zsh)"
 
 # https://github.com/bamos/zsh-history-analysis/blob/master/README.md#increasing-the-history-file-size
 export HISTSIZE=1000000000
@@ -131,9 +131,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# User configuration
-. ~/.asdf/plugins/java/set-java-home.zsh
 
 source ~/.alias
 source ~/.alias.local

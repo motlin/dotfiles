@@ -236,12 +236,12 @@
 [pager]
 	# diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
+	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-codeinitdefaultBranchcode
+	# Allows overriding the default branch name e.g. when initializing a new repository.
 	defaultBranch = main
-[gc]
-	writeCommitGraph = true
-[protocol]
-	version = 2
 [remote]
+	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-remotepushDefault
+	# The remote to push to by default. Overrides branch.<name>.remote for all branches, and is overridden by branch.<name>.pushRemote for specific branches.
 	pushDefault = origin
 [pull]
 	# https://github.blog/2021-08-16-highlights-from-git-2-33/#merge-ort-a-new-merge-strategy
@@ -251,39 +251,51 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
 	rebase = true
 [advice]
+	# > git rebase upstream/main
+	# warning: skipped previously applied commit abc123
+	# suggestion: use --reapply-cherry-picks to include skipped commits
+	# suggestion: Disable this message with "git config advice.skippedCherryPicks false"
+	# Rebase and update of refs/heads/main executed with success.
 	skippedCherryPicks = false
 [commit]
+	# https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---verbose
+	# Show unified diff between the HEAD commit and what would be committed at the bottom of the commit message template to help the user describe the commit by reminding what changes the commit has. Note that this diff output doesn’t have its lines prefixed with #. This diff will not be a part of the commit message.
 	verbose = true
 [url "git@github.com:"]
 	pushInsteadOf = "https://github.com/"
 
+# https://github.com/tummychow/git-absorb
 [absorb]
+	# When run without --base, git-absorb will only search for candidate commits to fixup within a certain range (by default 10)
 	maxStack=50
+	# By default, git-absorb will generate separate fixup commits for every absorbable hunk. Instead, can use the -F flag to create only 1 fixup commit for all hunks that absorb into the same commit.
 	oneFixupPerCommit = true
+	# By default, git-absorb will only consider files that you've staged to the index via git add. However, sometimes one wants to try and absorb from all changes, which would require to stage them first via `git add .`
 	autoStageIfNothingStaged = true
+	# By default, git-absorb will create fixup commits with their messages pointing to the target commit's summary, and if there are duplicate summaries, will fallback to pointing to the target's SHA.
 	fixupTargetAlwaysSHA = false
 
+# https://github.com/dandavison/delta
 [core]
-    pager = delta
-
+	pager = delta
 [interactive]
-    diffFilter = delta --color-only
-
+	diffFilter = delta --color-only
 [delta]
-    # use n and N to move between diff sections
-    navigate = true
-    features = calochortus-lyallii
-
-    # delta detects terminal colors automatically; set one of these to disable auto-detection
-    # dark = true
-    # light = true
-
+	# use n and N to move between diff sections
+	navigate = true
+	# features = calochortus-lyallii
+	# features = github
+	# features = chameleon
+	features = arctic-fox
+	# delta detects terminal colors automatically; set one of these to disable auto-detection
+	# dark = true
+	# light = true
 [merge]
-    conflictstyle = diff3
-
+	conflictstyle = diff3
 [diff]
-    colorMoved = default
+	colorMoved = default
 
+# https://git-scm.com/docs/git-config#_includes
 [include]
-    path = ~/.gitconfig.local
+	path = ~/.gitconfig.local
 
