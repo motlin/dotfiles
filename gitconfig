@@ -290,12 +290,9 @@
 	# delta detects terminal colors automatically; set one of these to disable auto-detection
 	# dark = true
 	# light = true
-[merge]
-	conflictstyle = diff3
 [diff]
 	colorMoved = default
 
 # https://git-scm.com/docs/git-config#_includes
 [include]
 	path = ~/.gitconfig.local
-
