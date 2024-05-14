@@ -3,7 +3,7 @@
 	email = cmotlin@gmail.com
 
 [alias]
-	m = mergetool --no-prompt --tool=idea1
+	m = mergetool --tool=intellij
 
 [include]
     path = /Users/Craig/projects/open-source/delta/themes.gitconfig
@@ -18,9 +18,9 @@
     repo = /Users/Craig/projects/klass-rewrite
 
 # https://gist.github.com/ffittschen/6d9be1720f30eb8dc0142cc0ed91c7d9
-[mergetool "intellij"]
-        cmd = /Users/Craig/bin/idea1 merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
-        trustExitCode = true
-
+# https://www.jetbrains.com/help/idea/tutorial-use-idea-as-default-command-line-merge-tool.html
 [merge]
-	tool = intellij
+    tool = intellij
+[mergetool "intellij"]
+    cmd = /Users/Craig/bin/idea1 merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
+    trustExitCode = false

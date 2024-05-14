@@ -187,6 +187,7 @@
 	# Defaults to true (i.e. keep the backup files).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergetoolkeepBackup
 	keepBackup = false
+    trustExitCode = true
 [help]
 	# Automatically correct and execute mistyped commands after waiting for the given number of deciseconds (0.1 sec). For example:
 	# git helo
