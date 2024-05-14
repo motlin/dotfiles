@@ -7,3 +7,6 @@ fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 . ~/.asdf/plugins/java/set-java-home.zsh
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+# Automatically installed by iterm2 into .zshrc
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
