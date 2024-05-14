@@ -1,0 +1,8 @@
+https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+
+alias       linguist-language=Shell
+alias.*     linguist-language=Shell
+env         linguist-language=Shell
+env.*       linguist-language=Shell
+gitconfig.* linguist-language=Git-Config
+zshrc.*     linguist-language=Shell

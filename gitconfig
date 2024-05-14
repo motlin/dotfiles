@@ -1,3 +1,4 @@
+# vim: set filetype=dosini:
 [user]
 	# Instruct Git to avoid trying to guess defaults for user.email and user.name, and instead retrieve the values only from the configuration.
 	# For example, if you have multiple email addresses and would like to use a different one for each repository, then with this configuration option set to true in the global config along with a name, Git will prompt you to set up an email before making new commits in a newly cloned repository.

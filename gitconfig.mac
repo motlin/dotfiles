@@ -1,3 +1,4 @@
+# vim: set filetype=dosini:
 [user]
 	name = Craig P. Motlin
 	email = cmotlin@gmail.com
