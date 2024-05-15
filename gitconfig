@@ -113,8 +113,6 @@
 	children = "!bash -c 'c=${1:-HEAD}; set -- $(git rev-list --all --not \"$c\"^@ --children | grep $(git rev-parse \"$c\") ); shift; echo $1' -"
 [core]
 	editor = vim
-	# https://github.com/so-fancy/diff-so-fancy
-	# pager = diff-so-fancy | less --tabs=4 -RFX
 	fsmonitor = true
 	untrackedCache = true
 [diff]
@@ -188,7 +186,7 @@
 	# Defaults to true (i.e. keep the backup files).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergetoolkeepBackup
 	keepBackup = false
-    trustExitCode = true
+	trustExitCode = true
 [help]
 	# Automatically correct and execute mistyped commands after waiting for the given number of deciseconds (0.1 sec). For example:
 	# git helo
@@ -235,8 +233,6 @@
 [pack]
 	# This is the default starting in 2.41.0
 	writeReverseIndex = true
-[pager]
-	# diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 [init]
 	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-codeinitdefaultBranchcode
 	# Allows overriding the default branch name e.g. when initializing a new repository.
@@ -265,7 +261,6 @@
 	verbose = true
 [url "git@github.com:"]
 	pushInsteadOf = "https://github.com/"
-
 # https://github.com/tummychow/git-absorb
 [absorb]
 	# When run without --base, git-absorb will only search for candidate commits to fixup within a certain range (by default 10)
@@ -276,24 +271,6 @@
 	autoStageIfNothingStaged = true
 	# By default, git-absorb will create fixup commits with their messages pointing to the target commit's summary, and if there are duplicate summaries, will fallback to pointing to the target's SHA.
 	fixupTargetAlwaysSHA = false
-
-# https://github.com/dandavison/delta
-[core]
-	pager = delta
-[interactive]
-	diffFilter = delta --color-only
-[delta]
-	# use n and N to move between diff sections
-	navigate = true
-	# features = calochortus-lyallii
-	# features = github
-	# features = chameleon
-	features = arctic-fox
-	# delta detects terminal colors automatically; set one of these to disable auto-detection
-	# dark = true
-	# light = true
-[diff]
-	colorMoved = default
 
 # https://git-scm.com/docs/git-config#_includes
 [include]

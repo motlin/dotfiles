@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# emacs mode
+# Enable emacs mode so that Ctrl+A goes to the beginning of the line and Ctrl+K erases after the cursor
 bindkey -e
 
 # disable auto correct

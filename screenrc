@@ -1,3 +1,5 @@
+source ~/.screenrc.local
+
 #kill startup message
 startup_message off
 
