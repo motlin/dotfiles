@@ -42,6 +42,8 @@
 	ss = status --short
 	m = mergetool --no-prompt --tool=vimdiff
 
+	branches-with = for-each-ref --format='%(refname)' refs/heads/ --sort -committerdate --contains
+
 	# Git log --graph aliases
 	# Several aliases for git log --decorate --graph --oneline, with nicer formatting
 		# `l` for specified branches or HEAD, as in `git l main`
