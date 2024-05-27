@@ -10,7 +10,7 @@
 	# Aliases from the git-scm book https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
 	co = checkout
 	br = branch
-	ci = commit --verbose
+	ci = commit
 	st = --paginate status
 	unstage = reset HEAD --
 	last = log -1 HEAD
@@ -18,12 +18,12 @@
 	cp = cherry-pick
 	oops = commit --amend --no-edit
 
-	# Aliases for plurals. Otherwise, git has inconsistent commands to list all branches, tags, stashes, wortrees, remotes, aliases.
+	# Aliases for plurals. Otherwise, git has inconsistent commands to list all branches, tags, stashes, workrees, remotes, aliases.
 	# Plurals from http://gggritso.com/human-git-aliases
 	branches = branch --all
 	tags = tag --list
 	stashes = stash list
-	# https://stackoverflow.com/a/22183573/23572
+	# https://stackoverflow.com/a/22183573/
 	aliases = config --get-regexp ^alias\\.
 	# More plurals
 	worktrees = worktree list
@@ -31,9 +31,8 @@
 	configs = config --list --show-origin
 
 	# there is no configuration available to tell git to always use `force-with-lease` instead of `force`
-	# https://stackoverflow.com/a/30567394/23572
+	# https://stackoverflow.com/a/30567394/
 	pushf = push --force-with-lease
-	pf = push --force-with-lease
 
 	# My aliases that aren't too common
 	ri = rebase --interactive --autosquash
@@ -48,10 +47,10 @@
 	# Several aliases for git log --decorate --graph --oneline, with nicer formatting
 		# `l` for specified branches or HEAD, as in `git l main`
 		# `la` for almost all branches and refs
-		# `laa` for all refs. The difference is `a` filters refs/notes, refs/stash, dependabot stuff, and pull requests
-		# decorate is like `l`, but with `--simplify-by-decoration`
+		# `laa` for all refs. The difference is `la` filters refs/notes, refs/stash, dependabot stuff, and pull requests
+		# decorate is like `la`, but with `--simplify-by-decoration`
 	# Common formatting
-		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option own line, like `* upstream/pr/123`
+		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option on its own line, like `* upstream/pr/123`
 		# %C(brightyellow)%h%C(reset)                                     abbreviated commit hash in brightyellow, like `63978b049`
 		# %C(normal)%<|(-50,trunc)%s%C(reset)                             subject (commit message) truncated 50 characters away from the right edge of the screen
 		# %C(brightmagenta)%<(15,trunc)%an%C(reset)                       author name truncated to 15, in brightmagenta
@@ -75,7 +74,7 @@
 
 	# reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
-	# https://stackoverflow.com/a/17369548/23572
+	# https://stackoverflow.com/a/17369548/
 	rl = reflog @{now} --date=relative --format=format:'%C(brightyellow)%h%C(reset) %C(brightblue)%gd%C(reset) %C(brightcyan)%ar%C(reset)%C(auto)%d%C(reset) %C(brightmagenta)%gs%C(reset) %C(normal)%s%C(reset)'
 
 	# https://gist.github.com/DuaelFr/5663854
@@ -85,21 +84,21 @@
 	ignored = !git ls-files -v | grep '^h'
 
 	# repository root directory
-	# https://stackoverflow.com/a/957978/23572
+	# https://stackoverflow.com/a/957978/
 	root = rev-parse --show-toplevel
 
-	# initial commit(s) that are anscestors of HEAD
-	# https://stackoverflow.com/a/1007545/23572
+	# initial commit(s) that are ancestors of HEAD
+	# https://stackoverflow.com/a/1007545/
 	first = rev-list --max-parents=0 HEAD
 
-	# Aggresive optimizations to save disk and time
+	# Aggressive optimizations to save disk and time
 	# https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
 	pruner = !git prune --expire=now && git reflog expire --expire-unreachable=now --rewrite --all
 	repacker = repack -a -d -f --depth=300 --window=300 --window-memory=1g
 	optimize = !git gc --aggressive && git pruner && git repacker && git prune-packed
 
 	# Show most recent commit on each branch that isn't pushed
-	# https://stackoverflow.com/a/3338774/23572
+	# https://stackoverflow.com/a/3338774/
 	unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
 
 	# Find when commit has been merged into branch
@@ -159,8 +158,7 @@
 	ui = auto
 [merge]
 	# Auto-stash before merge
-	# https://stackoverflow.com/a/30209750/23572
-	# Coming in Git 2.27. Current version at time of writing is 2.26.2.
+	# https://stackoverflow.com/a/30209750/
 	autoStash = true
 	# Never create merge commits
 	# When set to only, only fast-forward merges are allowed (equivalent to giving the --ff-only option from the command line).
@@ -277,3 +275,7 @@
 # https://git-scm.com/docs/git-config#_includes
 [include]
 	path = ~/.gitconfig.local
+[pager]
+	# https://stackoverflow.com/a/8883248/
+	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pagerltcmdgt
+	status = true
