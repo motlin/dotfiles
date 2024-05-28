@@ -150,7 +150,7 @@
 	# git should always set up tracking for new branches, not just for remote branches.
 	# Change from 'true' to 'always'
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchautoSetupMerge
-	autoSetupMerge = always
+	# autoSetupMerge = always
 	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
 	sort = -committerdate
 [column]
@@ -177,7 +177,7 @@
 	# git log should act as if the --follow option was used when a single <path> is given
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
 	follow = true
-	date = iso
+	# date = iso
 [mergetool]
 	# git should delete the .orig file after merge conflicts are resolved.
 	# It seems safer to keep the backup files, but git has so many other ways to recover work.
@@ -198,13 +198,6 @@
 	# git status should show a summary of commits for modified submodules.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-statussubmoduleSummary
 	submoduleSummary = true
-[fetch]
-	# Update commit graph during fetch
-	# Defaults to false, unless feature.experimental is true.
-	# Default to false at time of writing with git 2.26.2.
-	# https://github.blog/2019-11-03-highlights-from-git-2-24/
-	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-fetchwriteCommitGraph
-	writeCommitGraph = true
 [rebase]
 	# Auto-stash before rebase
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebaseautoStash
@@ -230,9 +223,6 @@
 	# 'simple' is better for beginners
 	# default = matching
 	default = current
-[pack]
-	# This is the default starting in 2.41.0
-	writeReverseIndex = true
 [init]
 	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-codeinitdefaultBranchcode
 	# Allows overriding the default branch name e.g. when initializing a new repository.
