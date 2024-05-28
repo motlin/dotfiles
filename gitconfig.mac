@@ -7,10 +7,11 @@
 	autocrlf = input
 
 [maintenance]
-	repo = /Users/Craig/projects/klass
-	repo = /Users/Craig/projects/liftwizard
-	repo = /Users/Craig/projects/eclipse-collections
-	repo = /Users/Craig/projects/klass-rewrite
+	repo = ~/.dotfiles
+	repo = ~/projects/eclipse-collections
+	repo = ~/projects/klass
+	repo = ~/projects/klass-rewrite
+	repo = ~/projects/liftwizard
 
 # https://gist.github.com/ffittschen/6d9be1720f30eb8dc0142cc0ed91c7d9
 # https://www.jetbrains.com/help/idea/tutorial-use-idea-as-default-command-line-merge-tool.html
@@ -19,7 +20,7 @@
 [merge]
 	tool = intellij
 [mergetool "intellij"]
-	cmd = /Users/Craig/bin/idea merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
+	cmd = ~/bin/idea merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
 	trustExitCode = false
 
 # diff-so-fancy or delta
@@ -47,4 +48,4 @@
 [diff]
 	colorMoved = default
 [include]
-	path = /Users/Craig/projects/open-source/delta/themes.gitconfig
+	path = ~/projects/open-source/delta/themes.gitconfig
