@@ -1,9 +1,14 @@
+# https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
 # Enable emacs mode so that Ctrl+A goes to the beginning of the line and Ctrl+K erases after the cursor
 bindkey -e
@@ -80,6 +85,12 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# Load environment before plugins to make sure direnv is on the PATH
+set -o allexport
+source ~/.env
+source ~/.env.local
+set +o allexport
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -116,10 +127,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-set -o allexport
-source ~/.env
-source ~/.env.local
-set +o allexport
 source ~/.zshrc.local
 
 eval "$(zoxide init --cmd cd zsh)"
