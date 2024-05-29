@@ -124,7 +124,6 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
 	# Change from 'true' to 'copies'
 	renames = copies
-	# renameLimit = 100000
 	# Diffs of submodules should show the changed contents rather than a list of commits.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffsubmodule
 	# Change from 'short' to 'diff'
@@ -135,7 +134,7 @@
 	# When runing git diff --color-words, git uses this regex to determinate word boundaries.
 	# https://git-scm.com/docs/git-config#git-config-diffwordRegex
 	# https://medium.com/@porteneuve/30-git-cli-options-you-should-know-about-15423e8771df
-	wordRegex = .
+	# wordRegex = .
 	algorithm = histogram
 [rerere]
 	# The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you’ve resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
@@ -167,8 +166,8 @@
 	# When set to only, only fast-forward merges are allowed (equivalent to giving the --ff-only option from the command line).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
 	ff = only
-	conflictstyle = zdiff3
-	keepbackup = false
+	conflictStyle = zdiff3
+	keepBackup = false
 [log]
 	# Print out the ref names of any commits that are shown by the log command.
 	# If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be printed.
@@ -176,7 +175,7 @@
 	# If auto is specified, then if the output is going to a terminal, the ref names are shown as if short were given, otherwise no ref names are shown.
 	# This is the same as the --decorate option of the git log.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logdecorate
-	decorate = auto
+	decorate = short
 	# git log should act as if the --follow option was used when a single <path> is given
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
 	follow = true
@@ -233,7 +232,7 @@
 [remote]
 	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-remotepushDefault
 	# The remote to push to by default. Overrides branch.<name>.remote for all branches, and is overridden by branch.<name>.pushRemote for specific branches.
-	pushDefault = origin
+	# pushDefault = origin
 [pull]
 	# https://github.blog/2021-08-16-highlights-from-git-2-33/#merge-ort-a-new-merge-strategy
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pulltwohead
