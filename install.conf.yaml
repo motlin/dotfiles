@@ -11,6 +11,7 @@
     ~/.alias:
     ~/.bash_profile:
     ~/.bashrc:
+      force: true
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
@@ -30,7 +31,6 @@
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
-    ~/.secrets:
     ~/.vim:
     ~/.vim/pack/vendor/start/vim-just:
       create: true
