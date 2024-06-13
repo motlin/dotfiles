@@ -24,6 +24,7 @@
     ~/.screenrc:
     ~/.secrets:
     ~/.vim:
+    ~/.vim/pack/vendor/start/vim-just: vim-just
     ~/.vimrc:
     ~/.zshrc:
 
