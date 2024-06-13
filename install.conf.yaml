@@ -15,16 +15,26 @@
     ~/.gitconfig:
     ~/.minttyrc:
     ~/.oh-my-zsh:
-    ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions: zsh-autosuggestions
-    ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search: zsh-history-substring-search
-    ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting: zsh-syntax-highlighting
-    ~/.oh-my-zsh/custom/themes/powerlevel10k: powerlevel10k
+    ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
+      create: true
+      path: zsh-autosuggestions
+    ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search:
+      create: true
+      path: zsh-history-substring-search
+    ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
+      create: true
+      path: zsh-syntax-highlighting
+    ~/.oh-my-zsh/custom/themes/powerlevel10k:
+      create: true
+      path: powerlevel10k
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
     ~/.secrets:
     ~/.vim:
-    ~/.vim/pack/vendor/start/vim-just: vim-just
+    ~/.vim/pack/vendor/start/vim-just:
+      create: true
+      path: vim-just
     ~/.vimrc:
     ~/.zshrc:
 
