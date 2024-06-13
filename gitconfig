@@ -1,4 +1,8 @@
 # vim: set filetype=dosini:
+
+# See the rationale behind the settings in this file at:
+# https://motlin.com/git/2019-01-13-git-configuration/
+
 [user]
 	# Instruct Git to avoid trying to guess defaults for user.email and user.name, and instead retrieve the values only from the configuration.
 	# For example, if you have multiple email addresses and would like to use a different one for each repository, then with this configuration option set to true in the global config along with a name, Git will prompt you to set up an email before making new commits in a newly cloned repository.
@@ -38,7 +42,6 @@
 	ri = rebase --interactive --autosquash
 	f = fetch --all --prune --jobs=16
 	detach = checkout --detach
-	ss = status --short
 	m = mergetool --no-prompt --tool=vimdiff
 
 	branches-with = for-each-ref --format='%(refname)' refs/heads/ --sort -committerdate --contains
@@ -69,6 +72,7 @@
 		--exclude=refs/remotes/origin/dependabot/* \
 		--exclude=refs/notes/tests/* \
 		--exclude=refs/stash \
+		--exclude=refs/remotes/origin/retype \
 		--all
 	decorate = la --simplify-by-decoration
 
@@ -179,7 +183,6 @@
 	# git log should act as if the --follow option was used when a single <path> is given
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-logfollow
 	follow = true
-	# date = iso
 [mergetool]
 	# git should delete the .orig file after merge conflicts are resolved.
 	# It seems safer to keep the backup files, but git has so many other ways to recover work.
@@ -251,8 +254,8 @@
 	# https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---verbose
 	# Show unified diff between the HEAD commit and what would be committed at the bottom of the commit message template to help the user describe the commit by reminding what changes the commit has. Note that this diff output doesn’t have its lines prefixed with #. This diff will not be a part of the commit message.
 	verbose = true
-[url "git@github.com:"]
-	pushInsteadOf = "https://github.com/"
+# [url "git@github.com:"]
+	# pushInsteadOf = "https://github.com/"
 # https://github.com/tummychow/git-absorb
 [absorb]
 	# When run without --base, git-absorb will only search for candidate commits to fixup within a certain range (by default 10)
