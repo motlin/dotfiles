@@ -15,6 +15,9 @@
     ~/.gitconfig:
     ~/.minttyrc:
     ~/.oh-my-zsh:
+    ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions: zsh-autosuggestions
+    ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search: zsh-history-substring-search
+    ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting: zsh-syntax-highlighting
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
