@@ -88,7 +88,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Load environment before plugins to make sure direnv is on the PATH
 set -o allexport
 source ~/.env
-source ~/.env.local
+[ -f ~/.env.local ] && source ~/.env.local
 set +o allexport
 
 # Which plugins would you like to load?
@@ -97,7 +97,7 @@ set +o allexport
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(zsh-syntax-highlighting zsh-autosuggestions direnv)
+plugins=(zsh-syntax-highlighting zsh-autosuggestions direnv ssh-agent colored-man-pages ripgrep)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -127,7 +127,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-source ~/.zshrc.local
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
@@ -142,7 +142,7 @@ setopt share_history
 setopt HIST_FIND_NO_DUPS
 
 source ~/.alias
-source ~/.alias.local
+[ -f ~/.alias.local ] && source ~/.alias.local
 
 # initialize autocompletion
 autoload -U compinit && compinit
