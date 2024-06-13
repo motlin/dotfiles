@@ -97,7 +97,7 @@ set +o allexport
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(zsh-syntax-highlighting zsh-autosuggestions direnv ssh-agent colored-man-pages ripgrep)
+plugins=(zsh-syntax-highlighting zsh-autosuggestions direnv ssh-agent command-not-found bgnotify alias-finder fzf gh)
 
 source $ZSH/oh-my-zsh.sh
 
