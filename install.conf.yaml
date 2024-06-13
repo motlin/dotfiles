@@ -18,6 +18,7 @@
     ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions: zsh-autosuggestions
     ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search: zsh-history-substring-search
     ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting: zsh-syntax-highlighting
+    ~/.oh-my-zsh/custom/themes/powerlevel10k: powerlevel10k
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
