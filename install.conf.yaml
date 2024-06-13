@@ -14,6 +14,7 @@
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
+    ~/.oh-my-zsh:
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
@@ -21,3 +22,6 @@
     ~/.vim:
     ~/.vimrc:
     ~/.zshrc:
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
