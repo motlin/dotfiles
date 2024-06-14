@@ -5,6 +5,9 @@
 
 - clean: ['~']
 
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+
 - link:
     ~/.Xdefaults:
     ~/.asdfrc:
@@ -38,5 +41,3 @@
     ~/.vimrc:
     ~/.zshrc:
 
-- shell:
-  - [git submodule update --init --recursive, Installing submodules]
