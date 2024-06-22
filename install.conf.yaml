@@ -39,5 +39,6 @@
       create: true
       path: vim-just
     ~/.vimrc:
+    ~/.zprofile:
     ~/.zshrc:
 
