@@ -1,18 +1,26 @@
 bindkey "^[^[[D" backward-word
 bindkey "^[^[[C" forward-word
 
+autoload -U add-zsh-hook
+add-zsh-hook -Uz chpwd (){ direnv exec . rgb; }
+
 eval "$(brew shellenv)"
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 
-. ~/.asdf/plugins/java/set-java-home.zsh
+# . ~/.asdf/plugins/java/set-java-home.zsh
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 . "$HOME/.cargo/env"
 
 source ~/.config/op/plugins.sh
 
 eval "$(op completion zsh)"; compdef _op op
+
+eval "$(mise activate zsh)"
+eval "$(mise activate zsh --shims)"
+
+fpath+=(~/.config/hcloud/completion/zsh)
 
 # Automatically installed by iterm2 into .zshrc
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
