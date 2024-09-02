@@ -106,12 +106,14 @@ set title
 set tabstop=4
 set shiftwidth=4
 
-" Tabs, not spaces!
 set autoindent
 set smartindent
 
+" Tabs, not spaces!
+" set noexpandtab
+
 " But just in case I'm working on a file with a more evil form of indentation
-set noexpandtab
+set expandtab
 
 " C-indenting option to make public and private labels not increase the
 " indentation level
