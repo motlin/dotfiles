@@ -10,7 +10,7 @@
 	repo = ~/.dotfiles
 	repo = ~/projects/eclipse-collections
 	repo = ~/projects/klass
-	repo = ~/projects/klass-rewrite
+	# repo = ~/projects/klass-rewrite
 	repo = ~/projects/liftwizard
 
 # https://gist.github.com/ffittschen/6d9be1720f30eb8dc0142cc0ed91c7d9
@@ -26,24 +26,32 @@
 # diff-so-fancy or delta
 # https://github.com/dandavison/delta
 [core]
-	pager = delta
+	pager = delta --features default-feature "$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)"
 [interactive]
-	diffFilter = delta --color-only
-[delta]
+	diffFilter = delta --color-only --features default-feature "$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)"
+
+[delta "default-feature"]
 	# use n and N to move between diff sections
 	navigate = true
-	features = colibri
-	# features = calochortus-lyallii
-	# features = github
-	# features = chameleon
-	# features = arctic-fox
-	# features = calochortus-lyallii
 	# delta detects terminal colors automatically; set one of these to disable auto-detection
 	# dark = true
 	# light = true
 	true-color = always
 	tabs = 4
 	line-numbers = false
+
+[delta "light-mode"]
+	light = true
+	features = hoopoe
+
+[delta "dark-mode"]
+	light = false
+	features = colibri
+	# features = calochortus-lyallii
+	# features = github
+	# features = chameleon
+	# features = arctic-fox
+	# features = calochortus-lyallii
 
 [diff]
 	colorMoved = default
