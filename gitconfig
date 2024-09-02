@@ -53,17 +53,18 @@
 		# `laa` for all refs. The difference is `la` filters refs/notes, refs/stash, dependabot stuff, and pull requests
 		# decorate is like `la`, but with `--simplify-by-decoration`
 	# Common formatting
-		# %C(auto)%(decorate:prefix=,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option on its own line, like `* upstream/pr/123`
-		# %C(brightyellow)%h%C(reset)                                     abbreviated commit hash in brightyellow, like `63978b049`
-		# %C(normal)%<|(-50,trunc)%s%C(reset)                             subject (commit message) truncated 50 characters away from the right edge of the screen
-		# %C(brightmagenta)%<(15,trunc)%an%C(reset)                       author name truncated to 15, in brightmagenta
-		# %C(brightblue)%ad%C(reset)                                      author date, in brightblue, like `2000-12-31`
-		# %C(brightcyan)%ar%C(reset)%                                     author date, relative, in brightcyan, like `10 days ago`
+		# %C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset) ref names, like the --decorate option on its own line, like `* upstream/pr/123`
+		# %C(dim)%h%C(reset)                                                 abbreviated commit hash, like `63978b049`
+		# %N%-C()                                                            git notes with trailing newline stripped https://stackoverflow.com/a/76133983/
+		# %C(normal)%<|(-50,trunc)%s%C(reset)                                subject (commit message) truncated 50 characters away from the right edge of the screen
+		# %C(brightmagenta)%<(15,trunc)%an%C(reset)                          author name truncated to 15
+		# %C(brightblue)%ad%C(reset)                                         author date, like `2000-12-31`
+		# %C(brightcyan)%ar%C(reset)                                         author date, relative, like `10 days ago`
 	l = log \
 		--graph \
 		--decorate \
 		--date=short \
-		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(brightyellow)%h%C(reset) %C(normal)%<|(-50,trunc)%s%C(reset) %C(brightmagenta)%<(15,trunc)%an%C(reset) %C(brightblue)%ad%C(reset) %C(brightcyan)%ar%C(reset)'
+		--format=format:'%C(auto)%(decorate:prefix=👇 ,suffix=%n,tag=,separator= )%C(reset)%C(dim)%h%C(reset) %N%-C()%C(normal)%<|(-50,trunc)%s%C(reset) %C(brightmagenta)%<(15,trunc)%an%C(reset) %C(brightblue)%ad%C(reset) %C(brightcyan)%ar%C(reset)'
 	laa = l --all
 	la  = l \
 		--exclude=refs/prefetch/* \
@@ -71,6 +72,7 @@
 		--exclude=refs/remotes/upstream/pr/* \
 		--exclude=refs/remotes/origin/dependabot/* \
 		--exclude=refs/notes/tests/* \
+		--exclude=refs/notes/commits \
 		--exclude=refs/stash \
 		--exclude=refs/remotes/origin/retype \
 		--all
