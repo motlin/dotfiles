@@ -1,2 +1,3 @@
 alias rm='trash'
 alias lg='lazygit'
+alias web-'gh pr view --web'
