@@ -39,7 +39,7 @@
 	pushf = push --force-with-lease
 
 	# My aliases that aren't too common
-	ri = rebase --interactive --autosquash
+	ri = rebase --interactive --autosquash --rebase-merges
 	f = fetch --all --prune --jobs=16
 	detach = checkout --detach
 	m = mergetool --no-prompt --tool=vimdiff
@@ -219,6 +219,7 @@
 	missingCommitsCheck = error
 	# https://github.blog/2022-10-03-highlights-from-git-2-38/#rebase-dependent-branches-with-update-refs
 	updateRefs = true
+	instructionFormat = %<|(-5,trunc)%s | %<(15,trunc)%an | %ar
 [stash]
 	# git stash show (without an option) should show the stash entry in patch form.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowPatch
