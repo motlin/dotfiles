@@ -1,5 +1,6 @@
-bindkey "^[^[[D" backward-word
-bindkey "^[^[[C" forward-word
+# https://stackoverflow.com/a/12403798/
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;3C" forward-word
 
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ direnv exec . rgb; }
@@ -20,6 +21,8 @@ eval "$(op completion zsh)"; compdef _op op
 eval "$(mise activate zsh)"
 eval "$(mise activate zsh --shims)"
 
+source <(render completions zsh)
+
 fpath+=(~/.config/hcloud/completion/zsh)
 
 # Automatically installed by iterm2 into .zshrc
@@ -30,3 +33,6 @@ if [ -f '/Users/Craig/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/Cra
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc'; fi
+
+# https://developer.1password.com/docs/ssh/get-started/#step-4-configure-your-ssh-or-git-client
+export SSH_AUTH_SOCK=~/.1password/agent.sock
