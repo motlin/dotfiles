@@ -237,3 +237,7 @@ endif
 
 au BufRead,BufNewFile *.g4 set filetype=antlr4
 
+
+" https://stackoverflow.com/a/37884871
+set timeoutlen=1000
+set ttimeoutlen=0
