@@ -21,8 +21,6 @@ eval "$(op completion zsh)"; compdef _op op
 eval "$(mise activate zsh)"
 eval "$(mise activate zsh --shims)"
 
-source <(render completions zsh)
-
 fpath+=(~/.config/hcloud/completion/zsh)
 
 # Automatically installed by iterm2 into .zshrc
