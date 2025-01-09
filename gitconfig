@@ -253,6 +253,8 @@
 	# suggestion: Disable this message with "git config advice.skippedCherryPicks false"
 	# Rebase and update of refs/heads/main executed with success.
 	skippedCherryPicks = false
+	# Working with a detached head is advanced. Don't copy this setting unless you know what it means and are comfortable with it.
+	detachedHead = false
 [commit]
 	# https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---verbose
 	# Show unified diff between the HEAD commit and what would be committed at the bottom of the commit message template to help the user describe the commit by reminding what changes the commit has. Note that this diff output doesn’t have its lines prefixed with #. This diff will not be a part of the commit message.
