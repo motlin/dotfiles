@@ -1,5 +1,8 @@
-# https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
-(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+# Load environment before plugins to make sure direnv is on the PATH
+set -o allexport
+source ~/.env
+[ -f ~/.env.local ] && source ~/.env.local
+set +o allexport
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -7,8 +10,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
 # Enable emacs mode so that Ctrl+A goes to the beginning of the line and Ctrl+K erases after the cursor
 bindkey -e
@@ -85,11 +86,14 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Load environment before plugins to make sure direnv is on the PATH
-set -o allexport
-source ~/.env
-[ -f ~/.env.local ] && source ~/.env.local
-set +o allexport
+# History config
+# https://unix.stackexchange.com/a/670027
+# Number of lines of history
+export SAVEHIST=1000000000
+# Share history between terminals
+setopt share_history
+# Record timings
+setopt HIST_FIND_NO_DUPS
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -97,7 +101,7 @@ set +o allexport
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(zsh-syntax-highlighting zsh-autosuggestions direnv ssh-agent command-not-found bgnotify alias-finder fzf gh)
+plugins=(direnv ssh-agent command-not-found bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -127,28 +131,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
-
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(fzf --zsh)"
 
-# History config
-# https://unix.stackexchange.com/a/670027
-# Number of lines of history
-export SAVEHIST=1000000000
-# Share history between terminals
-setopt share_history
-# Record timings
-setopt HIST_FIND_NO_DUPS
-
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
-
-# initialize autocompletion
-autoload -U compinit && compinit
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ZSH_THEME_TERM_TITLE_IDLE="%~"
-
