@@ -137,7 +137,10 @@ eval "$(zoxide init --cmd cd zsh)"
 source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
 
+export ZSH_THEME_TERM_TITLE_IDLE="%~"
+
+eval "$(just --completions zsh)"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-ZSH_THEME_TERM_TITLE_IDLE="%~"
