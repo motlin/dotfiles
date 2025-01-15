@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Default model
+DEFAULT_MODEL="gemini-1.5-flash-8b-latest"
+
+# Usage function
+usage() {
+    echo "Usage: describe-image [-m model] filename"
+    echo "  -m model: Optional LLM model (default: $DEFAULT_MODEL)"
+    exit 1
+}
+
+# Parse arguments
+model=$DEFAULT_MODEL
+while getopts "m:" opt; do
+    case $opt in
+        m) model="$OPTARG";;
+        ?) usage;;
+    esac
+done
+
+# Shift off the options
+shift $((OPTIND-1))
+
+# Check if filename is provided
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+filename="$1"
+
+# Check if file exists
+if [ ! -f "$filename" ]; then
+    echo "Error: File '$filename' not found"
+    exit 1
+fi
+
+# Generate and save description
+description=$(llm -m "$model" describe -a "$filename") && \
+exiftool -overwrite_original "-XMP-dc:Description=$description" "$filename"

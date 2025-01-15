@@ -7,6 +7,7 @@
 
 - create:
     - ~/.1password
+    - ~/.bin
 
 - link:
     ~/.1password/agent.sock: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
@@ -35,3 +36,9 @@
       path: zprofile.mac
     ~/.zshrc.local:
       path: zshrc.mac
+
+- shell:
+    - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
+
+- link:
+    ~/.bin/woof: bin/woof

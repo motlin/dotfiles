@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+git remote set-url origin $(gh repo view --json sshUrl -q .sshUrl)

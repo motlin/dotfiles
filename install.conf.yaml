@@ -8,6 +8,9 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
 
+- create:
+    - ~/.bin
+
 - link:
     ~/.Xdefaults:
     ~/.asdfrc:
@@ -15,6 +18,8 @@
     ~/.bash_profile:
     ~/.bashrc:
       force: true
+    ~/.bin/rgb: bin/rgb
+    ~/.bin/set-url: bin/set-url
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
