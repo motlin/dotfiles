@@ -12,6 +12,9 @@
       path: env.mac
     ~/.gitconfig.local:
       path: gitconfig.mac
+    ~/.ssh/config:
+      path: ssh/config
+      create: true
     ~/.zprofile.local:
       path: zprofile.mac
     ~/.zshrc.local:
