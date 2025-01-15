@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Check if the TAB_COLOR environment variable is set
+if [ -z "$TAB_COLOR" ]; then
+  echo "Error: TAB_COLOR environment variable is not set."
+  echo "Usage: export TAB_COLOR=\"255,100,0\""
+  exit 1
+fi
+
+# Split the TAB_COLOR variable into an array using comma as delimiter
+IFS=',' read -r -a colors <<< "$TAB_COLOR"
+
+# Check if there are exactly three values
+if [ "${#colors[@]}" -ne 3 ]; then
+  echo "Error: TAB_COLOR must be in the form of 'red,green,blue'"
+  echo "Example: export TAB_COLOR=\"255,100,0\""
+  exit 1
+fi
+
+# Assign the values to variables
+red=${colors[0]}
+green=${colors[1]}
+blue=${colors[2]}
+
+# Echo the escape codes
+echo -n -e "\033]6;1;bg;red;brightness;$red\a"
+echo -n -e "\033]6;1;bg;green;brightness;$green\a"
+echo -n -e "\033]6;1;bg;blue;brightness;$blue\a"
+

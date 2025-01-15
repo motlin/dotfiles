@@ -15,6 +15,9 @@
     ~/.bash_profile:
     ~/.bashrc:
       force: true
+    ~/.bin:
+      path: bin
+      create: true
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:

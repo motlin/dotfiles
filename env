@@ -2,4 +2,4 @@ EDITOR=vim
 PAGER="less -RFX"
 LESS="-RFX"
 RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-PATH=$PATH:~/bin
+PATH=$PATH:~/.bin
