@@ -5,9 +5,16 @@
 
 - clean: ['~']
 
+- create:
+    - ~/.1password
+
 - link:
+    ~/.1password/agent.sock: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
     ~/.alias.local:
       path: alias.mac
+    ~/.config/1Password/ssh/agent.toml:
+      path: config/1Password/ssh/agent.toml
+      force: true
     ~/.env.local:
       path: env.mac
     ~/.gitconfig.local:
