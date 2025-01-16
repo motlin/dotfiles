@@ -1,6 +1,9 @@
 set shell := ["bash", "-O", "globstar", "-c"]
 set dotenv-filename := ".envrc"
 
+default:
+    @just --list --unsorted
+
 push:
     git pushf public main
     git pushf private private:main
