@@ -34,3 +34,5 @@ if [ -f '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/Use
 
 # https://developer.1password.com/docs/ssh/get-started/#step-4-configure-your-ssh-or-git-client
 export SSH_AUTH_SOCK=~/.1password/agent.sock
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
