@@ -19,6 +19,8 @@
       path: env.mac
     ~/.gitconfig.local:
       path: gitconfig.mac
+    ~/.iterm2_shell_integration.zsh:
+    ~/.iterm2:
     ~/.ssh/config:
       path: ssh/config
       create: true
