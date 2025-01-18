@@ -101,7 +101,7 @@ setopt HIST_FIND_NO_DUPS
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(direnv ssh-agent command-not-found bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(direnv bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
