@@ -279,3 +279,5 @@
 	# https://stackoverflow.com/a/8883248/
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pagerltcmdgt
 	status = true
+[feature]
+	git3 = true
