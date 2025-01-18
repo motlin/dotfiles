@@ -24,6 +24,12 @@
     ~/.ssh/config:
       path: ssh/config
       create: true
+    ~/.ssh/factorio_id_ed25519.pub:
+      path: ssh/factorio_id_ed25519.pub
+      create: true
+    ~/.ssh/id_ed25519.pub:
+      path: ssh/id_ed25519.pub
+      create: true
     ~/.zprofile.local:
       path: zprofile.mac
     ~/.zshrc.local:
