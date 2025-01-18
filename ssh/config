@@ -5,6 +5,16 @@ Host github.com
   IdentityFile ~/.ssh/id_ed25519.pub
   IdentitiesOnly yes
 
+Host github.com
+  IdentityFile ~/.ssh/factorio_id_ed25519.pub
+  IdentitiesOnly yes
+
+Host MotlinGitHub
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519.pub
+  IdentitiesOnly yes
+
 Host FactorioBlueprintsGitHub
   HostName github.com
   User git
