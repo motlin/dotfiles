@@ -10,6 +10,13 @@ push:
 
 upstream_remote := env('UPSTREAM_REMOTE', "public")
 upstream_branch := env('UPSTREAM_BRANCH', "main")
+
+pull:
+    git checkout main
+    git pull public main --rebase
+    git checkout private
+    git pull private main --rebase
+
 # git rebase onto configurable upstream/main
 rebase:
     git fetch {{upstream_remote}} {{upstream_branch}}
