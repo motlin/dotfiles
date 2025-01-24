@@ -19,6 +19,7 @@
       path: env.mac
     ~/.gitconfig.local:
       path: gitconfig.mac
+    ~/.gitignore_global:
     ~/.iterm2_shell_integration.zsh:
     ~/.iterm2:
     ~/.ssh/config:
