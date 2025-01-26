@@ -8,11 +8,11 @@
 	excludesfile = ~/.gitignore_global
 
 [maintenance]
-	repo = ~/.dotfiles
-	repo = ~/projects/eclipse-collections
-	repo = ~/projects/klass
+	# repo = ~/.dotfiles
+	# repo = ~/projects/eclipse-collections
+	# repo = ~/projects/klass
 	# repo = ~/projects/klass-rewrite
-	repo = ~/projects/liftwizard
+	# repo = ~/projects/liftwizard
 
 # https://gist.github.com/ffittschen/6d9be1720f30eb8dc0142cc0ed91c7d9
 # https://www.jetbrains.com/help/idea/tutorial-use-idea-as-default-command-line-merge-tool.html
