@@ -118,6 +118,7 @@
 
 	# https://www.colinodell.com/blog/201803/four-useful-git-aliases
 	children = "!bash -c 'c=${1:-HEAD}; set -- $(git rev-list --all --not \"$c\"^@ --children | grep $(git rev-parse \"$c\") ); shift; echo $1' -"
+	today = !git commit --message \"Update $(date +%Y-%m-%d).\"
 [core]
 	editor = vim
 	# Use file system monitor and untracked cache

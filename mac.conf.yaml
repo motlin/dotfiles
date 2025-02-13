@@ -20,6 +20,7 @@
       path: env.mac
     ~/.gitconfig.local:
       path: gitconfig.mac
+    ~/.gitconfig-factorio-blueprints:
     ~/.gitignore_global:
     ~/.iterm2_shell_integration.zsh:
     ~/.iterm2:

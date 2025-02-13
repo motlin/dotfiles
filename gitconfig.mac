@@ -58,3 +58,7 @@
 	colorMoved = default
 [include]
 	path = ~/projects/open-source/delta/themes.gitconfig
+
+[includeIf "gitdir:~/projects/FactorioBlueprints/"]
+    path = ~/.gitconfig-factorio-blueprints
+
