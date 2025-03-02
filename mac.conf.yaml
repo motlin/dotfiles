@@ -8,6 +8,7 @@
 - create:
     - ~/.1password
     - ~/.bin
+    - ~/.config/yt-dlp
 
 - link:
     ~/.1password/agent.sock: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
@@ -16,6 +17,8 @@
     ~/.config/1Password/ssh/agent.toml:
       path: config/1Password/ssh/agent.toml
       force: true
+    ~/.config/yt-dlp/config:
+      path: config/yt-dlp/config
     ~/.env.local:
       path: env.mac
     ~/.gitconfig.local:

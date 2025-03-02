@@ -1,0 +1,17 @@
+--cookies-from-browser chrome
+# --embed-thumbnail
+--embed-metadata
+
+# Embeds the downloaded subtitles directly into the video file.
+--embed-subs
+
+# English subtitles.
+--sub-langs 'enUS,en,en-US'
+
+# Converts the subtitles to the SubRip Subtitle (SRT) format
+--convert-subs srt
+
+# iOS has native support for mp4
+--format "(bestvideo[ext=mp4]+bestaudio[ext=m4a])/best[ext=mp4]" --merge-output-format mp4
+
+--concurrent-fragments 4
