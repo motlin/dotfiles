@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+for file in "$@"; do
+  if [ -f "$file" ] && [ "$(tail -c 1 "$file" | xxd -p)" != "0a" ]; then
+    printf "\n" >> "$file"
+    echo "Added EOL to $file"
+  fi
+done

@@ -20,6 +20,7 @@
       force: true
     ~/.bin/rgb: bin/rgb
     ~/.bin/set-url: bin/set-url
+    ~/.bin/add-eol: bin/add-eol
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
