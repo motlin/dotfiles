@@ -21,6 +21,7 @@
     ~/.bin/rgb: bin/rgb
     ~/.bin/set-url: bin/set-url
     ~/.bin/add-eol: bin/add-eol
+    ~/.config/bat: config/bat
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
