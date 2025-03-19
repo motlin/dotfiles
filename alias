@@ -49,4 +49,5 @@ alias log="TZ='EST+5' ts '%Y-%m-%d %H:%M:%.S'"
 alias cat='bat'
 alias lg='lazygit'
 alias web='gh pr view --web'
-alias j='just'
+alias j='just --global-justfile'
+
