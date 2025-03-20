@@ -6,7 +6,7 @@ default:
 
 push:
     git pushf public main
-    git pushf private private:main
+    git pushf private refs/heads/private:main
 
 upstream_remote := env('UPSTREAM_REMOTE', "public")
 upstream_branch := env('UPSTREAM_BRANCH', "main")
