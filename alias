@@ -50,4 +50,5 @@ alias cat='bat'
 alias lg='lazygit'
 alias web='gh pr view --web'
 alias j='just --global-justfile'
+alias rsync='rsync --config=~/.rsyncrc'
 

@@ -1,0 +1,8 @@
+--archive
+--verbose
+--info=progress2
+--human-readable
+--partial
+--exclude=._*
+--exclude=.Trashes
+--exclude=.Spotlight-V100
