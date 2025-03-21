@@ -41,7 +41,6 @@
       path: powerlevel10k
     ~/.p10k.zsh:
     ~/.ripgreprc:
-    ~/.rsyncrc:
     ~/.screenrc:
     ~/.vim:
     ~/.vim/pack/vendor/start/vim-just:
