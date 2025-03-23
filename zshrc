@@ -4,12 +4,16 @@ source ~/.env
 [ -f ~/.env.local ] && source ~/.env.local
 set +o allexport
 
+emulate zsh -c "$(direnv export zsh)"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+emulate zsh -c "$(direnv hook zsh)"
 
 # Enable emacs mode so that Ctrl+A goes to the beginning of the line and Ctrl+K erases after the cursor
 bindkey -e
@@ -101,7 +105,7 @@ setopt HIST_FIND_NO_DUPS
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(direnv bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -140,6 +144,15 @@ source ~/.alias
 export ZSH_THEME_TERM_TITLE_IDLE="%~"
 
 eval "$(just --completions zsh)"
+
+function _apply_tab_color() {
+  if [[ -n "$TAB_COLOR" ]]; then
+    rgb
+  fi
+}
+
+add-zsh-hook chpwd _apply_tab_color
+_apply_tab_color
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
