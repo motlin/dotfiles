@@ -1,0 +1,3 @@
+[tools]
+"npm:@anthropic-ai/claude-code" = "latest"
+"npm:strip-ansi-cli" = "latest"

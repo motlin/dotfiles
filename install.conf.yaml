@@ -23,6 +23,7 @@
     ~/.bin/add-eol: bin/add-eol
     ~/.config/bat: config/bat
     ~/.config/just: config/just
+    ~/.config/mise: config/mise
     ~/.env:
     ~/.gitconfig:
     ~/.minttyrc:
