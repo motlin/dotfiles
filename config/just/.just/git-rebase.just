@@ -1,6 +1,6 @@
 # `git rebase` onto configurable upstream/main
 @rebase: _check-local-modifications fetch
-    just _run "git rebase --interactive --autosquash --rebase-merges --update-refs {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}"
+    just --global-justfile _run "git rebase --interactive --autosquash --rebase-merges --update-refs {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}"
 
 # Rebase all branches onto configurable upstream/main or matching up-to-date origin branch
 rebase-all: _check-local-modifications fetch
@@ -43,7 +43,7 @@ alias ra := rebase-all
 
 # `git absorb` into configurable upstream/main
 @absorb *FLAGS:
-    just _run "git absorb --base {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} --force {{FLAGS}}"
+    just --global-justfile _run "git absorb --base {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} --force {{FLAGS}}"
 
 # Delete local branches merged into configurable upstream/main
 delete-merged-local: fetch

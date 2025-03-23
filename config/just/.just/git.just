@@ -8,8 +8,8 @@ setup-github-refspec REMOTE:
     set -Eeuo pipefail
 
     if git remote get-url {{REMOTE}} &> /dev/null && git remote get-url {{REMOTE}} | grep -q 'github\.'; then
-        just _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/head:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/*'"
-        just _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/merge:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/merge/*'"
+        just --global-justfile _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/head:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/*'"
+        just --global-justfile _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/merge:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/merge/*'"
     else
         echo "Remote {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}} is not a GitHub remote"
     fi
@@ -31,7 +31,7 @@ _check-local-modifications:
     if [ -n "$ERRORS" ]; then
         {{echo_command}} "Local modifications"
         echo -e "$ERRORS"
-        just _run "git status"
+        just --global-justfile _run "git status"
         exit 1
     fi
 
@@ -40,7 +40,7 @@ fetch:
     #!/usr/bin/env bash
     set -Eeuo pipefail
     if [ "{{offline}}" != "true" ]; then
-        just _run "git fetch {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}{{ANSI_NORMAL}} --tags --prune"
+        just --global-justfile _run "git fetch {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}{{ANSI_NORMAL}} --tags --prune"
     fi
 
 # Create a branch if HEAD is detached
@@ -59,4 +59,4 @@ recover-detached-head:
 pull-request-description:
     #!/usr/bin/env bash
     set -Eeuo pipefail
-    just _run "git log {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_CYAN}}{{ANSI_BOLD}}HEAD{{ANSI_NORMAL}} --reverse --format='- %s'"
+    just --global-justfile _run "git log {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_CYAN}}{{ANSI_BOLD}}HEAD{{ANSI_NORMAL}} --reverse --format='- %s'"

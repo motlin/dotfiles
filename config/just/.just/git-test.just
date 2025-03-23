@@ -14,7 +14,7 @@ test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     fi
     echo "$branch" > JUSTFILE_BRANCH
     tests=$([ -n "{{TESTS}}" ] && echo "--tests {{TESTS}}" || echo "")
-    just _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
+    just --global-justfile _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
 
 # `just test` all commits with configurable upstream/main as ancestor
 test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
@@ -34,7 +34,7 @@ test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     for branch in "${branches[@]}"
     do
         echo -n "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total_branches}] "
-        just _run "{{ANSI_BRIGHT_RED}}just{{ANSI_DEFAULT}} test-branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}\"${branch}\"{{ANSI_NORMAL}} {{ANSI_GRAY}}'{{TESTS}}'{{ANSI_DEFAULT}} {{FLAGS}}"
+        just --global-justfile _run "{{ANSI_BRIGHT_RED}}just{{ANSI_DEFAULT}} --global-justfile test-branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}\"${branch}\"{{ANSI_NORMAL}} {{ANSI_GRAY}}'{{TESTS}}'{{ANSI_DEFAULT}} {{FLAGS}}"
         ((current++))
     done
 
@@ -54,7 +54,7 @@ test-results:
     for branch in "${branches[@]}"
     do
         echo -n "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total_branches}] "
-        just _run "git test results --color {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
+        just --global-justfile _run "git test results --color {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
         ((current++))
     done
 
@@ -64,21 +64,21 @@ test-fix:
     set -Eeuo pipefail
 
     echo "{{ANSI_BOLD}}Staging changes.{{ANSI_NORMAL}}"
-    just _run "git add --update"
+    just --global-justfile _run "git add --update"
 
     echo "{{ANSI_BOLD}}Committing fixup.{{ANSI_NORMAL}}"
-    just _run "git commit --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
+    just --global-justfile _run "git commit --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
 
     echo "{{ANSI_BOLD}}Checking for unstaged files.{{ANSI_NORMAL}}"
-    just _check-local-modifications
+    just --global-justfile _check-local-modifications
 
     BRANCH=$(cat JUSTFILE_BRANCH)
     echo "Rebasing the last branch used with just test-fix: {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
-    just _run "git rebase --onto HEAD HEAD^ {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
-    just _run "git checkout $BRANCH"
+    just --global-justfile _run "git rebase --onto HEAD HEAD^ {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
+    just --global-justfile _run "git checkout $BRANCH"
 
     echo "{{ANSI_BOLD}}Squashing changes.{{ANSI_NORMAL}}"
-    just _run "just rebase"
+    just --global-justfile _run "just --global-justfile rebase"
 
     echo "{{ANSI_BOLD}}Cleaning up.{{ANSI_NORMAL}}"
-    just _run "rm {{ANSI_YELLOW}}JUSTFILE_BRANCH{{ANSI_NORMAL}}"
+    just --global-justfile _run "rm {{ANSI_YELLOW}}JUSTFILE_BRANCH{{ANSI_NORMAL}}"
