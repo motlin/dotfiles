@@ -1,9 +1,3 @@
-# Load environment before plugins to make sure direnv is on the PATH
-set -o allexport
-source ~/.env
-[ -f ~/.env.local ] && source ~/.env.local
-set +o allexport
-
 emulate zsh -c "$(direnv export zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
