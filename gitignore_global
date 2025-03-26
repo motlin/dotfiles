@@ -1,2 +1,3 @@
 .DS_Store
 .mise/config.local.toml
+.aider*
