@@ -7,12 +7,6 @@ autoload -U add-zsh-hook
 eval "$(brew shellenv)"
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 
-# . ~/.asdf/plugins/java/set-java-home.zsh
-
-# . /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-# . "$HOME/.cargo/env"
-
 source ~/.config/op/plugins.sh
 
 eval "$(op completion zsh)"; compdef _op op
