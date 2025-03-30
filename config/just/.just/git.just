@@ -40,7 +40,7 @@ fetch:
     #!/usr/bin/env bash
     set -Eeuo pipefail
     if [ "{{offline}}" != "true" ]; then
-        just --global-justfile _run "git fetch {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}{{ANSI_NORMAL}} --tags --prune"
+        just --global-justfile _run "git fetch {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}{{ANSI_NORMAL}} --quiet --tags --prune"
     fi
 
 # Create a branch if HEAD is detached

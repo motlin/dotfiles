@@ -64,18 +64,18 @@ test-fix:
     set -Eeuo pipefail
 
     echo "{{ANSI_BOLD}}Staging changes.{{ANSI_NORMAL}}"
-    just --global-justfile _run "git add --update"
+    just --global-justfile _run "git add --update --quiet"
 
     echo "{{ANSI_BOLD}}Committing fixup.{{ANSI_NORMAL}}"
-    just --global-justfile _run "git commit --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
+    just --global-justfile _run "git commit --quiet --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
 
     echo "{{ANSI_BOLD}}Checking for unstaged files.{{ANSI_NORMAL}}"
     just --global-justfile _check-local-modifications
 
     BRANCH=$(cat JUSTFILE_BRANCH)
     echo "Rebasing the last branch used with just test-fix: {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
-    just --global-justfile _run "git rebase --onto HEAD HEAD^ {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
-    just --global-justfile _run "git checkout $BRANCH"
+    just --global-justfile _run "git rebase --quiet --onto HEAD HEAD^ {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$BRANCH{{ANSI_NORMAL}}"
+    just --global-justfile _run "git checkout --quiet $BRANCH"
 
     echo "{{ANSI_BOLD}}Squashing changes.{{ANSI_NORMAL}}"
     just --global-justfile _run "just --global-justfile rebase"
