@@ -20,7 +20,16 @@ rebase-all: _check-local-modifications fetch
             continue
         fi
 
-        git checkout --quiet "$branch"
+        if git worktree list 2>/dev/null | grep -q "\[$branch\]"; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is currently checked out in a worktree"
+            continue
+        fi
+
+        if ! git checkout --quiet "$branch" 2>/dev/null; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it cannot be checked out (possibly in use by a worktree)"
+            continue
+        fi
+
         rebase_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Rebasing branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
 
         # Check if origin/$branch exists
