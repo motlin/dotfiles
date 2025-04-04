@@ -64,7 +64,7 @@ test-fix:
     set -Eeuo pipefail
 
     echo "{{ANSI_BOLD}}Staging changes.{{ANSI_NORMAL}}"
-    just --global-justfile _run "git add --update --quiet"
+    just --global-justfile _run "git add --update"
 
     echo "{{ANSI_BOLD}}Committing fixup.{{ANSI_NORMAL}}"
     just --global-justfile _run "git commit --quiet --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
