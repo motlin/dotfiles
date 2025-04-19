@@ -1,4 +1,5 @@
 [tools]
 "npm:@anthropic-ai/claude-code" = "latest"
+"npm:@openai/codex" = "latest"
 "npm:repomix" = "latest"
 "npm:strip-ansi-cli" = "latest"
