@@ -20,8 +20,9 @@ rebase-all: _check-local-modifications fetch
             continue
         fi
 
-        if git worktree list 2>/dev/null | grep -q "\[$branch\]"; then
-            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is currently checked out in a worktree"
+        current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+        if [ "$branch" != "$current_branch" ] && git worktree list 2>/dev/null | grep -q "\[$branch\]"; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is currently checked out in another worktree"
             continue
         fi
 
