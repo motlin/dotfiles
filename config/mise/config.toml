@@ -1,5 +1,9 @@
 [tools]
-"npm:@anthropic-ai/claude-code" = "latest"
 "npm:@openai/codex" = "latest"
+"npm:create-docusaurus" = "latest"
+"npm:oclif" = "latest"
 "npm:repomix" = "latest"
 "npm:strip-ansi-cli" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
