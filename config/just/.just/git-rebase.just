@@ -57,9 +57,21 @@ alias ra := rebase-all
 
 # Delete local branches merged into configurable upstream/main
 delete-merged-local: fetch
-    git branch --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
-        | grep -v "^\*" \
-        | xargs --no-run-if-empty git branch -D
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+    
+    # Get all merged branches
+    branches=$(git branch --merged remotes/{{upstream_remote}}/{{upstream_branch}} | grep -v "^\*" | tr -d ' ')
+    
+    for branch in $branches; do
+        # Skip branches used by worktrees
+        if git worktree list 2>/dev/null | grep -q "\[$branch\]"; then
+            echo "Skipping branch $branch as it is currently checked out in another worktree"
+            continue
+        fi
+        
+        git branch -D "$branch" || true
+    done
 
 # Delete branches from origin merged into configurable upstream/main
 delete-merged-remote: fetch
@@ -81,4 +93,5 @@ delete-merged-remote: fetch
 delete-merged: delete-merged-local delete-merged-remote
 
 git-all: rebase-all delete-merged
+    git worktree prune
 alias g := git-all
