@@ -18,9 +18,9 @@
     ~/.bash_profile:
     ~/.bashrc:
       force: true
+    ~/.bin/add-eol: bin/add-eol
     ~/.bin/rgb: bin/rgb
     ~/.bin/set-url: bin/set-url
-    ~/.bin/add-eol: bin/add-eol
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
