@@ -13,7 +13,7 @@ alias lt='la --no-user --sort modified'
 
 # git aliases
 alias s='git st'
-alias ss='git ss'
+alias ss='git status --short'
 alias gl='git l'
 alias ga='git la'
 alias g='git la'
