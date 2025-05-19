@@ -58,12 +58,12 @@ alias ra := rebase-all
 # Delete local branches merged into configurable upstream/main
 delete-merged-local: fetch
     #!/usr/bin/env bash
-    set -Eeuo pipefail
+    set -Eeu                         # No pipefail or the grep commands fail when nothing needs to be deleted
 
     git branch --merged remotes/{{upstream_remote}}/{{upstream_branch}} |
-        grep -v "^\*" |            # Exclude current branch
-        grep -v "^+" |             # Exclude branches checked out in worktrees (marked with +)
-        sed 's/^[[:space:]]*//' |  # Trim leading whitespace
+        grep --invert-match "^\*" |  # Exclude current branch
+        grep --invert-match "^+" |   # Exclude branches checked out in worktrees (marked with +)
+        sed 's/^[[:space:]]*//' |    # Trim leading whitespace
         xargs --no-run-if-empty git branch -D
 
 # Delete branches from origin merged into configurable upstream/main
