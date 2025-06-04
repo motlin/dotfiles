@@ -6,12 +6,12 @@ alias vi='vim'
 alias vd='vim -d'
 alias grep='grep --color'
 
-# ls aliases
+# 📁 ls aliases
 alias l='eza --long --classify --header --color-scale --icons --no-permissions --time-style iso'
 alias la='l --all'
 alias lt='la --no-user --sort modified'
 
-# git aliases
+# 🔀 git aliases
 alias s='git st'
 alias ss='git status --short'
 alias gl='git l'

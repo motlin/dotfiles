@@ -6,7 +6,7 @@
 - clean: ['~']
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
+  - [git submodule update --init --recursive, 📦 Installing submodules]
 
 - create:
     - ~/.bin
