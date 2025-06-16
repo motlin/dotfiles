@@ -20,3 +20,6 @@
 [submodule "vim-just"]
 	path = vim-just
 	url = https://github.com/NoahTheDuke/vim-just.git
+[submodule "claude"]
+	path = claude
+	url = https://github.com/motlin/claude-code-prompts.git
