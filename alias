@@ -52,3 +52,5 @@ alias web='gh pr view --web'
 alias j='just --global-justfile'
 alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 
+alias commit="claude '/user:commit'"
+alias rebase="claude '/user:rebase'"
