@@ -7,7 +7,7 @@ setup-github-refspec REMOTE:
     #!/usr/bin/env bash
     set -Eeuo pipefail
 
-    if git remote get-url {{REMOTE}} &> /dev/null && git remote get-url {{REMOTE}} | grep -q 'github\.'; then
+    if git remote get-url {{REMOTE}} &> /dev/null && git remote get-url {{REMOTE}} | grep -qi 'github\.'; then
         just --global-justfile _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/head:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/*'"
         just --global-justfile _run "git config --add remote.{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}.fetch '+refs/pull/*/merge:refs/remotes/{{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{REMOTE}}{{ANSI_NORMAL}}/pr/merge/*'"
     else
