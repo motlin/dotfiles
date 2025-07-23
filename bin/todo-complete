@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+import sys
+import re
+
+
+def complete_first_todo(filename):
+    try:
+        with open(filename, "r") as file:
+            lines = file.readlines()
+
+        modified = False
+
+        for i, line in enumerate(lines):
+            # Find the first incomplete checkbox
+            if re.match(r"^- \[ \]", line):
+                # Replace [ ] with [x]
+                lines[i] = re.sub(r"^- \[ \]", "- [x]", line)
+                modified = True
+                break
+
+        if modified:
+            with open(filename, "w") as file:
+                file.writelines(lines)
+            print(f"✅ Completed first todo in {filename}")
+        else:
+            print("No incomplete todos found", file=sys.stderr)
+            sys.exit(1)
+
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: todo-complete <filename>", file=sys.stderr)
+        sys.exit(1)
+
+    complete_first_todo(sys.argv[1])

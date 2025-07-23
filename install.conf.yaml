@@ -20,6 +20,8 @@
     ~/.bin/add-eol: bin/add-eol
     ~/.bin/rgb: bin/rgb
     ~/.bin/set-url: bin/set-url
+    ~/.bin/todo-complete: bin/todo-complete
+    ~/.bin/todo-get: bin/todo-get
     ~/.claude: claude
     ~/.config/bat: config/bat
     ~/.config/just: config/just
