@@ -22,6 +22,7 @@
     ~/.bin/set-url: bin/set-url
     ~/.bin/todo-complete: bin/todo-complete
     ~/.bin/todo-get: bin/todo-get
+    ~/.bin/worktree: bin/worktree
     ~/.claude: claude
     ~/.config/bat: config/bat
     ~/.config/just: config/just
