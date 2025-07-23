@@ -10,7 +10,7 @@ fi
 TASK_NAME="$1"
 
 # Get the original repository name and paths
-ORIGINAL_REPO_DIR="$(dirname "$(git rev-parse --git-common-dir)")"
+ORIGINAL_REPO_DIR="$(git rev-parse --show-toplevel)"
 ORIGINAL_REPO=$(basename "$ORIGINAL_REPO_DIR")
 TODO_FILE="${ORIGINAL_REPO_DIR}/.llm/todo.md"
 
@@ -19,19 +19,13 @@ WORKTREE_NAME="${ORIGINAL_REPO}-${TASK_NAME}"
 BRANCH_NAME="task/${TASK_NAME}"
 WORKTREE_PATH="$(dirname "$ORIGINAL_REPO_DIR")/${WORKTREE_NAME}"
 
-echo "🌳 Creating worktree: ${WORKTREE_NAME}"
-echo "📁 Branch: ${BRANCH_NAME}"
-
-# Mark the current task as in progress
-echo "📝 Marking task as in progress..."
-todo-complete --progress "$TODO_FILE"
-
 # Create the git worktree
-echo "🔧 Creating git worktree..."
-git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" "${UPSTREAM_REMOTE:-origin}/${UPSTREAM_BRANCH:-main}"
+git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" "${UPSTREAM_REMOTE:-origin}/${UPSTREAM_BRANCH:-main}" >/dev/null 2>&1
+
+# Mark the current task as in progress only after successful worktree creation
+todo-complete --progress "$TODO_FILE" >/dev/null
 
 # Set up .llm directory and todo file
-echo "📋 Setting up todo file..."
 mkdir -p "${WORKTREE_PATH}/.llm"
 todo-get "$TODO_FILE" > "${WORKTREE_PATH}/.llm/todo.md"
 
@@ -45,15 +39,11 @@ todo-get "$TODO_FILE" > "${WORKTREE_PATH}/.llm/todo.md"
 
 # Copy .envrc if it exists
 if [ -f ".envrc" ]; then
-    echo "🔧 Copying .envrc..."
     cp ".envrc" "$WORKTREE_PATH/"
-    direnv allow "$WORKTREE_PATH"
+    direnv allow "$WORKTREE_PATH" >/dev/null 2>&1
 fi
 
 # Trust with mise
-echo "🔧 Setting up mise..."
-mise trust "$WORKTREE_PATH"
+mise trust "$WORKTREE_PATH" >/dev/null 2>&1
 
-echo "✅ Worktree created successfully!"
-echo "📁 Path: ${WORKTREE_PATH}"
-echo "🚀 Run: cd ${WORKTREE_PATH} && claude /todo"
+echo "${WORKTREE_PATH}"
