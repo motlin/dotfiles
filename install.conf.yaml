@@ -20,6 +20,7 @@
     ~/.bin/add-eol: bin/add-eol
     ~/.bin/rgb: bin/rgb
     ~/.bin/set-url: bin/set-url
+    ~/.bin/should-skip-commit: bin/should-skip-commit
     ~/.bin/todo-complete: bin/todo-complete
     ~/.bin/todo-get: bin/todo-get
     ~/.bin/worktree: bin/worktree

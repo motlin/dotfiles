@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Check if a commit should be skipped based on its commit message
+# Exit codes:
+#   0 - Should skip this commit
+#   1 - Should NOT skip this commit (test it)
+#   2 - Error occurred
+
+set -euo pipefail
+
+usage() {
+    cat >&2 <<EOF
+Usage: $(basename "$0") [committish]
+
+Check if a commit should be skipped based on its commit message.
+If no committish is provided, defaults to HEAD.
+
+Exit codes:
+  0 - Should skip this commit
+  1 - Should NOT skip this commit (test it)
+  2 - Error occurred
+
+Skip patterns (case-sensitive):
+  [skip] - Skip this commit
+  [pass] - Skip this commit
+  [stop] - Skip this commit
+  [fail] - Skip this commit
+
+Examples:
+  $(basename "$0")              # Check HEAD
+  $(basename "$0") HEAD
+  $(basename "$0") abc123
+  $(basename "$0") feature-branch
+EOF
+}
+
+if [ $# -gt 1 ]; then
+    usage
+    exit 2
+fi
+
+committish="${1:-HEAD}"
+
+# Verify the committish is valid
+if ! git rev-parse --verify "$committish" >/dev/null 2>&1; then
+    echo "Error: Invalid committish: $committish" >&2
+    exit 2
+fi
+
+# Get the full commit message (all lines)
+if ! COMMIT_MESSAGE=$(git log --format=%B -n 1 "$committish" 2>/dev/null); then
+    echo "Error: Failed to get commit message for: $committish" >&2
+    exit 2
+fi
+
+# Check for skip patterns (case-sensitive, matching maven.just logic)
+SKIPPABLE_WORDS=("skip" "pass" "stop" "fail")
+
+for word in "${SKIPPABLE_WORDS[@]}"; do
+    if [[ $COMMIT_MESSAGE == *\[${word}\]* ]]; then
+        echo "Skipping due to skip pattern in commit: '${COMMIT_MESSAGE}'"
+        exit 0
+    fi
+done
+
+# Default: do not skip
+exit 1
