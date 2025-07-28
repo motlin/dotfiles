@@ -8,22 +8,13 @@
 - shell:
   - [git submodule update --init --recursive, 📦 Installing submodules]
 
-- create:
-    - ~/.bin
-
 - link:
     ~/.Xdefaults:
     ~/.alias:
     ~/.bash_profile:
     ~/.bashrc:
       force: true
-    ~/.bin/add-eol: bin/add-eol
-    ~/.bin/rgb: bin/rgb
-    ~/.bin/set-url: bin/set-url
-    ~/.bin/should-skip-commit: bin/should-skip-commit
-    ~/.bin/todo-complete: bin/todo-complete
-    ~/.bin/todo-get: bin/todo-get
-    ~/.bin/worktree: bin/worktree
+    ~/.bin: bin
     ~/.claude: claude
     ~/.config/bat: config/bat
     ~/.config/just: config/just

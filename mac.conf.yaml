@@ -7,7 +7,6 @@
 
 - create:
     - ~/.1password
-    - ~/.bin
     - ~/.config/yt-dlp
 
 - link:
@@ -43,6 +42,3 @@
 
 - shell:
     - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
-
-- link:
-    ~/.bin/woof: bin/woof
