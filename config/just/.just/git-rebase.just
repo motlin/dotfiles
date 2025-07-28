@@ -55,6 +55,10 @@ alias ra := rebase-all
 @absorb *FLAGS:
     just --global-justfile _run "git absorb --base {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} --force {{FLAGS}}"
 
+# `git worktree prune --verbose`
+worktree-prune:
+    git worktree prune --verbose
+
 # Delete local branches merged into configurable upstream/main
 delete-merged-local: fetch
     #!/usr/bin/env bash
@@ -85,6 +89,5 @@ delete-merged-remote: fetch
 # Delete local and remote branches that are merged into configurable upstream/main
 delete-merged: delete-merged-local delete-merged-remote
 
-git-all: rebase-all delete-merged
-    git worktree prune
+git-all: rebase-all worktree-prune delete-merged
 alias g := git-all
