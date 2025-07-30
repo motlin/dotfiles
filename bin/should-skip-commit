@@ -7,6 +7,9 @@
 
 set -euo pipefail
 
+YELLOW=$(tput setaf 3 2>/dev/null || echo '')
+RESET=$(tput sgr0 2>/dev/null || echo '')
+
 usage() {
     cat >&2 <<EOF
 Usage: $(basename "$0") [committish]
@@ -57,7 +60,7 @@ SKIPPABLE_WORDS=("skip" "pass" "stop" "fail")
 
 for word in "${SKIPPABLE_WORDS[@]}"; do
     if [[ $COMMIT_MESSAGE == *\[${word}\]* ]]; then
-        echo "Skipping due to skip pattern in commit: '${COMMIT_MESSAGE}'"
+        echo "Skipping due to [${YELLOW}${word}${RESET}] in commit: '${COMMIT_MESSAGE}'"
         exit 0
     fi
 done
