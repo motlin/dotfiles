@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# Clean git worktrees whose branches have been merged into upstream
+# Usage: ./clean-worktrees.sh
+
+set -Eeuo pipefail
+
+UPSTREAM_REMOTE=${UPSTREAM_REMOTE:-origin}
+UPSTREAM_BRANCH=${UPSTREAM_BRANCH:-main}
+UPSTREAM_REF="$UPSTREAM_REMOTE/$UPSTREAM_BRANCH"
+
+# Check if we're in a git repository
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    echo "Error: Not in a git repository" >&2
+    exit 1
+fi
+
+# Fetch the latest from upstream
+echo "Fetching latest from $UPSTREAM_REMOTE..." >&2
+git fetch "$UPSTREAM_REMOTE" "$UPSTREAM_BRANCH" --quiet
+
+# Get all worktrees
+worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)
+
+echo "Checking worktrees against $UPSTREAM_REF..." >&2
+echo >&2
+
+# Collect worktrees to remove
+declare -a worktrees_to_remove=()
+
+# Process each worktree
+while IFS= read -r worktree_path; do
+    # Skip if it's the main worktree
+    if [ "$worktree_path" = "$(git rev-parse --show-toplevel)" ]; then
+        continue
+    fi
+    
+    # Get the branch name for this worktree
+    branch=$(git -C "$worktree_path" branch --show-current 2>/dev/null || echo "")
+    
+    # Skip if no branch (detached HEAD)
+    if [ -z "$branch" ]; then
+        continue
+    fi
+    
+    # Check if the branch is an ancestor of upstream
+    if git merge-base --is-ancestor "$branch" "$UPSTREAM_REF" 2>/dev/null; then
+        worktrees_to_remove+=("$worktree_path|$branch")
+    fi
+done <<< "$worktrees"
+
+# Now remove the collected worktrees
+removed_count=0
+failed_count=0
+
+for entry in "${worktrees_to_remove[@]}"; do
+    IFS='|' read -r worktree_path branch <<< "$entry"
+    echo "Removing worktree: $worktree_path (branch: $branch)"
+    if output=$(git worktree remove "$worktree_path" 2>&1); then
+        echo "✅ Successfully removed $worktree_path"
+        ((removed_count++))
+    else
+        echo "❌ Failed to remove $worktree_path" >&2
+        echo "   $output" >&2
+        ((failed_count++))
+    fi
+done
+
+echo >&2
+if [ $removed_count -eq 0 ] && [ $failed_count -eq 0 ]; then
+    echo "No worktrees found that can be cleaned." >&2
+else
+    [ $removed_count -gt 0 ] && echo "Successfully removed $removed_count worktree(s)." >&2
+    [ $failed_count -gt 0 ] && echo "Failed to remove $failed_count worktree(s)." >&2
+fi
