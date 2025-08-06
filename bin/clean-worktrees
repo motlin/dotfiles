@@ -9,6 +9,11 @@ UPSTREAM_REMOTE=${UPSTREAM_REMOTE:-origin}
 UPSTREAM_BRANCH=${UPSTREAM_BRANCH:-main}
 UPSTREAM_REF="$UPSTREAM_REMOTE/$UPSTREAM_BRANCH"
 
+# ANSI color codes
+YELLOW='\033[0;33m'
+WHITE='\033[0;37m'
+RESET='\033[0m'
+
 # Check if we're in a git repository
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
     echo "Error: Not in a git repository" >&2
@@ -49,20 +54,25 @@ while IFS= read -r worktree_path; do
     fi
 done <<< "$worktrees"
 
+if [ ${#worktrees_to_remove[@]} -gt 0 ]; then
+    echo >&2
+    echo -e "${WHITE}Found ${YELLOW}${#worktrees_to_remove[@]}${WHITE} worktree(s) ready to clean${RESET}" >&2
+    echo >&2
+fi
+
 # Now remove the collected worktrees
 removed_count=0
 failed_count=0
 
 for entry in "${worktrees_to_remove[@]}"; do
     IFS='|' read -r worktree_path branch <<< "$entry"
-    echo "Removing worktree: $worktree_path (branch: $branch)"
     if output=$(git worktree remove "$worktree_path" 2>&1); then
-        echo "✅ Successfully removed $worktree_path"
-        ((removed_count++))
+        echo -e "${WHITE}✅ Removed ${YELLOW}$worktree_path${WHITE} (branch: ${YELLOW}$branch${WHITE})${RESET}"
+        ((removed_count++)) || true
     else
-        echo "❌ Failed to remove $worktree_path" >&2
+        echo -e "${WHITE}❌ Failed to remove ${YELLOW}$worktree_path${WHITE} (branch: ${YELLOW}$branch${WHITE})${RESET}" >&2
         echo "   $output" >&2
-        ((failed_count++))
+        ((failed_count++)) || true
     fi
 done
 
