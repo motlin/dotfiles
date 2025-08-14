@@ -78,7 +78,7 @@ test-fix:
     just --global-justfile _run "git checkout --quiet $BRANCH"
 
     echo "{{ANSI_BOLD}}Squashing changes.{{ANSI_NORMAL}}"
-    just --global-justfile _run "just --global-justfile rebase"
+    just --global-justfile _run "just --global-justfile rebase true"
 
     echo "{{ANSI_BOLD}}Cleaning up.{{ANSI_NORMAL}}"
     just --global-justfile _run "rm {{ANSI_YELLOW}}JUSTFILE_BRANCH{{ANSI_NORMAL}}"

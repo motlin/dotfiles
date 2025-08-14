@@ -1,6 +1,6 @@
 # `git rebase` onto configurable upstream/main
-@rebase: _check-local-modifications fetch
-    just --global-justfile _run "git rebase --interactive --autosquash --rebase-merges --update-refs {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}"
+@rebase SKIP_EDITOR="false": _check-local-modifications fetch
+    just --global-justfile _run "{{ if SKIP_EDITOR == 'true' { 'GIT_SEQUENCE_EDITOR=true' } else { '' } }} git rebase --autosquash --rebase-merges --update-refs {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}"
 
 # Rebase all branches onto configurable upstream/main or matching up-to-date origin branch
 rebase-all: _check-local-modifications fetch
