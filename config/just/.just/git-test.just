@@ -59,7 +59,7 @@ test-results:
     done
 
 # Fix the current commit and `git rebase`
-test-fix:
+test-fix: && test-branch
     #!/usr/bin/env bash
     set -Eeuo pipefail
 
