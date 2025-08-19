@@ -1,0 +1,63 @@
+name: Daily Submodule Update
+
+on:
+  schedule:
+    # 8 AM EST / 9 AM EDT
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: "daily-submodule-update"
+  cancel-in-progress: true
+
+jobs:
+  update-submodules:
+    name: Update Submodules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Update Submodules
+        id: update
+        run: |
+          git submodule update --init --remote --recursive
+
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "No submodule updates detected"
+          fi
+
+      - name: Create Pull Request
+        if: steps.update.outputs.changes_detected == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update submodules."
+          title: "🔄 Daily Submodule Update"
+          body: |
+            ## 📦 Automated Submodule Update
+
+            This PR contains the latest submodule updates.
+
+            The changes were automatically detected and committed by the daily workflow.
+          branch: auto/submodule-update
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
