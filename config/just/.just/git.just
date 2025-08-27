@@ -60,3 +60,11 @@ pull-request-description:
     #!/usr/bin/env bash
     set -Eeuo pipefail
     just --global-justfile _run "git log {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_CYAN}}{{ANSI_BOLD}}HEAD{{ANSI_NORMAL}} --reverse --format='- %s'"
+
+# Update submodules to latest remote versions
+submodule-update:
+    git submodule update --init --recursive --remote --merge
+
+# Discard local changes in submodules and reset to committed versions
+submodule-discard:
+    git submodule update --init --recursive
