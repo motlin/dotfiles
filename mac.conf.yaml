@@ -20,10 +20,6 @@
       path: config/yt-dlp/config
     ~/.env.local:
       path: env.mac
-    ~/.gitconfig.local:
-      path: gitconfig.mac
-    ~/.gitconfig-factorio-blueprints:
-    ~/.gitignore_global:
     ~/.iterm2_shell_integration.zsh:
     ~/.iterm2:
     ~/.ssh/config:
