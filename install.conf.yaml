@@ -19,7 +19,12 @@
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
-    ~/.config/git: config/git
+    ~/.config/git/config: config/git/config
+    ~/.config/git/ignore: config/git/ignore
+    ~/.config/git/attributes:
+      path: config/git/attributes
+      create: true
+    ~/.config/git/config-factorio-blueprints: config/git/config-factorio-blueprints
     ~/.env:
     ~/.minttyrc:
     ~/.oh-my-zsh:

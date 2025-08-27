@@ -274,8 +274,8 @@
 	fixupTargetAlwaysSHA = false
 
 # 🔗 https://git-scm.com/docs/git-config#_includes
-[includeIf "gitdir/i:~/"]
-	path = ~/.config/git/config.mac
+[include]
+	path = ~/.config/git/config.local
 [pager]
 	# 📋 https://stackoverflow.com/a/8883248/
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-pagerltcmdgt
