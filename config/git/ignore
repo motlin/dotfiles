@@ -1,5 +1,4 @@
 *.hprof
 .DS_Store
-.aider*
 .mise/config.local.toml
 CLAUDE.local.md
