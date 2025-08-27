@@ -60,4 +60,3 @@
 
 [includeIf "gitdir:~/projects/FactorioBlueprints/"]
     path = ~/.config/git/config-factorio-blueprints
-
