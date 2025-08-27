@@ -19,8 +19,8 @@
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
+    ~/.config/git: config/git
     ~/.env:
-    ~/.gitconfig:
     ~/.minttyrc:
     ~/.oh-my-zsh:
     ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
