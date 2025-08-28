@@ -24,14 +24,14 @@ _check-local-modifications:
 
     ERRORS=""
 
-    git diff --quiet || ERRORS+="- Working tree has uncommitted changes\n"
-    git diff --staged --quiet || ERRORS+="- Index has staged changes\n"
-    git status --porcelain | grep -q '^??' && ERRORS+="- Untracked files exist\n"
+    git diff --ignore-submodules --quiet || ERRORS+="- Working tree has uncommitted changes\n"
+    git diff --ignore-submodules --staged --quiet || ERRORS+="- Index has staged changes\n"
+    git status --porcelain --ignore-submodules | grep -q '^??' && ERRORS+="- Untracked files exist\n"
 
     if [ -n "$ERRORS" ]; then
         {{echo_command}} "Local modifications"
         echo -e "$ERRORS"
-        just --global-justfile _run "git status"
+        just --global-justfile _run "git status --ignore-submodules"
         exit 1
     fi
 
