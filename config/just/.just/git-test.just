@@ -66,8 +66,12 @@ test-fix: && test-branch
     echo "{{ANSI_BOLD}}Staging changes.{{ANSI_NORMAL}}"
     just --global-justfile _run "git add --update"
 
+    echo "{{ANSI_BOLD}}Running pre-commit checks.{{ANSI_NORMAL}}"
+    just --global-justfile _run "uv tool run pre-commit run --files $(git diff --cached --name-only)"
+    just --global-justfile _run "git add --update"
+
     echo "{{ANSI_BOLD}}Committing fixup.{{ANSI_NORMAL}}"
-    just --global-justfile _run "git commit --quiet --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}}"
+    just --global-justfile _run "git commit --quiet --fixup {{ANSI_BOLD}}{{ANSI_CYAN}}HEAD{{ANSI_NORMAL}} --no-verify"
 
     echo "{{ANSI_BOLD}}Checking for unstaged files.{{ANSI_NORMAL}}"
     just --global-justfile _check-local-modifications
