@@ -3,6 +3,7 @@ fail_fast := env('FAIL_FAST', "false")
 git_tests := env('GIT_TESTS', "default")
 
 # `git-test` on the range of commits between a configurable upstream/main and {{BRANCH}}
+[group('git-test')]
 test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     #!/usr/bin/env bash
     branch="{{BRANCH}}"
@@ -17,6 +18,7 @@ test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     just --global-justfile _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
 
 # `just test` all commits with configurable upstream/main as ancestor
+[group('git-test')]
 test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     #!/usr/bin/env bash
     set -uo pipefail
@@ -41,6 +43,7 @@ test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
 alias ta := test-all
 
 # `just test results` all branches with configurable upstream/main as ancestor
+[group('git-test')]
 test-results:
     #!/usr/bin/env bash
     set -uo pipefail
@@ -59,6 +62,7 @@ test-results:
     done
 
 # Fix the current commit and `git rebase`
+[group('git-test')]
 test-fix: && test-branch
     #!/usr/bin/env bash
     set -Eeuo pipefail
