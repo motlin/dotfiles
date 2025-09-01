@@ -16,7 +16,7 @@ TODO_FILE_PATH="${ORIGINAL_REPO_PATH}/.llm/todo.md"
 
 # Create worktree and branch names
 WORKTREE_NAME="${ORIGINAL_REPO_NAME}-${TASK_NAME}"
-BRANCH_NAME="task/${TASK_NAME}"
+BRANCH_NAME="${TASK_NAME}"
 WORKTREE_PATH="$(dirname "$ORIGINAL_REPO_PATH")/${WORKTREE_NAME}"
 
 # Create the git worktree
