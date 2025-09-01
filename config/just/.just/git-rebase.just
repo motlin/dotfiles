@@ -18,35 +18,35 @@ rebase-all: _check-local-modifications fetch
         current=$((current + 1))
         included_count=$(git branch --contains "$branch" | wc -l)
         if [ "$included_count" -gt 1 ]; then
-            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is included in other branches"
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_YELLOW}}Skipping{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is {{ANSI_BG_BRIGHT_CYAN}}{{ANSI_BLACK}}included in other branches{{ANSI_NORMAL}}"
             continue
         fi
 
         current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
         if [ "$branch" != "$current_branch" ] && git worktree list 2>/dev/null | grep -q "\[$branch\]"; then
-            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is currently checked out in another worktree"
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_YELLOW}}Skipping{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is {{ANSI_BG_BRIGHT_MAGENTA}}{{ANSI_BLACK}}currently checked out in another worktree{{ANSI_NORMAL}}"
             continue
         fi
 
         if ! git checkout --quiet "$branch" 2>/dev/null; then
-            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Skipping branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it cannot be checked out (possibly in use by a worktree)"
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_YELLOW}}Skipping{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it {{ANSI_BG_BRIGHT_BLUE}}{{ANSI_BLACK}}cannot be checked out{{ANSI_NORMAL}} (possibly in use by a worktree)"
             continue
         fi
 
-        rebase_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] Rebasing branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
+        rebase_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_GREEN}}Rebasing{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
 
         # Check if origin/$branch exists
         if git rev-parse --verify origin/$branch &>/dev/null; then
             # Check if upstream/master is an ancestor of origin/$branch
             if git merge-base --is-ancestor {{upstream_remote}}/{{upstream_branch}} origin/$branch; then
-                echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}origin/$branch{{ANSI_NORMAL}} (because origin/$branch exists and is up-to-date with {{upstream_remote}}/{{upstream_branch}})"
+                echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}origin/$branch{{ANSI_NORMAL}} (because origin/$branch exists and is {{ANSI_CYAN}}up-to-date{{ANSI_NORMAL}} with {{upstream_remote}}/{{upstream_branch}})"
                 git rebase --rebase-merges --update-refs --quiet origin/$branch
             else
-                echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch exists but is not an ancestor)"
+                echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch exists but is {{ANSI_BLUE}}not an ancestor{{ANSI_NORMAL}})"
                 git rebase --rebase-merges --update-refs --quiet {{upstream_remote}}/{{upstream_branch}}
             fi
         else
-            echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch does not exist)"
+            echo "$rebase_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch {{ANSI_MAGENTA}}does not exist{{ANSI_NORMAL}})"
             git rebase --rebase-merges --update-refs --quiet {{upstream_remote}}/{{upstream_branch}}
         fi
     done
