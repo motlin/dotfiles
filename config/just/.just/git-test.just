@@ -17,6 +17,13 @@ test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     tests=$([ -n "{{TESTS}}" ] && echo "--tests {{TESTS}}" || echo "")
     just --global-justfile _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
 
+# `git-test` on a single commit
+[group('git-test')]
+test-commit COMMIT="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
+    #!/usr/bin/env bash
+    tests=$([ -n "{{TESTS}}" ] && echo "--tests {{TESTS}}" || echo "")
+    just --global-justfile _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}{{COMMIT}}{{ANSI_NORMAL}}"
+
 # `just test` all commits with configurable upstream/main as ancestor
 [group('git-test')]
 test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
