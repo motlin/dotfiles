@@ -6,10 +6,12 @@ import ".just/git-rebase.just"
 import ".just/git-test.just"
 
 # `just --list --unsorted --global-justfile`
+[group('default')]
 default:
     @just --list --unsorted --global-justfile
 
 # Count lines of code
+[group('default')]
 scc:
     #!/usr/bin/env bash
     shopt -s globstar

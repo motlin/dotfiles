@@ -1,8 +1,10 @@
 # `git rebase` onto configurable upstream/main
+[group('git-rebase')]
 @rebase interactive="true": _check-local-modifications fetch
     just --global-justfile _run "git rebase {{ if interactive == 'true' { '--interactive' } else { '' } }} --autosquash --rebase-merges --update-refs {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}"
 
 # Rebase all branches onto configurable upstream/main or matching up-to-date origin branch
+[group('git-rebase')]
 rebase-all: _check-local-modifications fetch
     #!/usr/bin/env bash
     set -Eeuo pipefail
@@ -52,14 +54,17 @@ rebase-all: _check-local-modifications fetch
 alias ra := rebase-all
 
 # `git absorb` into configurable upstream/main
+[group('git-rebase')]
 @absorb *FLAGS:
     just --global-justfile _run "git absorb --base {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} --force {{FLAGS}}"
 
 # `git worktree prune --verbose`
+[group('git-rebase')]
 worktree-prune:
     git worktree prune --verbose
 
 # Delete local branches merged into configurable upstream/main
+[group('git-rebase')]
 delete-merged-local: fetch
     #!/usr/bin/env bash
     set -Eeu                         # No pipefail or the grep commands fail when nothing needs to be deleted
@@ -71,6 +76,7 @@ delete-merged-local: fetch
         xargs --no-run-if-empty git branch -D
 
 # Delete branches from origin merged into configurable upstream/main
+[group('git-rebase')]
 delete-merged-remote: fetch
     #!/usr/bin/env bash
     set -Eeu
@@ -87,7 +93,9 @@ delete-merged-remote: fetch
     fi
 
 # Delete local and remote branches that are merged into configurable upstream/main
+[group('git-rebase')]
 delete-merged: delete-merged-local delete-merged-remote
 
+[group('git-rebase')]
 git-all: rebase-all worktree-prune delete-merged
 alias g := git-all

@@ -3,6 +3,7 @@ upstream_branch := env('UPSTREAM_BRANCH', "main")
 offline := env_var_or_default('OFFLINE', 'false')
 
 # Add git refspec to fetch GitHub PR refs from `REMOTE`
+[group('git')]
 setup-github-refspec REMOTE:
     #!/usr/bin/env bash
     set -Eeuo pipefail
@@ -15,9 +16,11 @@ setup-github-refspec REMOTE:
     fi
 
 # Add git refspec to fetch GitHub PR refs from origin and upstream
+[group('git')]
 setup-github-refspecs: (setup-github-refspec "origin") (setup-github-refspec "upstream")
 
 # Fail if there are local modifications or untracked files
+[group('git')]
 _check-local-modifications:
     #!/usr/bin/env bash
     set -uo pipefail
@@ -36,6 +39,7 @@ _check-local-modifications:
     fi
 
 # git fetch configurable upstream
+[group('git')]
 fetch:
     #!/usr/bin/env bash
     set -Eeuo pipefail
@@ -44,6 +48,7 @@ fetch:
     fi
 
 # Create a branch if HEAD is detached
+[group('git')]
 recover-detached-head:
     #!/usr/bin/env bash
     set -Eeuo pipefail
@@ -56,15 +61,18 @@ recover-detached-head:
     fi
 
 # Generate a markdown list of commit messages
+[group('git')]
 pull-request-description:
     #!/usr/bin/env bash
     set -Eeuo pipefail
     just --global-justfile _run "git log {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_CYAN}}{{ANSI_BOLD}}HEAD{{ANSI_NORMAL}} --reverse --format='- %s'"
 
 # Update submodules to latest remote versions
+[group('git')]
 submodule-update:
     git submodule update --init --recursive --remote --merge
 
 # Discard local changes in submodules and reset to committed versions
+[group('git')]
 submodule-discard:
     git submodule update --init --recursive
