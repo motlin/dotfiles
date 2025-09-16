@@ -1,6 +1,6 @@
 # 🏠 Understanding This Dotbot Repository
 
-This repository uses [Dotbot](https://github.com/anishathalye/dotbot) to manage dotfiles. Dotbot is a lightweight tool that creates symlinks from the home directory to files in the dotfiles repository based on a YAML configuration. Unlike more complex dotfile managers like Chezmoi, which uses templating, encryption, and state management, Dotbot takes a minimalist approach, making it easy to understand and debug.
+This repository uses [Dotbot](https://github.com/anishathalye/dotbot) to manage dotfiles. Dotbot creates symlinks from the home directory to files in the dotfiles repository based on YAML configuration. Dotbot competes with Chezmoi but is simpler, avoiding the need for templating.
 
 ## 🚀 Installation
 
@@ -16,15 +16,15 @@ This works even on a freshly installed system.
 
 ## ⚙️ How It Works
 
-The core of this system is the `./install` script, which is a wrapper around Dotbot. When you run it, Dotbot reads YAML configuration files and performs the specified actions:
+The `./install` script runs Dotbot:
 
 ```bash
 ./install mac
 ```
 
 This command runs on two config files:
-1. First, it processes `install.conf.yaml` (the base configuration)
-2. Then it processes `mac.conf.yaml` (the environment-specific configuration)
+1. `install.conf.yaml` (the base configuration)
+2. `mac.conf.yaml` (the named environment-specific configuration)
 
 ## 🌍 Multi-Environment Support
 
@@ -34,9 +34,9 @@ The repository supports multiple environments through separate configuration fil
 - [`mac.conf.yaml`](mac.conf.yaml) - My macOS-specific configurations
 - Additional `*.conf.yaml` files can be created for other environments
 
-`mac.conf.yaml` is my only public environment-specific config, so you'll have to use your imagination and pretend there are several. At work, I maintain a private branch with work-specific configuration. Running `./install work` applies both the base configuration and `work.conf.yaml`.
+`mac.conf.yaml` is my only public environment-specific config, so you'll have to use your imagination and pretend there are several. At work, I maintain a private branch where `./install work` would apply both base and work-specific configurations.
 
-The install script applies configurations in order, allowing environment-specific settings to override or extend the base configuration.
+Configurations apply in order, allowing environment-specific settings to override the base.
 
 ## 🔧 Local Override Pattern
 
@@ -58,7 +58,7 @@ The environment-specific configurations (like [`mac.conf.yaml`](mac.conf.yaml)) 
   path: zshrc.mac
 ```
 
-This pattern allows the base configuration to remain generic while supporting environment-specific customizations, _without_ introducing the complexity of environment-specific git branches or using templates.
+This supports environment-specific customizations introducing the complexity of git branches or templates.
 
 ## 🚀 Dotbot features
 
@@ -69,7 +69,7 @@ My configuration files use standard Dotbot features:
 3. 🔗 Create symlinks from the home directory to files in this repository
 4. 🧹 Cleans up broken symlinks
 
-In addition, you can run arbitrary shell commands during the installation process. I use this in [`mac.conf.yaml`](mac.conf.yaml) to inject secrets into scripts with 1Password.
+You can also run shell commands during installation. I use this in [`mac.conf.yaml`](mac.conf.yaml) to inject 1Password secrets.
 
 ## 📁 Configuration Files Overview
 
@@ -99,7 +99,3 @@ In addition, you can run arbitrary shell commands during the installation proces
   - ⚡ [`just/`](config/just/) - Command runner
   - 🔧 [`mise/`](config/mise/) - Development environment manager
   - 🔐 [`1Password/`](config/1Password/) - SSH agent integration
-
-##  Conclusion
-
-The beauty of Dotbot is its simplicity and that configuration files are version controlled without the downsides of having a git repository at the root of `$HOME`.
