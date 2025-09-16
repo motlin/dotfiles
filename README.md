@@ -7,7 +7,7 @@ This repository uses [Dotbot](https://github.com/anishathalye/dotbot) to manage 
 Clone this repository into `~/.dotfiles` and run the install script:
 
 ```bash
-git clone <repository-url> ~/.dotfiles
+git clone https://github.com/motlin/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install mac  # For macOS
 ```
