@@ -58,7 +58,7 @@ The environment-specific configurations (like [`mac.conf.yaml`](mac.conf.yaml)) 
   path: zshrc.mac
 ```
 
-This pattern allows the base configuration to remain generic while supporting environment-specific customizations, _without_ introducing the complexity environment-specific git branches or using templates.
+This pattern allows the base configuration to remain generic while supporting environment-specific customizations, _without_ introducing the complexity of environment-specific git branches or using templates.
 
 ## 🚀 Dotbot features
 
