@@ -1,6 +1,6 @@
 # 🏠 Understanding This Dotbot Repository
 
-This repository uses [Dotbot](https://github.com/anishathalye/dotbot) to manage dotfiles. Dotbot creates symlinks from the home directory to files in the dotfiles repository based on YAML configuration. Dotbot competes with Chezmoi but is simpler, avoiding the need for templating.
+This repository uses [Dotbot](https://github.com/anishathalye/dotbot) to manage dotfiles. Dotbot creates symlinks from the home directory to files in the dotfiles repository based on YAML configuration. Dotbot competes with [Chezmoi](https://github.com/twpayne/chezmoi) but is simpler, avoiding the need for templating.
 
 ## 🚀 Installation
 
@@ -64,7 +64,7 @@ This supports environment-specific customizations introducing the complexity of 
 
 My configuration files use standard Dotbot features:
 
-1. 📦 Update git submodules (Oh My Zsh plugins, Powerlevel10k theme, vim plugins)
+1. 📦 Update git submodules ([Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) plugins, [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, vim plugins)
 2. 📂 Create directories (`~/.bin`)
 3. 🔗 Create symlinks from the home directory to files in this repository
 4. 🧹 Cleans up broken symlinks
@@ -75,27 +75,27 @@ You can also run shell commands during installation. I use this in [`mac.conf.ya
 
 ### 🐚 Shell Configuration
 
-**[`.zshrc`](zshrc)** - Main Zsh configuration that sets up Oh My Zsh with the Powerlevel10k theme, configures shell behavior (history sharing, case-sensitive completion, emacs keybindings), and loads various plugins including zsh-autosuggestions, fzf, and syntax highlighting. It also integrates direnv, zoxide (replacing cd), and sources local overrides.
+**[`.zshrc`](zshrc)** - Main Zsh configuration that sets up [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) with the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, configures shell behavior (history sharing, case-sensitive completion, emacs keybindings), and loads various plugins including [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions), [fzf](https://github.com/junegunn/fzf), and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting). It also integrates [direnv](https://github.com/direnv/direnv), [zoxide](https://github.com/ajeetdsouza/zoxide) (replacing cd), and sources local overrides.
 
-**[`.p10k.zsh`](p10k.zsh)** - Powerlevel10k theme configuration that defines the prompt layout with segments for OS icon, directory, and Git status on the left, and command status/execution time on the right.
+**[`.p10k.zsh`](p10k.zsh)** - [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme configuration that defines the prompt layout with segments for OS icon, directory, and Git status on the left, and command status/execution time on the right.
 
 ### 🛠️ Development Tools
 
-**[`.config/git/config`](config/git/config)** (like `.gitconfig`) - See [my blog post](https://motlin.com/docs/git/configuration) which explains my customizations in depth. Includes aliases, advanced log formatting with graph visualization, aggressive optimizations, automatic stashing during merges/rebases, and integration with git-absorb for fixup commits.
+**[`.config/git/config`](config/git/config)** (like `.gitconfig`) - See [my blog post](https://motlin.com/docs/git/configuration) which explains my customizations in depth. Includes aliases, advanced log formatting with graph visualization, aggressive optimizations, automatic stashing during merges/rebases, and integration with [git-absorb](https://github.com/tummychow/git-absorb) for fixup commits.
 
-**[`.vimrc`](vimrc)** - Vim configuration that sets up pathogen for plugin management, enables quality-of-life improvements (smart searching, visual cues for whitespace, tab completion), and defines custom key mappings. Configures the inkpot color scheme and includes functions for viewing diffs.
+**[`.vimrc`](vimrc)** - Vim configuration that sets up [pathogen](https://github.com/tpope/vim-pathogen) for plugin management, enables quality-of-life improvements (smart searching, visual cues for whitespace, tab completion), and defines custom key mappings. Configures the [inkpot](https://github.com/ciaranm/inkpot) color scheme and includes functions for viewing diffs.
 
 ### 🌐 Environment and Aliases
 
-**[`.alias`](alias)** - Defines shell aliases for common commands including navigation (`up`, `up2`), ls commands using eza with icons, Git shortcuts, and replacements like `bat` for `cat`. Also includes utility aliases for lazygit, just, and timestamp formatting.
+**[`.alias`](alias)** - Defines shell aliases for common commands including navigation (`up`, `up2`), ls commands using [eza](https://github.com/eza-community/eza) with icons, Git shortcuts, and replacements like [bat](https://github.com/sharkdp/bat) for `cat`. Also includes utility aliases for [lazygit](https://github.com/jesseduffield/lazygit), [just](https://github.com/casey/just), and timestamp formatting.
 
-**[`.env`](env)** - Minimal environment configuration that extends PATH with local directories, sets vim as the default editor, configures less as the pager with specific options, and points to a ripgrep configuration file.
+**[`.env`](env)** - Minimal environment configuration that extends PATH with local directories, sets vim as the default editor, configures less as the pager with specific options, and points to a [ripgrep](https://github.com/BurntSushi/ripgrep) configuration file.
 
 ### 📦 Other Configurations
 
-- 🔍 **[`.ripgreprc`](ripgreprc)** - Ripgrep search tool configuration
+- 🔍 **[`.ripgreprc`](ripgreprc)** - [Ripgrep](https://github.com/BurntSushi/ripgrep) search tool configuration
 - 📁 **[`config/`](config/)** - Directory containing configurations for various tools:
-  - 🦇 [`bat/`](config/bat/) - Syntax highlighting pager
-  - ⚡ [`just/`](config/just/) - Command runner
+  - 🦇 [`bat/`](config/bat/) - [bat](https://github.com/sharkdp/bat) syntax highlighting pager
+  - ⚡ [`just/`](config/just/) - [just](https://github.com/casey/just) command runner
   - 🔧 [`mise/`](config/mise/) - Development environment manager
   - 🔐 [`1Password/`](config/1Password/) - SSH agent integration
