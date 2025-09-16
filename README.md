@@ -45,7 +45,7 @@ A key design in _my_ dotfiles is the use of `.local` files for environment-speci
 - `.zshrc` → sources `.zshrc.local`
 - `.alias` → sources `.alias.local`
 - `.env` → sources `.env.local`
-- `.gitconfig` → includes `.gitconfig.local`
+- `.config/git/config` → includes `.config/git/config.local`
 
 The environment-specific configurations (like [`mac.conf.yaml`](mac.conf.yaml)) create these `.local` symlinks pointing to actual environment files:
 
