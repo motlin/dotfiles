@@ -58,13 +58,13 @@ The environment-specific configurations (like [`mac.conf.yaml`](mac.conf.yaml)) 
   path: zshrc.mac
 ```
 
-This supports environment-specific customizations introducing the complexity of git branches or templates.
+This supports environment-specific customizations without introducing the complexity of `git` branches or templates.
 
 ## 🚀 Dotbot features
 
 My configuration files use standard Dotbot features:
 
-1. 📦 Update git submodules ([Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) plugins, [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, vim plugins)
+1. 📦 Update `git` submodules ([Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) plugins, [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, `vim` plugins)
 2. 📂 Create directories (`~/.bin`)
 3. 🔗 Create symlinks from the home directory to files in this repository
 4. 🧹 Cleans up broken symlinks
@@ -75,7 +75,7 @@ You can also run shell commands during installation. I use this in [`mac.conf.ya
 
 ### 🐚 Shell Configuration
 
-**[`.zshrc`](zshrc)** - Main Zsh configuration that sets up [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) with the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, configures shell behavior (history sharing, case-sensitive completion, emacs keybindings), and loads various plugins including [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions), [fzf](https://github.com/junegunn/fzf), and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting). It also integrates [direnv](https://github.com/direnv/direnv), [zoxide](https://github.com/ajeetdsouza/zoxide) (replacing cd), and sources local overrides.
+**[`.zshrc`](zshrc)** - Main Zsh configuration that sets up [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) with the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme, configures shell behavior (history sharing, case-sensitive completion, emacs keybindings), and loads various plugins including [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions), [fzf](https://github.com/junegunn/fzf), and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting). It also integrates [direnv](https://github.com/direnv/direnv), [zoxide](https://github.com/ajeetdsouza/zoxide) (replacing `cd`), and sources local overrides.
 
 **[`.p10k.zsh`](p10k.zsh)** - [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme configuration that defines the prompt layout with segments for OS icon, directory, and Git status on the left, and command status/execution time on the right.
 
@@ -87,9 +87,9 @@ You can also run shell commands during installation. I use this in [`mac.conf.ya
 
 ### 🌐 Environment and Aliases
 
-**[`.alias`](alias)** - Defines shell aliases for common commands including navigation (`up`, `up2`), ls commands using [eza](https://github.com/eza-community/eza) with icons, Git shortcuts, and replacements like [bat](https://github.com/sharkdp/bat) for `cat`. Also includes utility aliases for [lazygit](https://github.com/jesseduffield/lazygit), [just](https://github.com/casey/just), and timestamp formatting.
+**[`.alias`](alias)** - Defines shell aliases for common commands including navigation (`up`, `up2`), `ls` commands using [eza](https://github.com/eza-community/eza) with icons, Git shortcuts, and replacements like [bat](https://github.com/sharkdp/bat) for `cat`. Also includes utility aliases for [lazygit](https://github.com/jesseduffield/lazygit), [just](https://github.com/casey/just), and timestamp formatting.
 
-**[`.env`](env)** - Minimal environment configuration that extends PATH with local directories, sets vim as the default editor, configures less as the pager with specific options, and points to a [ripgrep](https://github.com/BurntSushi/ripgrep) configuration file.
+**[`.env`](env)** - Minimal environment configuration that extends `PATH` with local directories, sets `vim` as the default editor, configures `less` as the pager with specific options, and points to a [ripgrep](https://github.com/BurntSushi/ripgrep) configuration file.
 
 ### 📦 Other Configurations
 
@@ -97,5 +97,5 @@ You can also run shell commands during installation. I use this in [`mac.conf.ya
 - 📁 **[`config/`](config/)** - Directory containing configurations for various tools:
   - 🦇 [`bat/`](config/bat/) - [bat](https://github.com/sharkdp/bat) syntax highlighting pager
   - ⚡ [`just/`](config/just/) - [just](https://github.com/casey/just) command runner
-  - 🔧 [`mise/`](config/mise/) - Development environment manager
+  - 🔧 [`mise/`](config/mise/) - [mise](https://github.com/jdx/mise) development environment manager
   - 🔐 [`1Password/`](config/1Password/) - SSH agent integration
