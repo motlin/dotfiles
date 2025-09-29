@@ -16,15 +16,13 @@ This works even on a freshly installed system.
 
 ## ⚙️ How It Works
 
-The `./install` script runs Dotbot:
+The standard Dotbot setup uses `./install` to run a single configuration file on every host. However, this repository follows the [multiple-target pattern](https://github.com/anishathalye/dotbot/pull/11#issuecomment-73082152) to support environment-specific configurations.
 
-```bash
-./install mac
-```
+When you run `./install mac`, the script processes both:
+1. `install.conf.yaml` (always runs first)
+2. `mac.conf.yaml` (environment-specific)
 
-This command runs on two config files:
-1. `install.conf.yaml` (the base configuration)
-2. `mac.conf.yaml` (the named environment-specific configuration)
+The base configuration is implicit—you specify only the environment name, not the base config.
 
 ## 🌍 Multi-Environment Support
 
