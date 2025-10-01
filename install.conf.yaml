@@ -7,6 +7,7 @@
 
 - shell:
   - [git submodule update --init --recursive, 📦 Installing submodules]
+  - [mise install, 🛠️ Installing mise tools]
 
 - link:
     ~/.Xdefaults:
