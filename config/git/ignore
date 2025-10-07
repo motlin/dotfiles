@@ -3,3 +3,5 @@
 /.mise/config.local.toml
 CLAUDE.local.md
 /.serena/
+
+**/.claude/settings.local.json
