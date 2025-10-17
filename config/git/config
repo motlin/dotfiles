@@ -136,19 +136,28 @@
 	# Change from 'short' to 'diff'
 	submodule = diff
 	# 🏷️ git diff should use a prefix pair that is different from the standard "a/" and "b/" depending on what is being compared. Only relevant when not piping through a pager/formatter like diff-so-fancy.
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#better-diff
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffmnemonicPrefix
 	mnemonicPrefix = true
+
 	# 🔤 When runing git diff --color-words, git uses this regex to determinate word boundaries.
 	# https://git-scm.com/docs/git-config#git-config-diffwordRegex
 	# https://medium.com/@porteneuve/30-git-cli-options-you-should-know-about-15423e8771df
 	# wordRegex = .
+	# 📊 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-diff
 	algorithm = histogram
+
+	# 🎨 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-diff
+	colorMoved = plain
 [rerere]
-	# 🧞 The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you’ve resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
-	# https://git-scm.com/book/en/v2/Git-Tools-Rerere
+	# 🧞 The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you've resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#reuse-recorded-resolutions
 	# https://stackoverflow.com/questions/5519244/are-there-any-downsides-to-enabling-git-rerere
+	# https://git-scm.com/book/en/v2/Git-Tools-Rerere
 	enabled = true
+
 	# 🔄 rerere should update the index, not just the worktree.
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#reuse-recorded-resolutions
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rerereautoUpdate
 	autoUpdate = true
 [branch]
@@ -160,10 +169,15 @@
 	# Change from 'true' to 'always'
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchautoSetupMerge
 	# autoSetupMerge = always
-	# 💡 https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+
+	# 💡 Sort branches by most recent commit date
+	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#listing-branches
 	sort = -committerdate
 [column]
-	# 💡 https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+	# 💡 Display output in columns when terminal is wide enough
+	# https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#listing-branches
 	ui = auto
 [merge]
 	# 📦 Auto-stash before merge
@@ -173,6 +187,8 @@
 	# When set to only, only fast-forward merges are allowed (equivalent to giving the --ff-only option from the command line).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
 	ff = only
+
+	# 🔀 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-merge-conflicts
 	conflictStyle = zdiff3
 	keepBackup = false
 [log]
@@ -194,22 +210,26 @@
 	# Defaults to true (i.e. keep the backup files).
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergetoolkeepBackup
 	keepBackup = false
+
 	trustExitCode = true
 [help]
-	# 🧠 Automatically correct and execute mistyped commands after waiting for the given number of deciseconds (0.1 sec). For example:
+	# 🧠 Prompt before executing autocorrected commands
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#autocorrect-prompting
+	# Example:
 	# git helo
 	# WARNING: You called a Git command named 'helo', which does not exist.
-	# Continuing in 1.5 seconds, assuming that you meant 'help'.
-	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect
-	autoCorrect = 15
+	# Run 'help' instead [y/N]?
+	autocorrect = prompt
 [status]
 	# 📋 git status should show a summary of commits for modified submodules.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-statussubmoduleSummary
 	submoduleSummary = true
 [rebase]
 	# 📦 Auto-stash before rebase
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#slightly-nicer-rebase
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebaseautoStash
 	autoStash = true
+
 	# ⚠️ During `git rebase --interactive`, prevent (accidental) deletion of lines
 	# If set to "warn", git rebase -i will print a warning if some commits are removed (e.g. a line was deleted), however the rebase will still proceed.
 	# If set to "error", it will print the previous warning and stop the rebase, git rebase --edit-todo can then be used to correct the error.
@@ -219,22 +239,28 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-rebasemissingCommitsCheck
 	missingCommitsCheck = error
 	# 🌳 https://github.blog/2022-10-03-highlights-from-git-2-38/#rebase-dependent-branches-with-update-refs
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#slightly-nicer-rebase
 	updateRefs = true
+
 	instructionFormat = %<|(-58,trunc)%s | %<(15,trunc)%an | %ar
+
+	# 🔧 https://blog.gitbutler.com/how-git-core-devs-configure-git#slightly-nicer-rebase
+	autoSquash = true
 [stash]
 	# 📁 git stash show (without an option) should show the stash entry in patch form.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowPatch
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-stashshowStat
 	showPatch = true
 [push]
-	# 🚀 https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushdefault
+	# 🚀 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-pushing
 	# The default changed from 'matching' to 'simple' in Git 2.0
-	# 'simple' is better for beginners
-	# default = matching
-	default = current
+	default = simple
+
+	autoSetupRemote = true
 [init]
-	# 🌱 https://git-scm.com/docs/git-config/#Documentation/git-config.txt-codeinitdefaultBranchcode
-	# Allows overriding the default branch name e.g. when initializing a new repository.
+	# 🌱 Allows overriding the default branch name e.g. when initializing a new repository.
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#default-branch
+	# https://git-scm.com/docs/git-config/#Documentation/git-config.txt-codeinitdefaultBranchcode
 	defaultBranch = main
 [remote]
 	# 🌐 https://git-scm.com/docs/git-config/#Documentation/git-config.txt-remotepushDefault
@@ -257,8 +283,9 @@
 	# 🚨 Working with a detached head is advanced. Don't copy this setting unless you know what it means and are comfortable with it.
 	detachedHead = false
 [commit]
-	# 📝 https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---verbose
-	# Show unified diff between the HEAD commit and what would be committed at the bottom of the commit message template to help the user describe the commit by reminding what changes the commit has. Note that this diff output doesn’t have its lines prefixed with #. This diff will not be a part of the commit message.
+	# 📝 Show unified diff between the HEAD commit and what would be committed at the bottom of the commit message template to help the user describe the commit by reminding what changes the commit has. Note that this diff output doesn't have its lines prefixed with #. This diff will not be a part of the commit message.
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#commit-with-diffs
+	# https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---verbose
 	verbose = true
 # [url "git@github.com:"]
 	# pushInsteadOf = "https://github.com/"
@@ -282,3 +309,7 @@
 	status = true
 [feature]
 	git3 = true
+[tag]
+	# 🏷️ Sort tags as version numbers instead of alphabetically
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git#listing-tags
+	sort = version:refname
