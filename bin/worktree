@@ -68,4 +68,4 @@ mise trust "$WORKTREE_PATH"
 
 echo "✅ Worktree created successfully!"
 echo "📁 Path: ${WORKTREE_PATH}"
-echo "🚀 Run: cd ${WORKTREE_PATH}
+echo "🚀 Run: cd ${WORKTREE_PATH}"
