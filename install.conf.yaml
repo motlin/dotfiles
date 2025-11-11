@@ -8,6 +8,7 @@
 - shell:
   - [git submodule update --init --recursive, 📦 Installing submodules]
   - [mise install, 🛠️ Installing mise tools]
+  - ['[ -d ~/.config/tmux/plugins/tpm ] || git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm', 📥 Cloning tpm]
 
 - link:
     ~/.Xdefaults:
@@ -20,6 +21,9 @@
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
+    ~/.config/tmux/tmux.conf:
+      path: config/tmux/tmux.conf
+      create: true
     ~/.config/git/config: config/git/config
     ~/.config/git/ignore: config/git/ignore
     ~/.config/git/attributes:
