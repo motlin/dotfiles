@@ -11,9 +11,9 @@ REPO_URL="$1"
 TARGET_DIR="$2"
 
 if [ -d "$TARGET_DIR/.git" ]; then
-    echo "🔄 Updating $(basename "$TARGET_DIR")"
+    echo "Running: git -C \"$TARGET_DIR\" pull --ff-only"
     git -C "$TARGET_DIR" pull --ff-only
 else
-    echo "📥 Cloning $(basename "$TARGET_DIR")"
+    echo "Running: git clone \"$REPO_URL\" \"$TARGET_DIR\""
     git clone "$REPO_URL" "$TARGET_DIR"
 fi
