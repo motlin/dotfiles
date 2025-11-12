@@ -2,6 +2,9 @@
     link:
       relink: true
       force: false
+    shell:
+      stdout: true
+      stderr: true
 
 - clean: ['~']
 
@@ -40,3 +43,4 @@
 
 - shell:
     - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
+      description: 🔐 Injecting secrets into bin/woof
