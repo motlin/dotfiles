@@ -27,6 +27,8 @@
     description: 📥 Cloning/updating vim-just
   - command: ./scripts/clone-or-update.sh git-clones https://github.com/motlin/claude-code-prompts.git
     description: 📥 Cloning/updating claude-code-prompts
+  - command: ./scripts/clone-or-update.sh git-clones https://github.com/motlin/claude-code-plugins.git
+    description: 📥 Cloning/updating claude-code-plugins
   - command: ./scripts/clone-or-update.sh git-clones https://github.com/tmux-plugins/tpm
     description: 📥 Cloning/updating tpm
 
@@ -38,6 +40,9 @@
       force: true
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
+    ~/.claude/plugins/marketplaces/motlin-claude-code-plugins:
+      create: true
+      path: git-clones/motlin/claude-code-plugins
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
