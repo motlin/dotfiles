@@ -81,7 +81,7 @@
 	# 🕙 reflog
 	# Some people alias 'rl' to just 'reflog' without all these options
 	# https://stackoverflow.com/a/17369548/
-	rl = reflog @{now} --date=relative --format=format:'%C(brightyellow)%h%C(reset) %C(brightblue)%gd%C(reset) %C(brightcyan)%ar%C(reset)%C(auto)%d%C(reset) %C(brightmagenta)%gs%C(reset) %C(normal)%s%C(reset)'
+	rl = reflog @{now} --date=relative --format=format:'%C(brightyellow)%h%C(reset) %C(brightblue)%gd%C(reset) %C(brightcyan)%cr%C(reset)%C(auto)%d%C(reset) %C(brightmagenta)%gs%C(reset) %C(normal)%s%C(reset)'
 
 	# 👥 https://gist.github.com/DuaelFr/5663854
 	who = shortlog --summary --numbered --email --no-merges
