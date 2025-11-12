@@ -6,7 +6,14 @@
 - clean: ['~']
 
 - shell:
-  - [git submodule update --init --recursive, 📦 Installing submodules]
+  - [git submodule update --init dotbot, 📦 Installing dotbot]
+  - [./scripts/clone-or-update.sh https://github.com/ohmyzsh/ohmyzsh.git git-clones/oh-my-zsh, 📥 Cloning/updating oh-my-zsh]
+  - [./scripts/clone-or-update.sh https://github.com/zsh-users/zsh-autosuggestions git-clones/zsh-autosuggestions, 📥 Cloning/updating zsh-autosuggestions]
+  - [./scripts/clone-or-update.sh https://github.com/zsh-users/zsh-history-substring-search git-clones/zsh-history-substring-search, 📥 Cloning/updating zsh-history-substring-search]
+  - [./scripts/clone-or-update.sh https://github.com/zsh-users/zsh-syntax-highlighting.git git-clones/zsh-syntax-highlighting, 📥 Cloning/updating zsh-syntax-highlighting]
+  - [./scripts/clone-or-update.sh https://github.com/romkatv/powerlevel10k.git git-clones/powerlevel10k, 📥 Cloning/updating powerlevel10k]
+  - [./scripts/clone-or-update.sh https://github.com/NoahTheDuke/vim-just.git git-clones/vim-just, 📥 Cloning/updating vim-just]
+  - [./scripts/clone-or-update.sh https://github.com/motlin/claude-code-prompts.git git-clones/claude, 📥 Cloning/updating claude]
   - [mise install, 🛠️ Installing mise tools]
   - ['[ -d ~/.config/tmux/plugins/tpm ] || git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm', 📥 Cloning tpm]
 
@@ -17,7 +24,7 @@
     ~/.bashrc:
       force: true
     ~/.bin: bin
-    ~/.claude: claude
+    ~/.claude: git-clones/claude
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
@@ -32,26 +39,26 @@
     ~/.config/git/config-factorio-blueprints: config/git/config-factorio-blueprints
     ~/.env:
     ~/.minttyrc:
-    ~/.oh-my-zsh:
+    ~/.oh-my-zsh: git-clones/oh-my-zsh
     ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
       create: true
-      path: zsh-autosuggestions
+      path: git-clones/zsh-autosuggestions
     ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search:
       create: true
-      path: zsh-history-substring-search
+      path: git-clones/zsh-history-substring-search
     ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
       create: true
-      path: zsh-syntax-highlighting
+      path: git-clones/zsh-syntax-highlighting
     ~/.oh-my-zsh/custom/themes/powerlevel10k:
       create: true
-      path: powerlevel10k
+      path: git-clones/powerlevel10k
     ~/.p10k.zsh:
     ~/.ripgreprc:
     ~/.screenrc:
     ~/.vim:
     ~/.vim/pack/vendor/start/vim-just:
       create: true
-      path: vim-just
+      path: git-clones/vim-just
     ~/.vimrc:
     ~/.zprofile:
     ~/.zshrc:

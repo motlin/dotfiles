@@ -2,24 +2,3 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
-[submodule "oh-my-zsh"]
-	path = oh-my-zsh
-	url = https://github.com/ohmyzsh/ohmyzsh.git
-[submodule "zsh-autosuggestions"]
-	path = zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "zsh-history-substring-search"]
-	path = zsh-history-substring-search
-	url = https://github.com/zsh-users/zsh-history-substring-search
-[submodule "zsh-syntax-highlighting"]
-	path = zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "powerlevel10k"]
-	path = powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
-[submodule "vim-just"]
-	path = vim-just
-	url = https://github.com/NoahTheDuke/vim-just.git
-[submodule "claude"]
-	path = claude
-	url = https://github.com/motlin/claude-code-prompts.git
