@@ -12,7 +12,7 @@ source ~/.config/op/plugins.sh
 eval "$(op completion zsh)"; compdef _op op
 
 eval "$(mise activate zsh)"
-eval "$(mise activate zsh --shims)"
+# eval "$(mise activate zsh --shims)"
 eval "$(mise completion zsh)"
 
 fpath+=(~/.config/hcloud/completion/zsh)
