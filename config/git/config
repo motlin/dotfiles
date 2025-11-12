@@ -254,7 +254,7 @@
 [push]
 	# 🚀 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-pushing
 	# The default changed from 'matching' to 'simple' in Git 2.0
-	default = simple
+	default = current
 
 	autoSetupRemote = true
 [init]
