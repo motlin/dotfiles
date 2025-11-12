@@ -70,6 +70,7 @@
       path: config/git/attributes
       create: true
     ~/.config/git/config-factorio-blueprints: config/git/config-factorio-blueprints
+    ~/.config/powerline: config/powerline
     ~/.env:
     ~/.minttyrc:
     ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
