@@ -29,6 +29,10 @@
     description: 📥 Cloning/updating claude-code-prompts
   - command: ./scripts/clone-or-update.sh git-clones https://github.com/motlin/claude-code-plugins.git
     description: 📥 Cloning/updating claude-code-plugins
+  - command: ./scripts/clone-or-update.sh git-clones https://github.com/anthropics/claude-code.git
+    description: 📥 Cloning/updating claude-code
+  - command: ./scripts/clone-or-update.sh git-clones https://github.com/anthropics/skills.git
+    description: 📥 Cloning/updating skills
   - command: ./scripts/clone-or-update.sh git-clones https://github.com/tmux-plugins/tpm
     description: 📥 Cloning/updating tpm
 
@@ -43,6 +47,12 @@
     ~/.claude/plugins/marketplaces/motlin-claude-code-plugins:
       create: true
       path: git-clones/motlin/claude-code-plugins
+    ~/.claude/plugins/marketplaces/claude-code-plugins:
+      create: true
+      path: git-clones/anthropics/claude-code/plugins
+    ~/.claude/plugins/marketplaces/anthropic-agent-skills:
+      create: true
+      path: git-clones/anthropics/skills
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
