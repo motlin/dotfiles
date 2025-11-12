@@ -35,6 +35,8 @@
     description: 📥 Cloning/updating skills
   - command: ./scripts/clone-or-update.sh git-clones https://github.com/tmux-plugins/tpm
     description: 📥 Cloning/updating tpm
+  - command: ./scripts/show-claude-plugin-setup-instructions.sh
+    description: 📋 Claude Code plugin setup instructions
 
 - link:
     ~/.Xdefaults:
@@ -49,7 +51,7 @@
       path: git-clones/motlin/claude-code-plugins
     ~/.claude/plugins/marketplaces/claude-code-plugins:
       create: true
-      path: git-clones/anthropics/claude-code/plugins
+      path: git-clones/anthropics/claude-code
     ~/.claude/plugins/marketplaces/anthropic-agent-skills:
       create: true
       path: git-clones/anthropics/skills
