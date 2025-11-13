@@ -37,6 +37,10 @@
     description: 📥 Cloning/updating tpm
   - command: ./scripts/show-claude-plugin-setup-instructions.sh
     description: 📋 Claude Code plugin setup instructions
+  - command: which powerline || echo 'Warning: powerline not found on PATH'
+    stdout: true
+    stderr: true
+    description: ⚠️ Check for powerline binary
 
 - link:
     ~/.Xdefaults:
