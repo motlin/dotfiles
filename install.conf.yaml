@@ -47,7 +47,6 @@
     ~/.alias:
     ~/.bash_profile:
     ~/.bashrc:
-      force: true
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
     ~/.claude/plugins/marketplaces/motlin-claude-code-plugins:
