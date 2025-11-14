@@ -96,6 +96,51 @@ delete-merged-remote: fetch
 [group('git-rebase')]
 delete-merged: delete-merged-local delete-merged-remote
 
+# Delete branches from origin matching a prefix pattern
+[group('git-rebase')]
+delete-prefix PREFIX: fetch
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+
+    echo "🔍 Finding remote branches starting with '{{PREFIX}}'..."
+    echo
+
+    branches=$(git branch --remote --list "origin/{{PREFIX}}*" | sed 's/^[[:space:]]*origin\///' || true)
+
+    if [ -z "$branches" ]; then
+        echo "✅ No branches starting with '{{PREFIX}}' found on origin."
+        exit 0
+    fi
+
+    branch_count=$(echo "$branches" | wc -l | xargs)
+    echo "📋 Found $branch_count branch(es) to delete:"
+    echo
+    echo "$branches" | sed 's/^/  - /'
+    echo
+
+    read -p "❓ Delete these branches from origin? (y/N) " -n 1 -r
+    echo
+
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "❌ Cancelled. No branches were deleted."
+        exit 0
+    fi
+
+    echo "🗑️  Deleting branches..."
+    echo
+
+    branches_args=$(echo "$branches" | tr '\n' ' ')
+
+    # shellcheck disable=SC2086
+    git push origin --delete $branches_args
+
+    echo
+    echo "✅ Successfully deleted $branch_count branch(es) from origin."
+
+# Delete branches from origin starting with fix-
+[group('git-rebase')]
+delete-fix-branches: (delete-prefix "fix-")
+
 [group('git-rebase')]
 git-all: rebase-all worktree-prune delete-merged
 alias g := git-all
