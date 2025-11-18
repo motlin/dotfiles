@@ -135,7 +135,13 @@ eval "$(zoxide init --cmd cd zsh)"
 source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
 
-export ZSH_THEME_TERM_TITLE_IDLE="%~"
+export DISABLE_AUTO_TITLE="true"
+
+# Set terminal title to just the directory name
+chpwd() {
+  print -Pn "\e]0;%1~\a"
+}
+chpwd
 
 eval "$(just --completions zsh)"
 
