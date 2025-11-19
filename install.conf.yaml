@@ -1,3 +1,4 @@
+---
 - defaults:
     link:
       relink: true
@@ -9,38 +10,62 @@
 - clean: ['~']
 
 - shell:
-  - command: git submodule update --init dotbot
-    description: 📦 Installing dotbot
-  - command: mise install
-    description: 🛠️ Installing mise tools
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/ohmyzsh/ohmyzsh.git
-    description: 📥 Cloning/updating ohmyzsh
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/zsh-users/zsh-autosuggestions
-    description: 📥 Cloning/updating zsh-autosuggestions
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/zsh-users/zsh-history-substring-search
-    description: 📥 Cloning/updating zsh-history-substring-search
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/zsh-users/zsh-syntax-highlighting.git
-    description: 📥 Cloning/updating zsh-syntax-highlighting
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/romkatv/powerlevel10k.git
-    description: 📥 Cloning/updating powerlevel10k
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/NoahTheDuke/vim-just.git
-    description: 📥 Cloning/updating vim-just
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/motlin/claude-code-prompts.git
-    description: 📥 Cloning/updating claude-code-prompts
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/motlin/claude-code-plugins.git
-    description: 📥 Cloning/updating claude-code-plugins
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/anthropics/claude-code.git
-    description: 📥 Cloning/updating claude-code
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/anthropics/skills.git
-    description: 📥 Cloning/updating skills
-  - command: ./scripts/clone-or-update.sh git-clones https://github.com/tmux-plugins/tpm
-    description: 📥 Cloning/updating tpm
-  - command: ./scripts/show-claude-plugin-setup-instructions.sh
-    description: 📋 Claude Code plugin setup instructions
-  - command: which powerline || echo 'Warning: powerline not found on PATH'
-    stdout: true
-    stderr: true
-    description: ⚠️ Check for powerline binary
+    - command: git submodule update --init dotbot
+      description: 📦 Installing dotbot
+    - command: mise install
+      description: 🛠️ Installing mise tools
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/ohmyzsh/ohmyzsh.git
+      description: 📥 Cloning/updating ohmyzsh
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/zsh-users/zsh-autosuggestions
+      description: 📥 Cloning/updating zsh-autosuggestions
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/zsh-users/zsh-history-substring-search
+      description: 📥 Cloning/updating zsh-history-substring-search
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/zsh-users/zsh-syntax-highlighting.git
+      description: 📥 Cloning/updating zsh-syntax-highlighting
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/romkatv/powerlevel10k.git
+      description: 📥 Cloning/updating powerlevel10k
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/NoahTheDuke/vim-just.git
+      description: 📥 Cloning/updating vim-just
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/motlin/claude-code-prompts.git
+      description: 📥 Cloning/updating claude-code-prompts
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/motlin/claude-code-plugins.git
+      description: 📥 Cloning/updating claude-code-plugins
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/anthropics/claude-code.git
+      description: 📥 Cloning/updating claude-code
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/anthropics/skills.git
+      description: 📥 Cloning/updating skills
+    - command: >-
+        ./scripts/clone-or-update.sh git-clones
+        https://github.com/tmux-plugins/tpm
+      description: 📥 Cloning/updating tpm
+    - command: ./scripts/show-claude-plugin-setup-instructions.sh
+      description: 📋 Claude Code plugin setup instructions
+    - command: >-
+        which powerline || echo
+        'Warning: powerline not found on PATH'
+      stdout: true
+      stderr: true
+      description: Check for powerline binary
 
 - link:
     ~/.Xdefaults:
@@ -72,7 +97,8 @@
     ~/.config/git/attributes:
       path: config/git/attributes
       create: true
-    ~/.config/git/config-factorio-blueprints: config/git/config-factorio-blueprints
+    ~/.config/git/config-factorio-blueprints:
+      path: config/git/config-factorio-blueprints
     ~/.config/powerline: config/powerline
     ~/.env:
     ~/.minttyrc:
@@ -100,4 +126,3 @@
     ~/.zprofile:
     ~/.zshrc:
     ~/.zshenv:
-
