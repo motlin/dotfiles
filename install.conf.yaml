@@ -58,8 +58,6 @@
         ./scripts/clone-or-update.sh git-clones
         https://github.com/tmux-plugins/tpm
       description: 📥 Cloning/updating tpm
-    - command: ./scripts/show-claude-plugin-setup-instructions.sh
-      description: 📋 Claude Code plugin setup instructions
     - command: >-
         which powerline || echo
         'Warning: powerline not found on PATH'
@@ -74,15 +72,6 @@
     ~/.bashrc:
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
-    ~/.claude/plugins/marketplaces/motlin-claude-code-plugins:
-      create: true
-      path: git-clones/motlin/claude-code-plugins
-    ~/.claude/plugins/marketplaces/claude-code-plugins:
-      create: true
-      path: git-clones/anthropics/claude-code
-    ~/.claude/plugins/marketplaces/anthropic-agent-skills:
-      create: true
-      path: git-clones/anthropics/skills
     ~/.config/bat: config/bat
     ~/.config/just: config/just
     ~/.config/mise: config/mise
@@ -126,3 +115,20 @@
     ~/.zprofile:
     ~/.zshrc:
     ~/.zshenv:
+
+- shell:
+    - claude plugin marketplace remove motlin-claude-code-plugins || true
+    - claude plugin marketplace add ~/.dotfiles/git-clones/motlin/claude-code-plugins
+    - claude plugin install markdown-tasks@motlin-claude-code-plugins
+    - claude plugin install git-worktree@motlin-claude-code-plugins
+    - claude plugin install tmux-titles@motlin-claude-code-plugins
+    - claude plugin install iterm2-titles@motlin-claude-code-plugins
+    - claude plugin marketplace remove claude-code-plugins || true
+    - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/claude-code
+    - claude plugin install pr-review-toolkit@claude-code-plugins
+    - claude plugin install commit-commands@claude-code-plugins
+    - claude plugin install feature-dev@claude-code-plugins
+    - claude plugin install agent-sdk-dev@claude-code-plugins
+    - claude plugin marketplace remove anthropic-agent-skills || true
+    - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/skills
+    - claude plugin install example-skills@anthropic-agent-skills
