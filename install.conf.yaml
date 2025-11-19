@@ -120,7 +120,7 @@
     - claude plugin marketplace remove motlin-claude-code-plugins || true
     - claude plugin marketplace add ~/.dotfiles/git-clones/motlin/claude-code-plugins
     - claude plugin install markdown-tasks@motlin-claude-code-plugins
-    - claude plugin install git-worktree@motlin-claude-code-plugins
+    - claude plugin install git@motlin-claude-code-plugins
     - claude plugin install tmux-titles@motlin-claude-code-plugins
     - claude plugin install iterm2-titles@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-code-plugins || true
