@@ -1,5 +1,5 @@
 alias h='history | grep'
-alias f='find . -iname'
+alias f="git ls-files | fzf --preview 'bat --color=always --style=numbers {}' --preview-window=right:60%:wrap --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down,ctrl-f:preview-page-down,ctrl-b:preview-page-up'"
 alias x='exit'
 alias v='vim'
 alias vi='vim'
