@@ -1,5 +1,4 @@
 alias h='history | grep'
-alias f="git ls-files | fzf --preview 'bat --color=always --style=numbers {}' --preview-window=right:60%:wrap --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down,ctrl-f:preview-page-down,ctrl-b:preview-page-up'"
 alias x='exit'
 alias v='vim'
 alias vi='vim'
@@ -33,6 +32,7 @@ alias absorb='git absorb --base origin/main^ --force'
 alias onto='git rebase --onto HEAD HEAD^ main'
 alias fixup='git ci --fixup HEAD'
 alias gtree='git ls-files | tree --fromfile'
+alias f="git ls-files | fzf --preview 'bat --color=always --style=numbers {}' --preview-window=right:60%:wrap --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down,ctrl-f:preview-page-down,ctrl-b:preview-page-up'"
 
 alias up='cd ..'
 alias up2='cd ../..'
