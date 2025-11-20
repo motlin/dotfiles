@@ -32,6 +32,7 @@ alias pushf='git push --force'
 alias absorb='git absorb --base origin/main^ --force'
 alias onto='git rebase --onto HEAD HEAD^ main'
 alias fixup='git ci --fixup HEAD'
+alias gtree='git ls-files | tree --fromfile'
 
 alias up='cd ..'
 alias up2='cd ../..'
