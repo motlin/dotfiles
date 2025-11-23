@@ -143,6 +143,11 @@ chpwd() {
 }
 chpwd
 
+# Strip icons from terminal title before each prompt
+precmd() {
+  print -Pn "\e]0;%1~\a"
+}
+
 eval "$(just --completions zsh)"
 
 function _apply_tab_color() {
