@@ -123,10 +123,12 @@
     - claude plugin install build@motlin-claude-code-plugins
     - claude plugin install code@motlin-claude-code-plugins
     - claude plugin install git@motlin-claude-code-plugins
+    - claude plugin install github@motlin-claude-code-plugins
+    - claude plugin install iterm2-titles@motlin-claude-code-plugins
     - claude plugin install java@motlin-claude-code-plugins
     - claude plugin install justfile@motlin-claude-code-plugins
+    - claude plugin install orchestration@motlin-claude-code-plugins
     - claude plugin install tmux-titles@motlin-claude-code-plugins
-    - claude plugin install iterm2-titles@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-code-plugins || true
     - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/claude-code
     - claude plugin install pr-review-toolkit@claude-code-plugins
