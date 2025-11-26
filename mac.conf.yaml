@@ -23,6 +23,7 @@
       path: config/yt-dlp/config
     ~/.config/git/config.local:
       path: config/git/config.mac
+      force: true
     ~/.env.local:
       path: env.mac
     ~/.iterm2_shell_integration.zsh:
