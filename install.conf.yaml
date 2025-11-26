@@ -70,6 +70,7 @@
     ~/.alias:
     ~/.bash_profile:
     ~/.bashrc:
+      force: true
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
     ~/.config/bat: config/bat
