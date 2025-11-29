@@ -132,9 +132,6 @@
     - claude plugin install tmux-titles@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-code-plugins || true
     - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/claude-code
-    - claude plugin install pr-review-toolkit@claude-code-plugins
-    - claude plugin install commit-commands@claude-code-plugins
-    - claude plugin install feature-dev@claude-code-plugins
     - claude plugin install agent-sdk-dev@claude-code-plugins
     - claude plugin marketplace remove anthropic-agent-skills || true
     - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/skills
