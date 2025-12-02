@@ -130,6 +130,7 @@
     - claude plugin install iterm2-titles@motlin-claude-code-plugins
     - claude plugin install java@motlin-claude-code-plugins
     - claude plugin install justfile@motlin-claude-code-plugins
+    - claude plugin install offline-claude-code-guide@motlin-claude-code-plugins
     - claude plugin install orchestration@motlin-claude-code-plugins
     - claude plugin install tmux-titles@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-code-plugins || true
