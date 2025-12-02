@@ -74,6 +74,7 @@
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
     ~/.config/bat: config/bat
+    ~/.config/direnv: config/direnv
     ~/.config/just: config/just
     ~/.config/mise: config/mise
     ~/.config/tmux/tmux.conf:
@@ -91,6 +92,7 @@
       path: config/git/config-factorio-blueprints
     ~/.config/powerline: config/powerline
     ~/.env:
+    ~/.hushlogin:
     ~/.minttyrc:
     ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
     ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:

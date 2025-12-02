@@ -5,3 +5,5 @@ export EDITOR=vim
 export PAGER="less -RFX"
 export LESS="-RFX"
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+export DIRENV_LOG_FORMAT=
