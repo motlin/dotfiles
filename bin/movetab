@@ -1,0 +1,40 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# dependencies = ["iterm2"]
+# ///
+"""Move the current iTerm2 tab to the background window, creating it if needed."""
+
+import iterm2
+
+
+async def main(connection):
+    app = await iterm2.async_get_app(connection)
+    current_window = app.current_window
+
+    if not current_window:
+        print("No current window")
+        return
+
+    current_tab = current_window.current_tab
+    windows = app.windows
+
+    if len(windows) < 2:
+        # Only one window - move tab to new window
+        await current_tab.async_move_to_window()
+    else:
+        # Find the other window (not the current one)
+        background_window = None
+        for window in windows:
+            if window.window_id != current_window.window_id:
+                background_window = window
+                break
+
+        if background_window:
+            # Get existing tabs in background window and add current tab
+            existing_tabs = list(background_window.tabs)
+            existing_tabs.append(current_tab)
+            await background_window.async_set_tabs(existing_tabs)
+
+
+if __name__ == "__main__":
+    iterm2.run_until_complete(main)
