@@ -48,14 +48,6 @@
       description: 📥 Cloning/updating claude-code-plugins
     - command: >-
         ./scripts/clone-or-update.sh git-clones
-        https://github.com/anthropics/claude-code.git
-      description: 📥 Cloning/updating claude-code
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/anthropics/skills.git
-      description: 📥 Cloning/updating skills
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
         https://github.com/tmux-plugins/tpm
       description: 📥 Cloning/updating tpm
     - command: >-
@@ -134,8 +126,8 @@
     - claude plugin install orchestration@motlin-claude-code-plugins
     - claude plugin install tmux-titles@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-code-plugins || true
-    - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/claude-code
+    - claude plugin marketplace add anthropics/claude-code
     - claude plugin install agent-sdk-dev@claude-code-plugins
     - claude plugin marketplace remove anthropic-agent-skills || true
-    - claude plugin marketplace add ~/.dotfiles/git-clones/anthropics/skills
+    - claude plugin marketplace add anthropics/skills
     - claude plugin install example-skills@anthropic-agent-skills
