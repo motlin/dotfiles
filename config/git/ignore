@@ -3,5 +3,7 @@
 /.mise/config.local.toml
 CLAUDE.local.md
 /.serena/
+/firebase-debug.log
 
 **/.claude/settings.local.json
+
