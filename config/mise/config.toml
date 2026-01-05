@@ -1,4 +1,5 @@
 [tools]
+java = "temurin"
 "npm:@google/gemini-cli" = "latest"
 "npm:@openai/codex" = "latest"
 "npm:create-docusaurus" = "latest"
