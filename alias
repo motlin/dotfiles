@@ -56,3 +56,17 @@ alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 alias c='claude'
 alias cc='claude --continue'
 alias cr='claude --resume'
+alias yolo='claude --permission-mode acceptEdits'
+
+# 🤖 Claude model aliases
+alias haiku='claude --model haiku'
+alias sonnet='claude --model sonnet'
+alias opus='claude --model opus'
+
+# 🔧 Claude slash command aliases
+alias commit='claude --model opus --permission-mode acceptEdits /git:commit'
+alias conflicts='claude --model haiku --permission-mode acceptEdits /git:conflicts'
+alias rebase-all='claude --model haiku --permission-mode acceptEdits /git:rebase-all'
+alias fix='claude --model haiku --permission-mode acceptEdits /build:fix'
+alias add-task='claude --model opus --permission-mode acceptEdits /markdown-tasks:add-one-task'
+alias do-all-tasks='claude --model opus --permission-mode acceptEdits /markdown-tasks:do-all-tasks'
