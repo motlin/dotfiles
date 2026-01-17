@@ -4,7 +4,6 @@ java = "temurin"
 "npm:@openai/codex" = "latest"
 "npm:create-docusaurus" = "latest"
 "npm:oclif" = "latest"
-"npm:repomix" = "latest"
 "npm:strip-ansi-cli" = "latest"
 
 [settings]
