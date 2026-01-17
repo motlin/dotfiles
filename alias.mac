@@ -1,4 +1,1 @@
 alias rsync="rsync --archive --verbose --info=progress2 --human-readable --partial --exclude='._*' --exclude=.Trashes --exclude=.Spotlight-V100"
-
-alias conflicts="claude '/git:conflicts'"
-alias fix="claude '/build:fix'"
