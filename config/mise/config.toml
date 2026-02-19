@@ -8,3 +8,4 @@ java = "temurin"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
+disable_tools = ["npm:@anthropic-ai/claude-code"]
