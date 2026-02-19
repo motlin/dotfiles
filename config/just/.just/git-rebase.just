@@ -118,7 +118,7 @@ delete-prefix PREFIX: fetch
     echo "$branches" | sed 's/^/  - /'
     echo
 
-    read -p "❓ Delete these branches from origin? (y/N) " -n 1 -r
+    read -p "❓ Delete these branches from origin? (y/N) " -r
     echo
 
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
