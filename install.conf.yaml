@@ -75,6 +75,7 @@
     ~/.config/tmux/plugins/tpm:
       create: true
       path: git-clones/tmux-plugins/tpm
+    ~/.config/ghostty: config/ghostty
     ~/.config/git/config: config/git/config
     ~/.config/git/ignore: config/git/ignore
     ~/.config/git/attributes:

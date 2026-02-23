@@ -1,0 +1,30 @@
+# Font (matching iTerm2: MesloLGSNFM-Regular 16)
+font-family = MesloLGS Nerd Font Mono
+font-size = 16
+
+# Colors (matching iTerm2 "Craig" profile)
+background = #000000
+foreground = #bbbbbb
+cursor-color = #bbbbbb
+selection-background = #b5d5ff
+selection-foreground = #000000
+
+# Ansi colors (normal)
+palette = 0=#000000
+palette = 1=#ea432f
+palette = 2=#00bb00
+palette = 3=#bbbb00
+palette = 4=#0000bb
+palette = 5=#bb00bb
+palette = 6=#00bbbb
+palette = 7=#bbbbbb
+
+# Ansi colors (bright)
+palette = 8=#555555
+palette = 9=#ff5555
+palette = 10=#55ff55
+palette = 11=#fefc6a
+palette = 12=#464df0
+palette = 13=#dc44f5
+palette = 14=#7ef5fd
+palette = 15=#ffffff
