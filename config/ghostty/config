@@ -4,7 +4,7 @@ font-size = 16
 
 # Colors (matching iTerm2 "Craig" profile)
 background = #000000
-foreground = #bbbbbb
+foreground = #cccccc
 cursor-color = #bbbbbb
 selection-background = #b5d5ff
 selection-foreground = #000000
@@ -28,3 +28,6 @@ palette = 12=#464df0
 palette = 13=#dc44f5
 palette = 14=#7ef5fd
 palette = 15=#ffffff
+
+# Disable Ghostty's title management so zshrc chpwd/precmd control the title
+shell-integration-features = cursor,no-sudo,no-title,no-ssh-env,no-ssh-terminfo,path
