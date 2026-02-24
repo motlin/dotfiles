@@ -129,8 +129,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-eval "$(zoxide init --cmd cd zsh)"
-
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
@@ -165,4 +163,6 @@ _apply_tab_color
 ZSH_ALIAS_FINDER_AUTOMATIC=true
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+eval "$(zoxide init --cmd cd zsh)"
 
