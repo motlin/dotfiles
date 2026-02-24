@@ -1,4 +1,5 @@
 bin/woof
 
 /git-clones
+/vim/.netrwhist
 /vim/pack
