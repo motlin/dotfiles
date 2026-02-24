@@ -1,4 +1,38 @@
 #!/bin/bash
-# Attach to existing tmux session or create a new one
-SESSION_NAME="${1:-main}"
-exec tmux new-session -A -s "$SESSION_NAME"
+# Attach to existing tmux session or create a new one.
+# If the session already has a client, creates a grouped session so both
+# clients can independently view different windows at their own display size.
+# Usage: tm [--detach] [session-name]
+#   --detach, -d  Detach other clients when attaching (take over the session)
+SESSION_NAME="main"
+DETACH=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --detach|-d) DETACH="true"; shift ;;
+    *)  SESSION_NAME="$1"; shift ;;
+  esac
+done
+
+if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+  exec tmux new-session -s "$SESSION_NAME"
+fi
+
+if [[ -n "$DETACH" ]]; then
+  exec tmux attach-session -d -t "$SESSION_NAME"
+fi
+
+# If session has no clients, attach directly
+CLIENT_COUNT=$(tmux list-clients -t "$SESSION_NAME" 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$CLIENT_COUNT" -eq 0 ]]; then
+  exec tmux attach-session -t "$SESSION_NAME"
+fi
+
+# Session has a client already — create a grouped session.
+# Find an unused grouped session name.
+N=2
+while tmux has-session -t "${SESSION_NAME}-grouped-${N}" 2>/dev/null; do
+  ((N++))
+done
+# destroy-unattached ensures the grouped session is cleaned up on disconnect.
+exec tmux new-session -t "$SESSION_NAME" -s "${SESSION_NAME}-grouped-${N}" \; set-option destroy-unattached on
