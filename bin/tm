@@ -1,0 +1,4 @@
+#!/bin/bash
+# Attach to existing tmux session or create a new one
+SESSION_NAME="${1:-main}"
+exec tmux new-session -A -s "$SESSION_NAME"
