@@ -151,6 +151,13 @@ eval "$(just --completions zsh)"
 function _apply_tab_color() {
   if [[ -n "$TAB_COLOR" ]]; then
     rgb
+    if [[ -n "$TMUX" ]]; then
+      local r g b
+      IFS=',' read -r r g b <<< "$TAB_COLOR"
+      tmux set-option -wq @tab_color "$(printf '#%02x%02x%02x' "$r" "$g" "$b")"
+    fi
+  elif [[ -n "$TMUX" ]]; then
+    tmux set-option -wqu @tab_color 2>/dev/null
   fi
 }
 
