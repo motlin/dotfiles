@@ -18,12 +18,17 @@ if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   exec tmux new-session -s "$SESSION_NAME"
 fi
 
+# Clean up orphaned grouped sessions (no attached clients).
+for s in $(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null | grep "^${SESSION_NAME}-grouped-" | grep ':0$' | cut -d: -f1); do
+  tmux kill-session -t "$s" 2>/dev/null
+done
+
 if [[ -n "$DETACH" ]]; then
   exec tmux attach-session -d -t "$SESSION_NAME"
 fi
 
-# If session has no clients, attach directly
-CLIENT_COUNT=$(tmux list-clients -t "$SESSION_NAME" 2>/dev/null | wc -l | tr -d ' ')
+# Count clients attached directly to the base session (not grouped sessions).
+CLIENT_COUNT=$(tmux list-clients -F '#{client_session}' 2>/dev/null | grep -cx "$SESSION_NAME")
 if [[ "$CLIENT_COUNT" -eq 0 ]]; then
   exec tmux attach-session -t "$SESSION_NAME"
 fi
