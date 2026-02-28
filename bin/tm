@@ -18,11 +18,6 @@ if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   exec tmux new-session -s "$SESSION_NAME"
 fi
 
-# Clean up orphaned grouped sessions (no attached clients).
-for s in $(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null | grep "^${SESSION_NAME}-grouped-" | grep ':0$' | cut -d: -f1); do
-  tmux kill-session -t "$s" 2>/dev/null
-done
-
 if [[ -n "$DETACH" ]]; then
   exec tmux attach-session -d -t "$SESSION_NAME"
 fi
@@ -33,11 +28,22 @@ if [[ "$CLIENT_COUNT" -eq 0 ]]; then
   exec tmux attach-session -t "$SESSION_NAME"
 fi
 
-# Session has a client already — create a grouped session.
-# Find an unused grouped session name.
+# Session has a client already — reuse an unattached grouped session if available.
+UNATTACHED_SESSIONS=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null \
+  | grep "^${SESSION_NAME}-grouped-" | grep ':0$' | cut -d: -f1)
+
+if [[ -n "$UNATTACHED_SESSIONS" ]]; then
+  REUSE=$(echo "$UNATTACHED_SESSIONS" | head -1)
+  # Clean up any extra unattached grouped sessions.
+  echo "$UNATTACHED_SESSIONS" | tail -n +2 | while read -r sess; do
+    tmux kill-session -t "$sess" 2>/dev/null
+  done
+  exec tmux attach-session -t "$REUSE"
+fi
+
+# No unattached grouped session — create a new one.
 N=2
 while tmux has-session -t "${SESSION_NAME}-grouped-${N}" 2>/dev/null; do
   ((N++))
 done
-# destroy-unattached ensures the grouped session is cleaned up on disconnect.
-exec tmux new-session -t "$SESSION_NAME" -s "${SESSION_NAME}-grouped-${N}" \; set-option destroy-unattached on
+exec tmux new-session -t "$SESSION_NAME" -s "${SESSION_NAME}-grouped-${N}"
