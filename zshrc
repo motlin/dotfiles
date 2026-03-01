@@ -149,20 +149,27 @@ precmd() {
 eval "$(just --completions zsh)"
 
 function _apply_tab_color() {
+  [[ "$TAB_COLOR" == "$_last_tab_color" ]] && return
+  _last_tab_color="$TAB_COLOR"
+
   if [[ -n "$TAB_COLOR" ]]; then
-    rgb
     if [[ -n "$TMUX" ]]; then
       local r g b
       IFS=',' read -r r g b <<< "$TAB_COLOR"
       tmux set-option -wq @tab_color "$(printf '#%02x%02x%02x' "$r" "$g" "$b")"
+    else
+      rgb
     fi
-  elif [[ -n "$TMUX" ]]; then
-    tmux set-option -wqu @tab_color 2>/dev/null
+  else
+    if [[ -n "$TMUX" ]]; then
+      tmux set-option -wqu @tab_color 2>/dev/null
+    else
+      echo -n -e "\033]6;1;bg;*;default\a"
+    fi
   fi
 }
 
-add-zsh-hook chpwd _apply_tab_color
-_apply_tab_color
+add-zsh-hook precmd _apply_tab_color
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
