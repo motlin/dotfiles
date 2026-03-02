@@ -31,3 +31,6 @@ palette = 15=#ffffff
 
 # Disable Ghostty's title management so zshrc chpwd/precmd control the title
 shell-integration-features = cursor,no-sudo,no-title,no-ssh-env,no-ssh-terminfo,path
+
+# Fix Shift+Enter in Claude Code (Ghostty sends modifyOtherKeys sequence instead of newline)
+keybind = shift+enter=text:\n
