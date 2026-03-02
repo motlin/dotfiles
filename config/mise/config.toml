@@ -1,4 +1,5 @@
 [tools]
+bun = "latest"
 java = "temurin"
 "npm:@google/gemini-cli" = "latest"
 "npm:@openai/codex" = "latest"
