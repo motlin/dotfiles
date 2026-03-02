@@ -169,6 +169,7 @@ function _apply_tab_color() {
   fi
 }
 
+typeset -g _last_tab_color="__uninitialized__"
 add-zsh-hook precmd _apply_tab_color
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
