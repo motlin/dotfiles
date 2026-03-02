@@ -7,6 +7,7 @@ node = "24.13.0"
 "npm:create-docusaurus" = "latest"
 "npm:oclif" = "latest"
 "npm:strip-ansi-cli" = "latest"
+rust = "nightly"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
