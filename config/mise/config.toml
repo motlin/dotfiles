@@ -1,6 +1,7 @@
 [tools]
 bun = "latest"
 java = "temurin"
+node = "24.13.0"
 "npm:@google/gemini-cli" = "latest"
 "npm:@openai/codex" = "latest"
 "npm:create-docusaurus" = "latest"
