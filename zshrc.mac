@@ -9,7 +9,12 @@ fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 
 source ~/.config/op/plugins.sh
 
-eval "$(op completion zsh)"; compdef _op op
+# Cache op completions to avoid triggering 1Password popup on every shell start
+if [[ ! -f ~/.cache/op-completion.zsh ]] || [[ $(stat -f %m /opt/homebrew/bin/op) -gt $(stat -f %m ~/.cache/op-completion.zsh) ]]; then
+    mkdir -p ~/.cache
+    op completion zsh > ~/.cache/op-completion.zsh
+fi
+source ~/.cache/op-completion.zsh; compdef _op op
 
 eval "$(mise activate zsh)"
 eval "$(mise completion zsh)"
