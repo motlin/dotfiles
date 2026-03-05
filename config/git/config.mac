@@ -58,5 +58,12 @@
 [include]
 	path = ~/projects/open-source/delta/themes.gitconfig
 
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
 [includeIf "gitdir:~/projects/FactorioBlueprints/"]
     path = ~/.config/git/config-factorio-blueprints
