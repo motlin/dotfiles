@@ -156,13 +156,13 @@ function _apply_tab_color() {
     if [[ -n "$TMUX" ]]; then
       local r g b
       IFS=',' read -r r g b <<< "$TAB_COLOR"
-      tmux set-option -wq @tab_color "$(printf '#%02x%02x%02x' "$r" "$g" "$b")"
+      tmux set-option -wqt "$TMUX_PANE" @tab_color "$(printf '#%02x%02x%02x' "$r" "$g" "$b")"
     else
       rgb
     fi
   else
     if [[ -n "$TMUX" ]]; then
-      tmux set-option -wqu @tab_color 2>/dev/null
+      tmux set-option -wqut "$TMUX_PANE" @tab_color 2>/dev/null
     else
       echo -n -e "\033]6;1;bg;*;default\a"
     fi
