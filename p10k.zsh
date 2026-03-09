@@ -493,6 +493,9 @@
 
   # Disable the default Git status formatting.
   typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true
+  # Lower gitstatus init timeout so shell becomes responsive quickly.
+  # Git status will appear async once the daemon is ready.
+  typeset -g POWERLEVEL9K_GITSTATUS_INIT_TIMEOUT_SEC=1
   # Install our own Git status formatter.
   typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${$((my_git_formatter(1)))+${my_git_format}}'
   typeset -g POWERLEVEL9K_VCS_LOADING_CONTENT_EXPANSION='${$((my_git_formatter(0)))+${my_git_format}}'

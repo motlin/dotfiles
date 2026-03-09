@@ -12,7 +12,6 @@ source ~/.config/op/plugins.sh
 eval "$(op completion zsh)"; compdef _op op
 
 eval "$(mise activate zsh)"
-eval "$(mise activate zsh --shims)"
 eval "$(mise completion zsh)"
 
 fpath+=(~/.config/hcloud/completion/zsh)
@@ -28,5 +27,3 @@ if [ -f '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/Use
 
 # https://developer.1password.com/docs/ssh/get-started/#step-4-configure-your-ssh-or-git-client
 export SSH_AUTH_SOCK=~/.1password/agent.sock
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

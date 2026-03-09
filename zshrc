@@ -86,11 +86,12 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # History config
 # https://unix.stackexchange.com/a/670027
-# Number of lines of history
-export SAVEHIST=1000000000
+# HISTSIZE must be set: macOS /etc/zshrc defaults it to 2000, causing
+# multi-second startup delays when the history file is large.
+export HISTSIZE=1000000
+export SAVEHIST=1000000
 # Share history between terminals
 setopt share_history
-# Record timings
 setopt HIST_FIND_NO_DUPS
 
 # Which plugins would you like to load?
@@ -176,8 +177,6 @@ add-zsh-hook precmd _apply_tab_color
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ZSH_ALIAS_FINDER_AUTOMATIC=true
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 eval "$(zoxide init --cmd cd zsh)"
 
