@@ -1,0 +1,1 @@
+export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)
