@@ -78,7 +78,7 @@ test-fix: && test-branch
     just --global-justfile _run "git add --update"
 
     echo "{{ANSI_BOLD}}Running pre-commit checks.{{ANSI_NORMAL}}"
-    just --global-justfile _run "uv tool run pre-commit run --files \"\$(git diff --cached --name-only | tr '\n' ' ')\" || true"
+    just --global-justfile _run "uv tool run pre-commit run --files \"\$(git diff --cached --name-only | sed 's/\\$/\\\\$/g' | tr '\n' ' ')\" || true"
     just --global-justfile _run "git add --update"
 
     echo "{{ANSI_BOLD}}Committing fixup.{{ANSI_NORMAL}}"
