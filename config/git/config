@@ -117,7 +117,8 @@
 	delete-merged = "!git branch --merge upstream/main --remote --list 'origin/*' | sed 's#origin/##' | xargs git push --delete origin"
 
 	# 🔗 https://www.colinodell.com/blog/201803/four-useful-git-aliases
-	children = "!bash -c 'c=${1:-HEAD}; set -- $(git rev-list --all --not \"$c\"^@ --children | grep $(git rev-parse \"$c\") ); shift; echo $1' -"
+    children = "!PARENT=$(git rev-parse ${1:-HEAD}); git rev-list --all --parents | awk -v p=\"$PARENT\" 'NF==2 && $2==p {print $1}'; :"
+
 	today = !git commit --message \"Update $(date +%Y-%m-%d).\"
 [core]
 	editor = vim
