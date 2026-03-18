@@ -147,6 +147,8 @@ source ~/.alias
 
 export DISABLE_AUTO_TITLE="true"
 
+ZSH_ALIAS_FINDER_AUTOMATIC=true
+
 # Set terminal title to just the directory name
 chpwd() {
   print -Pn "\e]0;%1~\a"
@@ -187,7 +189,8 @@ add-zsh-hook precmd _apply_tab_color
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-ZSH_ALIAS_FINDER_AUTOMATIC=true
-
+# Suppress false positive zoxide "configuration issue" warning caused by p10k hooks
+export _ZO_DOCTOR=0
+# Must be last in zshrc — replaces cd with zoxide's smart cd
 eval "$(zoxide init --cmd cd zsh)"
 
