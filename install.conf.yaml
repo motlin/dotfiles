@@ -113,6 +113,8 @@
     ~/.zshenv:
 
 - shell:
+    - command: ./scripts/patch-tmux-resurrect.sh
+      description: Patching tmux-resurrect with PR #541 (symlink race fix)
     - claude plugin marketplace remove motlin-claude-code-plugins || true
     - claude plugin marketplace add ~/.dotfiles/git-clones/motlin/claude-code-plugins
     - claude plugin install markdown-tasks@motlin-claude-code-plugins
