@@ -119,7 +119,9 @@
     - claude plugin marketplace add ~/.dotfiles/git-clones/motlin/claude-code-plugins
     - claude plugin install markdown-tasks@motlin-claude-code-plugins
     - claude plugin install build@motlin-claude-code-plugins
+    - claude plugin install builtin-tasks@motlin-claude-code-plugins
     - claude plugin install code@motlin-claude-code-plugins
+    - claude plugin install ghostty-titles@motlin-claude-code-plugins
     - claude plugin install git@motlin-claude-code-plugins
     - claude plugin install github@motlin-claude-code-plugins
     - claude plugin install iterm2-titles@motlin-claude-code-plugins
@@ -128,6 +130,7 @@
     - claude plugin install offline-claude-code-guide@motlin-claude-code-plugins
     - claude plugin install orchestration@motlin-claude-code-plugins
     - claude plugin install tmux-titles@motlin-claude-code-plugins
+    - claude plugin install worktree-setup@motlin-claude-code-plugins
     - claude plugin marketplace remove claude-plugins-official || true
     - claude plugin marketplace add anthropics/claude-plugins-official
     - claude plugin install agent-sdk-dev@claude-plugins-official
