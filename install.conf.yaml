@@ -3,6 +3,7 @@
     link:
       relink: true
       force: false
+      backup: true
     shell:
       stdout: true
       stderr: true
