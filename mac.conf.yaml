@@ -43,6 +43,8 @@
       path: zshrc.mac
 
 - shell:
+    - command: pipx install powerline-status
+      description: 🎨 Installing powerline
     - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
       description: 🔐 Injecting secrets into bin/woof
     - claude plugin install context7@claude-plugins-official
