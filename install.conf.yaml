@@ -51,12 +51,8 @@
         ./scripts/clone-or-update.sh git-clones
         https://github.com/tmux-plugins/tpm
       description: 📥 Cloning/updating tpm
-    - command: >-
-        which powerline || echo
-        'Warning: powerline not found on PATH'
-      stdout: true
-      stderr: true
-      description: Check for powerline binary
+    - command: pipx install powerline-status
+      description: 🎨 Installing powerline
 
 - link:
     ~/.Xdefaults:
