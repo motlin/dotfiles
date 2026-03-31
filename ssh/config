@@ -1,5 +1,6 @@
 Host *
-    IdentityAgent ~/.1password/agent.sock
+  AddKeysToAgent yes
+  UseKeychain yes
 
 Host github.com
   IdentityFile ~/.ssh/id_ed25519
