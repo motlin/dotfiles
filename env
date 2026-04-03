@@ -7,3 +7,5 @@ export LESS="-RFX"
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 export DIRENV_LOG_FORMAT=
+
+export CLAUDE_CODE_NO_FLICKER=1
