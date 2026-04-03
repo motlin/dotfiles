@@ -4,6 +4,7 @@
 CLAUDE.local.md
 /.serena/
 /firebase-debug.log
+/.remember/
 
 **/.claude/settings.local.json
 
