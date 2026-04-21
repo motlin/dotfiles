@@ -53,6 +53,49 @@ rebase-all: _check-local-modifications fetch
 
 alias ra := rebase-all
 
+# `git replay` onto configurable upstream/main (non-interactive, no autosquash)
+[group('git-rebase')]
+@replay: fetch
+    just --global-justfile _run "git replay --onto {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} {{upstream_remote}}/{{upstream_branch}}..HEAD"
+    just --global-justfile _run "git reset --hard"
+
+# Replay all branches onto configurable upstream/main or matching up-to-date origin branch
+[group('git-rebase')]
+replay-all: fetch
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+
+    branches=($(git for-each-ref --format='%(refname:short)' refs/heads/ --sort -committerdate --no-contains {{upstream_remote}}/{{upstream_branch}}))
+    total=${#branches[@]}
+    current=0
+
+    for branch in "${branches[@]}"
+    do
+        current=$((current + 1))
+        included_count=$(git branch --contains "$branch" | wc -l)
+        if [ "$included_count" -gt 1 ]; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_YELLOW}}Skipping{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as it is {{ANSI_BG_BRIGHT_CYAN}}{{ANSI_BLACK}}included in other branches{{ANSI_NORMAL}}"
+            continue
+        fi
+
+        replay_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_GREEN}}Replaying{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
+
+        if git rev-parse --verify origin/$branch &>/dev/null; then
+            if git merge-base --is-ancestor {{upstream_remote}}/{{upstream_branch}} origin/$branch; then
+                echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}origin/$branch{{ANSI_NORMAL}} (because origin/$branch exists and is {{ANSI_CYAN}}up-to-date{{ANSI_NORMAL}} with {{upstream_remote}}/{{upstream_branch}})"
+                git replay --onto origin/$branch origin/$branch..$branch
+            else
+                echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch exists but is {{ANSI_BLUE}}not an ancestor{{ANSI_NORMAL}})"
+                git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch
+            fi
+        else
+            echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch {{ANSI_MAGENTA}}does not exist{{ANSI_NORMAL}})"
+            git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch
+        fi
+    done
+
+alias r := replay-all
+
 # `git absorb` into configurable upstream/main
 [group('git-rebase')]
 @absorb *FLAGS:
