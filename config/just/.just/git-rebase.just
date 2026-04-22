@@ -68,6 +68,7 @@ replay-all: fetch
     branches=($(git for-each-ref --format='%(refname:short)' refs/heads/ --sort -committerdate --no-contains {{upstream_remote}}/{{upstream_branch}}))
     total=${#branches[@]}
     current=0
+    failed_branches=()
 
     for branch in "${branches[@]}"
     do
@@ -80,19 +81,40 @@ replay-all: fetch
 
         replay_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_GREEN}}Replaying{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
 
+        replay_failed=false
         if git rev-parse --verify origin/$branch &>/dev/null; then
             if git merge-base --is-ancestor {{upstream_remote}}/{{upstream_branch}} origin/$branch; then
                 echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}origin/$branch{{ANSI_NORMAL}} (because origin/$branch exists and is {{ANSI_CYAN}}up-to-date{{ANSI_NORMAL}} with {{upstream_remote}}/{{upstream_branch}})"
-                git replay --onto origin/$branch origin/$branch..$branch
+                if ! git replay --onto origin/$branch origin/$branch..$branch 2>&1; then
+                    replay_failed=true
+                fi
             else
                 echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch exists but is {{ANSI_BLUE}}not an ancestor{{ANSI_NORMAL}})"
-                git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch
+                if ! git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
+                    replay_failed=true
+                fi
             fi
         else
             echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch {{ANSI_MAGENTA}}does not exist{{ANSI_NORMAL}})"
-            git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch
+            if ! git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
+                replay_failed=true
+            fi
+        fi
+
+        if [ "$replay_failed" = true ]; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_RED}}Failed{{ANSI_NORMAL}} to replay branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} ({{ANSI_BG_RED}}{{ANSI_WHITE}}conflict{{ANSI_NORMAL}})"
+            failed_branches+=("$branch")
         fi
     done
+
+    if [ ${#failed_branches[@]} -gt 0 ]; then
+        echo ""
+        echo "{{ANSI_RED}}{{ANSI_BOLD}}Failed to replay ${#failed_branches[@]} branch(es):{{ANSI_NORMAL}}"
+        for branch in "${failed_branches[@]}"; do
+            echo "  {{ANSI_RED}}-{{ANSI_NORMAL}} {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}}"
+        done
+        exit 1
+    fi
 
 alias r := replay-all
 
