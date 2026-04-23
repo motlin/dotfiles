@@ -152,5 +152,4 @@
     - claude plugin install typescript-lsp@claude-plugins-official
     - claude plugin marketplace add trailofbits/skills-curated
     - claude plugin install humanizer@skills-curated
-    - claude plugin install planning-with-files@skills-curated
     - claude plugin install skill-extractor@skills-curated
