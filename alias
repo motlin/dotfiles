@@ -53,20 +53,20 @@ alias web='gh pr view --web'
 alias j='just --global-justfile'
 alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 
-alias c='claude'
-alias cc='claude --continue'
-alias cr='claude --resume'
-alias yolo='claude --permission-mode acceptEdits'
+alias c='claude --chrome --verbose'
+alias cc='claude --chrome --continue --verbose'
+alias cr='claude --chrome --resume --verbose'
+alias yolo='claude --chrome --permission-mode acceptEdits'
 
 # 🤖 Claude model aliases
-alias haiku='claude --model haiku'
-alias sonnet='claude --model sonnet'
-alias opus='claude --model opus'
+alias haiku='claude --chrome --model haiku'
+alias sonnet='claude --chrome --model sonnet'
+alias opus='claude --chrome --model opus'
 
 # 🔧 Claude slash command aliases
-alias commit='claude --permission-mode acceptEdits /git:commit'
-alias conflicts='claude --permission-mode acceptEdits /git:conflicts'
-alias rebase-all='claude --permission-mode acceptEdits /git:rebase-all'
-alias fix='claude --permission-mode acceptEdits /build:fix'
-alias add-task='claude --permission-mode acceptEdits /markdown-tasks:add-one-task'
-alias do-all-tasks='claude --permission-mode acceptEdits /markdown-tasks:do-all-tasks'
+alias commit='claude --permission-mode acceptEdits --verbose /git:commit'
+alias conflicts='claude --permission-mode acceptEdits --verbose /git:conflicts'
+alias rebase-all='claude --permission-mode acceptEdits --verbose /git:rebase-all'
+alias fix='claude --permission-mode acceptEdits --verbose /build:fix'
+alias add-task='claude --permission-mode acceptEdits --verbose /markdown-tasks:add-one-task'
+alias do-all-tasks='claude --permission-mode acceptEdits --verbose /markdown-tasks:do-all-tasks'
