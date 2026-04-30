@@ -66,25 +66,42 @@
       force: true
     ~/.bin: bin
     ~/.claude: git-clones/motlin/claude-code-prompts
-    ~/.config/bat: config/bat
-    ~/.config/direnv: config/direnv
-    ~/.config/just: config/just
-    ~/.config/mise: config/mise
+    ~/.config/bat:
+      path: config/bat
+      create: true
+    ~/.config/direnv:
+      path: config/direnv
+      create: true
+    ~/.config/just:
+      path: config/just
+      create: true
+    ~/.config/mise:
+      path: config/mise
+      create: true
     ~/.config/tmux/tmux.conf:
       path: config/tmux/tmux.conf
       create: true
     ~/.config/tmux/plugins/tpm:
       create: true
       path: git-clones/tmux-plugins/tpm
-    ~/.config/ghostty: config/ghostty
-    ~/.config/git/config: config/git/config
-    ~/.config/git/ignore: config/git/ignore
+    ~/.config/ghostty:
+      path: config/ghostty
+      create: true
+    ~/.config/git/config:
+      path: config/git/config
+      create: true
+    ~/.config/git/ignore:
+      path: config/git/ignore
+      create: true
     ~/.config/git/attributes:
       path: config/git/attributes
       create: true
     ~/.config/git/config-factorio-blueprints:
       path: config/git/config-factorio-blueprints
-    ~/.config/powerline: config/powerline
+      create: true
+    ~/.config/powerline:
+      path: config/powerline
+      create: true
     ~/.env:
     ~/.hushlogin:
     ~/.minttyrc:
