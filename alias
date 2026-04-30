@@ -53,15 +53,15 @@ alias web='gh pr view --web'
 alias j='just --global-justfile'
 alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 
-alias c   ='claude --chrome --verbose'
-alias cc  ='claude --chrome --verbose --continue'
-alias cr  ='claude --chrome --verbose --resume'
+alias c='claude --chrome --verbose'
+alias cc='claude --chrome --verbose --continue'
+alias cr='claude --chrome --verbose --resume'
 alias yolo='claude --chrome --verbose --permission-mode acceptEdits'
 
 # 🔧 Claude slash command aliases
-alias commit      ='yolo /git:commit'
-alias conflicts   ='yolo /git:conflicts'
-alias rebase-all  ='yolo /git:rebase-all'
-alias fix         ='yolo /build:fix'
-alias add-task    ='yolo /markdown-tasks:add-one-task'
+alias commit='yolo /git:commit'
+alias conflicts='yolo /git:conflicts'
+alias rebase-all='yolo /git:rebase-all'
+alias fix='yolo /build:fix'
+alias add-task='yolo /markdown-tasks:add-one-task'
 alias do-all-tasks='yolo /markdown-tasks:do-all-tasks'
