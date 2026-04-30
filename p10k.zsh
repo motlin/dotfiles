@@ -1694,7 +1694,7 @@
   }
 
   typeset -g POWERLEVEL9K_LLM_TASKS_FOREGROUND=3
-  typeset -g POWERLEVEL9K_LLM_TASKS_VISUAL_IDENTIFIER_EXPANSION='☐'
+  typeset -g POWERLEVEL9K_LLM_TASKS_VISUAL_IDENTIFIER_EXPANSION='󰝖'
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
