@@ -50,6 +50,5 @@
     - claude plugin install context7@claude-plugins-official
     - claude plugin install discord@claude-plugins-official
     - claude plugin install imessage@claude-plugins-official
-    - claude plugin install pushover@motlin-claude-code-plugins
     - claude plugin install telegram@claude-plugins-official
 
