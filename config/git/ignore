@@ -7,5 +7,6 @@ CLAUDE.local.md
 /.remember/
 
 **/.claude/settings.local.json
+**/.claude/worktrees/
 
 .envrc
