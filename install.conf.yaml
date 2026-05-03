@@ -150,7 +150,6 @@
     - claude plugin install mcp-server-dev@claude-plugins-official
     - claude plugin install playwright@claude-plugins-official
     - claude plugin install plugin-dev@claude-plugins-official
-    - claude plugin install remember@claude-plugins-official
     - claude plugin install serena@claude-plugins-official
     - claude plugin install skill-creator@claude-plugins-official
     - claude plugin install typescript-lsp@claude-plugins-official
