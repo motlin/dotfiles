@@ -8,7 +8,7 @@
       stdout: true
       stderr: true
 
-- clean: ['~']
+- clean: ["~"]
 
 - shell:
     - command: git submodule update --init dotbot
@@ -128,7 +128,7 @@
 
 - shell:
     - command: ./scripts/patch-tmux-resurrect.sh
-      description: Patching tmux-resurrect with PR #541 (symlink race fix)
+      description: "Patching tmux-resurrect with PR #541 (symlink race fix)"
     - command: >-
         claude plugin marketplace add motlin/claude-code-plugins &&
         curl --fail --silent https://raw.githubusercontent.com/motlin/claude-code-plugins/main/.claude-plugin/marketplace.json |

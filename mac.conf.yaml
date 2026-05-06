@@ -6,7 +6,7 @@
       stdout: true
       stderr: true
 
-- clean: ['~']
+- clean: ["~"]
 
 - create:
     - ~/.1password
@@ -51,4 +51,3 @@
     - claude plugin install discord@claude-plugins-official
     - claude plugin install imessage@claude-plugins-official
     - claude plugin install telegram@claude-plugins-official
-

@@ -15,7 +15,7 @@ WHITE='\033[0;37m'
 RESET='\033[0m'
 
 # Check if we're in a git repository
-if ! git rev-parse --git-dir > /dev/null 2>&1; then
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
     echo "Error: Not in a git repository" >&2
     exit 1
 fi
@@ -39,20 +39,20 @@ while IFS= read -r worktree_path; do
     if [ "$worktree_path" = "$(git rev-parse --show-toplevel)" ]; then
         continue
     fi
-    
+
     # Get the branch name for this worktree
     branch=$(git -C "$worktree_path" branch --show-current 2>/dev/null || echo "")
-    
+
     # Skip if no branch (detached HEAD)
     if [ -z "$branch" ]; then
         continue
     fi
-    
+
     # Check if the branch is an ancestor of upstream
     if git merge-base --is-ancestor "$branch" "$UPSTREAM_REF" 2>/dev/null; then
         worktrees_to_remove+=("$worktree_path|$branch")
     fi
-done <<< "$worktrees"
+done <<<"$worktrees"
 
 if [ ${#worktrees_to_remove[@]} -gt 0 ]; then
     echo >&2
@@ -65,7 +65,7 @@ removed_count=0
 failed_count=0
 
 for entry in "${worktrees_to_remove[@]}"; do
-    IFS='|' read -r worktree_path branch <<< "$entry"
+    IFS='|' read -r worktree_path branch <<<"$entry"
     if output=$(git worktree remove "$worktree_path" 2>&1); then
         echo -e "${WHITE}✅ Removed ${YELLOW}$worktree_path${WHITE} (branch: ${YELLOW}$branch${WHITE})${RESET}"
         ((removed_count++)) || true

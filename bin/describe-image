@@ -14,13 +14,13 @@ usage() {
 model=$DEFAULT_MODEL
 while getopts "m:" opt; do
     case $opt in
-        m) model="$OPTARG";;
-        ?) usage;;
+        m) model="$OPTARG" ;;
+        ?) usage ;;
     esac
 done
 
 # Shift off the options
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 # Check if filename is provided
 if [ $# -ne 1 ]; then
@@ -36,5 +36,5 @@ if [ ! -f "$filename" ]; then
 fi
 
 # Generate and save description
-description=$(llm -m "$model" describe -a "$filename") && \
-exiftool -overwrite_original "-XMP-dc:Description=$description" "$filename"
+description=$(llm -m "$model" describe -a "$filename") &&
+    exiftool -overwrite_original "-XMP-dc:Description=$description" "$filename"

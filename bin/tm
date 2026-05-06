@@ -8,42 +8,48 @@ SESSION_NAME="main"
 DETACH=""
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --detach|-d) DETACH="true"; shift ;;
-    *)  SESSION_NAME="$1"; shift ;;
-  esac
+    case "$1" in
+        --detach | -d)
+            DETACH="true"
+            shift
+            ;;
+        *)
+            SESSION_NAME="$1"
+            shift
+            ;;
+    esac
 done
 
 if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-  exec tmux new-session -s "$SESSION_NAME"
+    exec tmux new-session -s "$SESSION_NAME"
 fi
 
 if [[ -n "$DETACH" ]]; then
-  exec tmux attach-session -d -t "$SESSION_NAME"
+    exec tmux attach-session -d -t "$SESSION_NAME"
 fi
 
 # Count clients attached directly to the base session (not grouped sessions).
 CLIENT_COUNT=$(tmux list-clients -F '#{client_session}' 2>/dev/null | grep -cx "$SESSION_NAME")
 if [[ "$CLIENT_COUNT" -eq 0 ]]; then
-  exec tmux attach-session -t "$SESSION_NAME"
+    exec tmux attach-session -t "$SESSION_NAME"
 fi
 
 # Session has a client already — reuse an unattached grouped session if available.
-UNATTACHED_SESSIONS=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null \
-  | grep "^${SESSION_NAME}-grouped-" | grep ':0$' | cut -d: -f1)
+UNATTACHED_SESSIONS=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null |
+    grep "^${SESSION_NAME}-grouped-" | grep ':0$' | cut -d: -f1)
 
 if [[ -n "$UNATTACHED_SESSIONS" ]]; then
-  REUSE=$(echo "$UNATTACHED_SESSIONS" | head -1)
-  # Clean up any extra unattached grouped sessions.
-  echo "$UNATTACHED_SESSIONS" | tail -n +2 | while read -r sess; do
-    tmux kill-session -t "$sess" 2>/dev/null
-  done
-  exec tmux attach-session -t "$REUSE"
+    REUSE=$(echo "$UNATTACHED_SESSIONS" | head -1)
+    # Clean up any extra unattached grouped sessions.
+    echo "$UNATTACHED_SESSIONS" | tail -n +2 | while read -r sess; do
+        tmux kill-session -t "$sess" 2>/dev/null
+    done
+    exec tmux attach-session -t "$REUSE"
 fi
 
 # No unattached grouped session — create a new one.
 N=2
 while tmux has-session -t "${SESSION_NAME}-grouped-${N}" 2>/dev/null; do
-  ((N++))
+    ((N++))
 done
 exec tmux new-session -t "$SESSION_NAME" -s "${SESSION_NAME}-grouped-${N}"

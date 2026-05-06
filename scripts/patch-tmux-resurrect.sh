@@ -39,14 +39,13 @@ fi
 # Check if the PR commits are already applied (cherry-pick detection)
 ALL_APPLIED=true
 while IFS= read -r line; do
-    commit_hash=$(echo "$line" | awk '{print $1}')
     commit_msg=$(echo "$line" | cut -d' ' -f2-)
     # Check if a commit with the same message exists on current HEAD
     if ! git log --oneline HEAD | grep -qF "$commit_msg"; then
         ALL_APPLIED=false
         break
     fi
-done <<< "$PR_COMMITS"
+done <<<"$PR_COMMITS"
 
 if [ "$ALL_APPLIED" = true ]; then
     echo "PR #541 already applied to tmux-resurrect, skipping"
