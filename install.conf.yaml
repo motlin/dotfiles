@@ -1,158 +1,158 @@
 ---
 - defaults:
-    link:
-      relink: true
-      force: false
-      backup: true
-    shell:
-      stdout: true
-      stderr: true
+      link:
+          relink: true
+          force: false
+          backup: true
+      shell:
+          stdout: true
+          stderr: true
 
-- clean: ["~"]
+- clean: ['~']
 
 - shell:
-    - command: git submodule update --init dotbot
-      description: 📦 Installing dotbot
-    - command: mise install
-      description: 🛠️ Installing mise tools
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/ohmyzsh/ohmyzsh.git
-      description: 📥 Cloning/updating ohmyzsh
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/zsh-users/zsh-autosuggestions
-      description: 📥 Cloning/updating zsh-autosuggestions
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/zsh-users/zsh-history-substring-search
-      description: 📥 Cloning/updating zsh-history-substring-search
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/zsh-users/zsh-syntax-highlighting.git
-      description: 📥 Cloning/updating zsh-syntax-highlighting
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/romkatv/powerlevel10k.git
-      description: 📥 Cloning/updating powerlevel10k
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/NoahTheDuke/vim-just.git
-      description: 📥 Cloning/updating vim-just
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/motlin/claude-code-prompts.git
-      description: 📥 Cloning/updating claude-code-prompts
-    - command: >-
-        ./scripts/clone-or-update.sh git-clones
-        https://github.com/tmux-plugins/tpm
-      description: 📥 Cloning/updating tpm
-    - command: >-
-        which powerline || echo
-        'Warning: powerline not found on PATH'
-      stdout: true
-      stderr: true
-      description: Check for powerline binary
+      - command: git submodule update --init dotbot
+        description: 📦 Installing dotbot
+      - command: mise install
+        description: 🛠️ Installing mise tools
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/ohmyzsh/ohmyzsh.git
+        description: 📥 Cloning/updating ohmyzsh
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/zsh-users/zsh-autosuggestions
+        description: 📥 Cloning/updating zsh-autosuggestions
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/zsh-users/zsh-history-substring-search
+        description: 📥 Cloning/updating zsh-history-substring-search
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/zsh-users/zsh-syntax-highlighting.git
+        description: 📥 Cloning/updating zsh-syntax-highlighting
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/romkatv/powerlevel10k.git
+        description: 📥 Cloning/updating powerlevel10k
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/NoahTheDuke/vim-just.git
+        description: 📥 Cloning/updating vim-just
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/motlin/claude-code-prompts.git
+        description: 📥 Cloning/updating claude-code-prompts
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
+            https://github.com/tmux-plugins/tpm
+        description: 📥 Cloning/updating tpm
+      - command: >-
+            which powerline || echo
+            'Warning: powerline not found on PATH'
+        stdout: true
+        stderr: true
+        description: Check for powerline binary
 
 - link:
-    ~/.Xdefaults:
-    ~/.alias:
-    ~/.bash_profile:
-    ~/.bashrc:
-      force: true
-    ~/.bin: bin
-    ~/.claude: git-clones/motlin/claude-code-prompts
-    ~/.config/bat:
-      path: config/bat
-      create: true
-    ~/.config/direnv:
-      path: config/direnv
-      create: true
-    ~/.config/just:
-      path: config/just
-      create: true
-    ~/.config/mise:
-      path: config/mise
-      create: true
-    ~/.config/tmux/tmux.conf:
-      path: config/tmux/tmux.conf
-      create: true
-    ~/.config/tmux/plugins/tpm:
-      create: true
-      path: git-clones/tmux-plugins/tpm
-    ~/.config/ghostty:
-      path: config/ghostty
-      create: true
-    ~/.config/git/config:
-      path: config/git/config
-      create: true
-    ~/.config/git/ignore:
-      path: config/git/ignore
-      create: true
-    ~/.config/git/attributes:
-      path: config/git/attributes
-      create: true
-    ~/.config/git/config-factorio-blueprints:
-      path: config/git/config-factorio-blueprints
-      create: true
-    ~/.config/powerline:
-      path: config/powerline
-      create: true
-    ~/.env:
-    ~/.hushlogin:
-    ~/.minttyrc:
-    ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
-    ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
-      create: true
-      path: git-clones/zsh-users/zsh-autosuggestions
-    ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search:
-      create: true
-      path: git-clones/zsh-users/zsh-history-substring-search
-    ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
-      create: true
-      path: git-clones/zsh-users/zsh-syntax-highlighting
-    ~/.oh-my-zsh/custom/themes/powerlevel10k:
-      create: true
-      path: git-clones/romkatv/powerlevel10k
-    ~/.p10k.zsh:
-    ~/.ripgreprc:
-    ~/.screenrc:
-    ~/.vim:
-    ~/.vim/pack/vendor/start/vim-just:
-      create: true
-      path: git-clones/NoahTheDuke/vim-just
-    ~/.vimrc:
-    ~/.zprofile:
-    ~/.zshrc:
-    ~/.zshenv:
+      ~/.Xdefaults:
+      ~/.alias:
+      ~/.bash_profile:
+      ~/.bashrc:
+          force: true
+      ~/.bin: bin
+      ~/.claude: git-clones/motlin/claude-code-prompts
+      ~/.config/bat:
+          path: config/bat
+          create: true
+      ~/.config/direnv:
+          path: config/direnv
+          create: true
+      ~/.config/just:
+          path: config/just
+          create: true
+      ~/.config/mise:
+          path: config/mise
+          create: true
+      ~/.config/tmux/tmux.conf:
+          path: config/tmux/tmux.conf
+          create: true
+      ~/.config/tmux/plugins/tpm:
+          create: true
+          path: git-clones/tmux-plugins/tpm
+      ~/.config/ghostty:
+          path: config/ghostty
+          create: true
+      ~/.config/git/config:
+          path: config/git/config
+          create: true
+      ~/.config/git/ignore:
+          path: config/git/ignore
+          create: true
+      ~/.config/git/attributes:
+          path: config/git/attributes
+          create: true
+      ~/.config/git/config-factorio-blueprints:
+          path: config/git/config-factorio-blueprints
+          create: true
+      ~/.config/powerline:
+          path: config/powerline
+          create: true
+      ~/.env:
+      ~/.hushlogin:
+      ~/.minttyrc:
+      ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
+      ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
+          create: true
+          path: git-clones/zsh-users/zsh-autosuggestions
+      ~/.oh-my-zsh/custom/plugins/zsh-history-substring-search:
+          create: true
+          path: git-clones/zsh-users/zsh-history-substring-search
+      ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
+          create: true
+          path: git-clones/zsh-users/zsh-syntax-highlighting
+      ~/.oh-my-zsh/custom/themes/powerlevel10k:
+          create: true
+          path: git-clones/romkatv/powerlevel10k
+      ~/.p10k.zsh:
+      ~/.ripgreprc:
+      ~/.screenrc:
+      ~/.vim:
+      ~/.vim/pack/vendor/start/vim-just:
+          create: true
+          path: git-clones/NoahTheDuke/vim-just
+      ~/.vimrc:
+      ~/.zprofile:
+      ~/.zshrc:
+      ~/.zshenv:
 
 - shell:
-    - command: ./scripts/patch-tmux-resurrect.sh
-      description: "Patching tmux-resurrect with PR #541 (symlink race fix)"
-    - command: >-
-        claude plugin marketplace add motlin/claude-code-plugins &&
-        curl --fail --silent https://raw.githubusercontent.com/motlin/claude-code-plugins/main/.claude-plugin/marketplace.json |
-        jq -r '.plugins[].name' |
-        while read -r plugin; do claude plugin install "${plugin}@motlin-claude-code-plugins"; done
-      description: Installing all motlin-claude-code-plugins from marketplace.json
-    - claude plugin marketplace add anthropics/claude-plugins-official
-    - claude plugin install agent-sdk-dev@claude-plugins-official
-    - claude plugin install chrome-devtools-mcp@claude-plugins-official
-    - claude plugin install claude-code-setup@claude-plugins-official
-    - claude plugin install claude-md-management@claude-plugins-official
-    - claude plugin install code-review@claude-plugins-official
-    - claude plugin install code-simplifier@claude-plugins-official
-    - claude plugin install explanatory-output-style@claude-plugins-official
-    - claude plugin install frontend-design@claude-plugins-official
-    - claude plugin install github@claude-plugins-official
-    - claude plugin install hookify@claude-plugins-official
-    - claude plugin install learning-output-style@claude-plugins-official
-    - claude plugin install mcp-server-dev@claude-plugins-official
-    - claude plugin install playwright@claude-plugins-official
-    - claude plugin install plugin-dev@claude-plugins-official
-    - claude plugin install serena@claude-plugins-official
-    - claude plugin install skill-creator@claude-plugins-official
-    - claude plugin install typescript-lsp@claude-plugins-official
-    - claude plugin marketplace add trailofbits/skills-curated
-    - claude plugin install humanizer@skills-curated
-    - claude plugin install skill-extractor@skills-curated
+      - command: ./scripts/patch-tmux-resurrect.sh
+        description: 'Patching tmux-resurrect with PR #541 (symlink race fix)'
+      - command: >-
+            claude plugin marketplace add motlin/claude-code-plugins &&
+            curl --fail --silent https://raw.githubusercontent.com/motlin/claude-code-plugins/main/.claude-plugin/marketplace.json |
+            jq -r '.plugins[].name' |
+            while read -r plugin; do claude plugin install "${plugin}@motlin-claude-code-plugins"; done
+        description: Installing all motlin-claude-code-plugins from marketplace.json
+      - claude plugin marketplace add anthropics/claude-plugins-official
+      - claude plugin install agent-sdk-dev@claude-plugins-official
+      - claude plugin install chrome-devtools-mcp@claude-plugins-official
+      - claude plugin install claude-code-setup@claude-plugins-official
+      - claude plugin install claude-md-management@claude-plugins-official
+      - claude plugin install code-review@claude-plugins-official
+      - claude plugin install code-simplifier@claude-plugins-official
+      - claude plugin install explanatory-output-style@claude-plugins-official
+      - claude plugin install frontend-design@claude-plugins-official
+      - claude plugin install github@claude-plugins-official
+      - claude plugin install hookify@claude-plugins-official
+      - claude plugin install learning-output-style@claude-plugins-official
+      - claude plugin install mcp-server-dev@claude-plugins-official
+      - claude plugin install playwright@claude-plugins-official
+      - claude plugin install plugin-dev@claude-plugins-official
+      - claude plugin install serena@claude-plugins-official
+      - claude plugin install skill-creator@claude-plugins-official
+      - claude plugin install typescript-lsp@claude-plugins-official
+      - claude plugin marketplace add trailofbits/skills-curated
+      - claude plugin install humanizer@skills-curated
+      - claude plugin install skill-extractor@skills-curated

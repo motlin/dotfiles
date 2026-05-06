@@ -19,6 +19,7 @@ This works even on a freshly installed system.
 The standard Dotbot setup uses `./install` to run a single configuration file on every host. However, this repository follows the [multiple-target pattern](https://github.com/anishathalye/dotbot/pull/11#issuecomment-73082152) to support environment-specific configurations.
 
 When you run `./install mac`, the script processes both:
+
 1. `install.conf.yaml` (always runs first)
 2. `mac.conf.yaml` (environment-specific)
 
@@ -49,11 +50,11 @@ The environment-specific configurations (like [`mac.conf.yaml`](mac.conf.yaml)) 
 
 ```yaml
 ~/.alias.local:
-  path: alias.mac
+    path: alias.mac
 ~/.env.local:
-  path: env.mac
+    path: env.mac
 ~/.zshrc.local:
-  path: zshrc.mac
+    path: zshrc.mac
 ```
 
 This supports environment-specific customizations without introducing the complexity of `git` branches or templates.
@@ -93,7 +94,7 @@ You can also run shell commands during installation. I use this in [`mac.conf.ya
 
 - 🔍 **[`.ripgreprc`](ripgreprc)** - [Ripgrep](https://github.com/BurntSushi/ripgrep) search tool configuration
 - 📁 **[`config/`](config/)** - Directory containing configurations for various tools:
-  - 🦇 [`bat/`](config/bat/) - [bat](https://github.com/sharkdp/bat) syntax highlighting pager
-  - ⚡ [`just/`](config/just/) - [just](https://github.com/casey/just) command runner
-  - 🔧 [`mise/`](config/mise/) - [mise](https://github.com/jdx/mise) development environment manager
-  - 🔐 [`1Password/`](config/1Password/) - SSH agent integration
+    - 🦇 [`bat/`](config/bat/) - [bat](https://github.com/sharkdp/bat) syntax highlighting pager
+    - ⚡ [`just/`](config/just/) - [just](https://github.com/casey/just) command runner
+    - 🔧 [`mise/`](config/mise/) - [mise](https://github.com/jdx/mise) development environment manager
+    - 🔐 [`1Password/`](config/1Password/) - SSH agent integration

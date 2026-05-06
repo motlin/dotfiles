@@ -29,4 +29,3 @@ if [ -f '/Users/Craig/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/Cra
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/Craig/tools/google-cloud-sdk/completion.zsh.inc'; fi
-
