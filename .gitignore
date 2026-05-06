@@ -3,3 +3,9 @@ bin/woof
 /git-clones
 /vim/.netrwhist
 /vim/pack
+
+.claude/
+.llm/
+.ruff_cache/
+firebase-debug.log
+dotbot/
