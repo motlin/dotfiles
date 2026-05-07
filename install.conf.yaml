@@ -132,25 +132,15 @@
       - command: >-
             claude plugin marketplace add motlin/claude-code-plugins &&
             curl --fail --silent https://raw.githubusercontent.com/motlin/claude-code-plugins/main/.claude-plugin/marketplace.json |
-            jq -r '.plugins[].name' |
+            jq -r '.plugins[].name | select(. != "iterm2-titles")' |
             while read -r plugin; do claude plugin install "${plugin}@motlin-claude-code-plugins"; done
-        description: Installing all motlin-claude-code-plugins from marketplace.json
+        description: Installing motlin-claude-code-plugins (excluding iterm2-titles)
       - claude plugin marketplace add anthropics/claude-plugins-official
-      - claude plugin install agent-sdk-dev@claude-plugins-official
       - claude plugin install chrome-devtools-mcp@claude-plugins-official
-      - claude plugin install claude-code-setup@claude-plugins-official
       - claude plugin install claude-md-management@claude-plugins-official
-      - claude plugin install code-review@claude-plugins-official
       - claude plugin install code-simplifier@claude-plugins-official
-      - claude plugin install explanatory-output-style@claude-plugins-official
-      - claude plugin install frontend-design@claude-plugins-official
-      - claude plugin install github@claude-plugins-official
       - claude plugin install hookify@claude-plugins-official
-      - claude plugin install learning-output-style@claude-plugins-official
-      - claude plugin install mcp-server-dev@claude-plugins-official
-      - claude plugin install playwright@claude-plugins-official
       - claude plugin install plugin-dev@claude-plugins-official
-      - claude plugin install serena@claude-plugins-official
       - claude plugin install skill-creator@claude-plugins-official
       - claude plugin install typescript-lsp@claude-plugins-official
       - claude plugin marketplace add trailofbits/skills-curated
