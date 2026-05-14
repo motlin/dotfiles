@@ -27,7 +27,7 @@ precommit: format lint
     pre-commit run --all-files
 
 push:
-    git pushf public main
+    git pushf public refs/remotes/public/main:main
     git pushf private refs/heads/private:main
 
 upstream_remote := env('UPSTREAM_REMOTE', "public")
