@@ -12,6 +12,12 @@
 	"segments": {
 		"right": [
 			{
+				"function": "powerline.segments.common.net.hostname",
+				"args": {
+					"exclude_domain": true
+				}
+			},
+			{
 				"function": "powerline.segments.common.time.date"
 			},
 			{
