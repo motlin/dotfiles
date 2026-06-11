@@ -15,10 +15,9 @@ ORG_REPO=$(echo "$REPO_URL" | sed -E -e 's|^https?://[^/]+/||' -e 's|^[^:]+:||' 
 TARGET_DIR="$BASE_DIR/$ORG_REPO"
 
 if [ -d "$TARGET_DIR/.git" ]; then
-    echo "Running: git -C \"$TARGET_DIR\" pull --ff-only"
-    git -C "$TARGET_DIR" pull --ff-only
+    git -C "$TARGET_DIR" fetch origin
+    git -C "$TARGET_DIR" reset --hard origin/HEAD
 else
-    echo "Running: git clone \"$REPO_URL\" \"$TARGET_DIR\""
     mkdir -p "$(dirname "$TARGET_DIR")"
     git clone "$REPO_URL" "$TARGET_DIR"
 fi
