@@ -10,7 +10,8 @@ fi
 BASE_DIR="$1"
 REPO_URL="$2"
 
-ORG_REPO=$(echo "$REPO_URL" | sed -e 's|.*github\.com[:/]||' -e 's|\.git$||')
+# Extract org/repo from URL (handles https://host/org/repo and git@host:org/repo)
+ORG_REPO=$(echo "$REPO_URL" | sed -E -e 's|^https?://[^/]+/||' -e 's|^[^:]+:||' -e 's|\.git$||')
 TARGET_DIR="$BASE_DIR/$ORG_REPO"
 
 if [ -d "$TARGET_DIR/.git" ]; then
