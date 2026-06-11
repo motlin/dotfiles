@@ -1,5 +1,3 @@
-set dotenv-filename := ".envrc"
-
 import ".just/console.just"
 import ".just/git.just"
 import ".just/git-rebase.just"
