@@ -190,8 +190,9 @@
 	ff = only
 
 	# 🔀 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-merge-conflicts
-	conflictStyle = zdiff3
 	keepBackup = false
+	# Work git is too old for zdiff3
+	conflictstyle = diff3
 [log]
 	# 🏷️ Print out the ref names of any commits that are shown by the log command.
 	# If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be printed.
