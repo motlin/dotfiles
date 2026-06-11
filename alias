@@ -65,3 +65,5 @@ alias rebase-all='yolo /git:rebase-all'
 alias fix='yolo /build:fix'
 alias add-task='yolo /markdown-tasks:add-one-task'
 alias do-all-tasks='yolo /markdown-tasks:do-all-tasks'
+
+alias rsync="rsync --archive --verbose --info=progress2 --human-readable --partial"
