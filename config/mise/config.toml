@@ -10,6 +10,8 @@ node = "24.13.0"
 "npm:oclif" = "latest"
 "npm:oxfmt" = "0.49.0"
 "npm:strip-ansi-cli" = "latest"
+"npm:trash" = "latest"
+"npm:trash-cli" = "latest"
 rust = "nightly"
 
 [settings]
