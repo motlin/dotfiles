@@ -11,6 +11,10 @@
 - clean: ['~']
 
 - shell:
+      - command: >-
+            git remote get-url upstream >/dev/null 2>&1 ||
+            git remote add upstream https://github.com/motlin/dotfiles.git
+        description: 🔗 Setting up upstream remote for dotfiles
       - command: git submodule update --init dotbot
         description: 📦 Installing dotbot
       - command: mise install
