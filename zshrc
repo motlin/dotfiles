@@ -219,3 +219,6 @@ eval "$(zoxide init --cmd cd zsh)"
 # Re-enforce correct PATH order after direnv/oh-my-zsh may have reordered
 typeset -U path
 path=("$HOME/.bin" "$HOME/.local/bin" "$HOME/.nix-profile/bin" $path)
+
+# Point node-gyp to local Node.js headers (avoids downloading from nodejs.org)
+export npm_config_nodedir="$(node -e "console.log(require('path').dirname(require('path').dirname(process.execPath)))")"
