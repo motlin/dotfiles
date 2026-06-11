@@ -49,9 +49,11 @@ CASE_SENSITIVE="true"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-zstyle ':omz:update' mode auto      # update automatically without asking
+# Auto-update is disabled; we drive updates ourselves below (see
+# _omz_update_if_stale) so the git pull can be wrapped through a network
+# proxy helper when one is present.
+zstyle ':omz:update' mode disabled
+# zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
@@ -122,6 +124,19 @@ ZSH_ALIAS_FINDER_AUTOMATIC=true
 plugins=(bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
+
+# Synchronous OMZ update when the local clone is stale, wrapped through a
+# network proxy helper so updates succeed without leaving a long-lived
+# proxy process. No-op on hosts without that helper (e.g. macOS).
+_omz_update_if_stale() {
+  local fetch_head="$ZSH/.git/FETCH_HEAD"
+  local stale_days=14
+  if [[ ! -f "$fetch_head" ]] || \
+     [[ -z "$(find "$fetch_head" -mtime -$stale_days 2>/dev/null)" ]]; then
+    command -v gssproxy2 >/dev/null && gssproxy2 omz update
+  fi
+}
+_omz_update_if_stale
 
 # User configuration
 
