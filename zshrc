@@ -1,3 +1,4 @@
+# direnv export must run BEFORE instant prompt (it produces console output)
 emulate zsh -c "$(direnv export zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -7,6 +8,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# direnv hook can run after instant prompt (just sets up the chpwd hook)
 emulate zsh -c "$(direnv hook zsh)"
 
 # Enable emacs mode so that Ctrl+A goes to the beginning of the line and Ctrl+K erases after the cursor
