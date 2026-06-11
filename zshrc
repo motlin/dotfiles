@@ -1,3 +1,8 @@
+# Source nix early so all nix-installed tools are available
+if [[ -f /nix/setup-nix.sh ]]; then
+  source /nix/setup-nix.sh
+fi
+
 # direnv export must run BEFORE instant prompt (it produces console output)
 emulate zsh -c "$(direnv export zsh)"
 
