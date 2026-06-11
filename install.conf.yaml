@@ -17,8 +17,6 @@
         description: 🔗 Setting up upstream remote for dotfiles
       - command: git submodule update --init dotbot
         description: 📦 Installing dotbot
-      - command: mise install
-        description: 🛠️ Installing mise tools
       - command: >-
             ./scripts/clone-or-update.sh git-clones
             https://github.com/ohmyzsh/ohmyzsh.git
@@ -129,6 +127,10 @@
       ~/.zprofile:
       ~/.zshrc:
       ~/.zshenv:
+
+- shell:
+      - command: mise install
+        description: 🛠️ Installing mise tools
 
 - shell:
       - command: ./scripts/patch-tmux-resurrect.sh
