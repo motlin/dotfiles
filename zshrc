@@ -113,6 +113,7 @@ setopt HIST_FIND_NO_DUPS
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
+ZSH_ALIAS_FINDER_AUTOMATIC=true
 plugins=(bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
@@ -148,8 +149,6 @@ source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
 
 export DISABLE_AUTO_TITLE="true"
-
-ZSH_ALIAS_FINDER_AUTOMATIC=true
 
 # Set terminal title to just the directory name
 chpwd() {
