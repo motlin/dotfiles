@@ -181,6 +181,7 @@ precmd() {
   print -Pn "\e]0;%1~\a"
 }
 
+export POWERLEVEL9K_DISABLE_GITSTATUS=true
 eval "$(just --completions zsh)"
 
 function _apply_tab_color() {
