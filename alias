@@ -57,6 +57,7 @@ alias c='claude --chrome --verbose'
 alias cc='claude --chrome --verbose --continue'
 alias cr='claude --chrome --verbose --resume'
 alias yolo='claude --chrome --verbose --permission-mode acceptEdits'
+alias yolo='codex --dangerously-bypass-approvals-and-sandbox'
 
 # 🔧 Claude slash command aliases
 alias commit='yolo /git:commit'
