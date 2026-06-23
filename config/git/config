@@ -15,7 +15,7 @@
 	co = checkout
 	br = branch
 	ci = commit
-	st = --paginate status
+	st = status
 	unstage = reset HEAD --
 	last = log -1 HEAD
 	# 🚀 Aliases of my own that seem to be pretty common
