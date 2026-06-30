@@ -56,14 +56,14 @@ alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 alias c='claude --chrome --verbose'
 alias cc='c --continue'
 alias cr='c --resume'
-alias yolo='c --permission-mode acceptEdits'
-# alias yolo='codex --dangerously-bypass-approvals-and-sandbox'
+# alias yolo='c --permission-mode acceptEdits'
+alias yolo='codex --dangerously-bypass-approvals-and-sandbox'
 
 # 🔧 Claude slash command aliases
-alias commit='yolo /git:commit'
-alias conflicts='yolo /git:conflicts'
+alias commit='yolo "Read and follow the instructions in $HOME/.dotfiles/git-clones/motlin/claude-code-plugins/plugins/git/commands/commit.md"'
+alias conflicts='yolo "Read and follow the instructions in $HOME/.dotfiles/git-clones/motlin/claude-code-plugins/plugins/git/commands/conflicts.md"'
 alias rebase-all='yolo /git:rebase-all'
-alias fix='yolo /build:fix'
+alias fix='yolo "Read and follow the instructions in $HOME/.dotfiles/git-clones/motlin/claude-code-plugins/plugins/build/commands/fix.md"'
 alias add-task='yolo /markdown-tasks:add-one-task'
 alias do-all-tasks='yolo /markdown-tasks:do-all-tasks'
 
