@@ -48,6 +48,7 @@ test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     done
 
 alias ta := test-all
+alias tb := test-branch
 
 # `just test results` all branches with configurable upstream/main as ancestor
 [group('git-test')]
@@ -67,6 +68,8 @@ test-results:
         just --global-justfile _run "git test results --color {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
         ((current++))
     done
+
+alias tr := test-results
 
 # Fix the current commit and `git rebase`
 [group('git-test')]
