@@ -1,3 +1,6 @@
+# Prevent Terminal.app from maintaining a competing per-session history file.
+export SHELL_SESSION_HISTORY=0
+
 set -o allexport
 if [ -f "$HOME/.env" ]; then
   source "$HOME/.env"

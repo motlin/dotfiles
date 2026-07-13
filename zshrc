@@ -90,22 +90,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # https://unix.stackexchange.com/a/670027
 # HISTSIZE must be set: macOS /etc/zshrc defaults it to 2000, causing
 # multi-second startup delays when the history file is large.
-export HISTSIZE=1000000
+export HISTSIZE=1200000
 export SAVEHIST=1000000
-# History sharing mode (uncomment one):
-#
-# share_history: all shells see each other's commands in real-time via up-arrow.
-# inc_append_history: commands are saved immediately (crash-safe), but up-arrow
-#   only shows the current session's commands. New shells get the full history.
-#
-# Option A: shared history across all shells in real-time
-# setopt SHARE_HISTORY
-
-# Option B: per-session up-arrow, but still saves immediately (crash-safe)
-unsetopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
-
-setopt HIST_FIND_NO_DUPS
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -117,6 +103,13 @@ ZSH_ALIAS_FINDER_AUTOMATIC=true
 plugins=(bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
+
+# Oh My Zsh enables SHARE_HISTORY, so select the history mode after loading it.
+unsetopt APPEND_HISTORY SHARE_HISTORY INC_APPEND_HISTORY_TIME
+setopt INC_APPEND_HISTORY
+setopt HIST_FCNTL_LOCK
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_BY_COPY
 
 # User configuration
 
