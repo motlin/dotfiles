@@ -1,0 +1,7 @@
+# Unlike zshrc.mac, this does not activate mise. Everything mise fetches comes
+# from the public internet, which is blocked here unless tunnelled through
+# gssproxy2, so mise is not practical to use on this machine.
+
+# Point node-gyp at the headers of whichever node is already on PATH, so it does
+# not try to download them from nodejs.org — that download is blocked here.
+export npm_config_nodedir="$(node -e "console.log(require('path').dirname(require('path').dirname(process.execPath)))")"

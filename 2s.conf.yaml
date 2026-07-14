@@ -1,0 +1,15 @@
+- defaults:
+      link:
+          relink: true
+          force: false
+      shell:
+          stdout: true
+          stderr: true
+
+- clean: ['~']
+
+- link:
+      ~/.env.local:
+          path: env.2s
+      ~/.zshrc.local:
+          path: zshrc.2s
