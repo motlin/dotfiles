@@ -11,5 +11,7 @@
 - link:
       ~/.env.local:
           path: env.2s
+      ~/.p10k.local.zsh:
+          path: p10k.2s
       ~/.zshrc.local:
           path: zshrc.2s

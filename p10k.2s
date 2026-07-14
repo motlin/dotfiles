@@ -1,0 +1,22 @@
+# Sourced from zshrc immediately after ~/.p10k.zsh.
+#
+# These cannot live in env.2s: p10k.zsh starts with
+#   unset -m '(POWERLEVEL9K_*|DEFAULT_USER)~POWERLEVEL9K_GITSTATUS_DIR'
+# which wipes anything set earlier. They have to be applied afterwards.
+#
+# Work repos are large enough that git status makes the prompt sluggish.
+# Dropping the vcs segment is not enough on its own — with the segment gone
+# but a backend still configured, p10k keeps paying for gitstatusd.
+
+typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+    os_icon
+    dir
+    newline
+    prompt_char
+)
+typeset -g POWERLEVEL9K_VCS_BACKENDS=()
+typeset -g POWERLEVEL9K_DISABLE_GITSTATUS=true
+
+# p10k.zsh sets POWERLEVEL9K_DISABLE_HOT_RELOAD, so the overrides above only
+# reach the prompt if we reload explicitly.
+(( ! $+functions[p10k] )) || p10k reload

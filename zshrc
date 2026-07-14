@@ -44,10 +44,10 @@ CASE_SENSITIVE="true"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+# Auto-update behavior. Set OMZ_UPDATE_MODE in a .local env file to override
+# per-machine; valid values are auto, disabled, and reminder.
+: ${OMZ_UPDATE_MODE:=auto}
+zstyle ':omz:update' mode $OMZ_UPDATE_MODE
 
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
@@ -182,6 +182,10 @@ add-zsh-hook precmd _apply_tab_color
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Per-machine prompt overrides. Must come after ~/.p10k.zsh, which unsets every
+# POWERLEVEL9K_* parameter when it loads.
+[[ ! -f ~/.p10k.local.zsh ]] || source ~/.p10k.local.zsh
 
 # Suppress false positive zoxide "configuration issue" warning caused by p10k hooks
 export _ZO_DOCTOR=0
