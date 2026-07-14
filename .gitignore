@@ -1,4 +1,6 @@
 bin/woof
+/secrets
+/secrets.tpl
 
 /git-clones
 /vim/.netrwhist

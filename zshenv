@@ -36,4 +36,8 @@ fi
 if [ -f "$HOME/.env.local" ]; then
   source "$HOME/.env.local"
 fi
+
+if [ -f "$HOME/.secrets.local" ]; then
+  source "$HOME/.secrets.local"
+fi
 set +o allexport

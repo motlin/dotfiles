@@ -12,6 +12,14 @@
       - ~/.1password
       - ~/.config/yt-dlp
 
+# Must precede the link block: ~/.secrets.local targets `secrets`, which does
+# not exist until op resolves the template, and dotbot fails a link whose
+# source is missing. secrets.tpl is gitignored, so a fresh clone has none;
+# touch keeps the link source present without clobbering an existing secrets.
+- shell:
+      - command: if [ -f secrets.tpl ]; then op inject --force --in-file secrets.tpl --out-file secrets; else touch secrets; fi && chmod 600 secrets
+        description: 🔐 Resolving op:// references into secrets
+
 - link:
       ~/.1password/agent.sock: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
       ~/.alias.local:
@@ -26,6 +34,8 @@
           force: true
       ~/.env.local:
           path: env.mac
+      ~/.secrets.local:
+          path: secrets
       ~/.iterm2_shell_integration.zsh:
       ~/.iterm2:
       ~/.ssh/config:
