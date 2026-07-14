@@ -122,10 +122,8 @@
 	today = !git commit --message \"Update $(date +%Y-%m-%d).\"
 [core]
 	editor = vim
-	# 📡 Use file system monitor and untracked cache
+	# 📡 Use untracked cache
 	# https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor/
-	# added in Git version 2.37.0
-	fsmonitor = true
 	untrackedCache = true
 [diff]
 	# 🔍 Git should detect both renames and copies. Theoretically slows down git.

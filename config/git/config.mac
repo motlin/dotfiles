@@ -6,6 +6,14 @@
 [core]
 	autocrlf = input
 
+	# 📡 Use file system monitor. Set here rather than in the shared config:
+	# fsmonitor needs Git 2.37.0, and on older versions core.fsmonitor names a
+	# hook to run, so `true` there makes those gits execute `true`, which prints
+	# nothing and provokes "warning: Empty last update token." on every command
+	# that touches the index.
+	# https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor/
+	fsmonitor = true
+
 # Set here rather than in the shared config: git validates conflictStyle while
 # parsing, so machines with a git too old for zdiff3 cannot override it later.
 # https://blog.gitbutler.com/how-git-core-devs-configure-git#better-merge-conflicts
