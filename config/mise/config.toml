@@ -2,6 +2,7 @@
 bun = "latest"
 java = "temurin"
 maven = "3.9.12"
+mvnd = "1.0.5"
 "npm:@openai/codex" = "latest"
 node = "24.13.0"
 "npm:@google/gemini-cli" = "latest"
