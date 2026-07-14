@@ -1,0 +1,7 @@
+# vim: set filetype=dosini:
+
+# The git here predates zdiff3 (added in 2.35), so use diff3. The shared config
+# deliberately leaves conflictStyle unset; git validates it while parsing, so a
+# zdiff3 there would kill this git before it ever read this file.
+[merge]
+	conflictstyle = diff3

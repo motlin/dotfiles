@@ -9,6 +9,9 @@
 - clean: ['~']
 
 - link:
+      ~/.config/git/config.local:
+          path: config/git/config.2s
+          force: true
       ~/.env.local:
           path: env.2s
       ~/.p10k.local.zsh:

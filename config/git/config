@@ -189,8 +189,6 @@
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
 	ff = only
 
-	# 🔀 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-merge-conflicts
-	conflictStyle = zdiff3
 	keepBackup = false
 [log]
 	# 🏷️ Print out the ref names of any commits that are shown by the log command.

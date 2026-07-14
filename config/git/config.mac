@@ -6,6 +6,12 @@
 [core]
 	autocrlf = input
 
+# Set here rather than in the shared config: git validates conflictStyle while
+# parsing, so machines with a git too old for zdiff3 cannot override it later.
+# https://blog.gitbutler.com/how-git-core-devs-configure-git#better-merge-conflicts
+[merge]
+	conflictStyle = zdiff3
+
 [maintenance]
 	# repo = ~/.dotfiles
 	# repo = ~/projects/eclipse-collections
