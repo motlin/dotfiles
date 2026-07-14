@@ -5,3 +5,17 @@
 # Point node-gyp at the headers of whichever node is already on PATH, so it does
 # not try to download them from nodejs.org — that download is blocked here.
 export npm_config_nodedir="$(node -e "console.log(require('path').dirname(require('path').dirname(process.execPath)))")"
+
+# oh-my-zsh's own auto-update is off (see OMZ_UPDATE_MODE in env.2s) because its
+# git pull has to go through a network proxy helper. Drive it here instead,
+# wrapped in gssproxy2 so the update succeeds without leaving a long-lived proxy
+# process behind. Runs after oh-my-zsh has loaded, so `omz` is defined.
+_omz_update_if_stale() {
+  local fetch_head="$ZSH/.git/FETCH_HEAD"
+  local stale_days=14
+  if [[ ! -f "$fetch_head" ]] || \
+     [[ -z "$(find "$fetch_head" -mtime -$stale_days 2>/dev/null)" ]]; then
+    command -v gssproxy2 >/dev/null && gssproxy2 omz update
+  fi
+}
+_omz_update_if_stale
