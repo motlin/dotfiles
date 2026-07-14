@@ -19,6 +19,15 @@ path_append() {  # Add to back (low priority)
   esac
 }
 
+# Force our bin directories to the front, in order. Unlike path_prepend this
+# reorders entries that are already present, so it must be re-run after direnv
+# and oh-my-zsh have had a chance to shuffle PATH. -g is required: a bare
+# typeset here would declare a function-local path and never touch the real one.
+path_enforce_order() {
+  typeset -gU path
+  path=("$HOME/.bin" "$HOME/.local/bin" $path)
+}
+
 set -o allexport
 if [ -f "$HOME/.env" ]; then
   source "$HOME/.env"

@@ -187,3 +187,6 @@ add-zsh-hook precmd _apply_tab_color
 export _ZO_DOCTOR=0
 # Must be last in zshrc — replaces cd with zoxide's smart cd
 eval "$(zoxide init --cmd cd zsh)"
+
+# Re-enforce correct PATH order after direnv/oh-my-zsh may have reordered
+path_enforce_order
