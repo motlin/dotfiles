@@ -135,20 +135,5 @@
 - shell:
       - command: ./scripts/patch-tmux-resurrect.sh
         description: 'Patching tmux-resurrect with PR #541 (symlink race fix)'
-      - command: >-
-            claude plugin marketplace add motlin/claude-code-plugins &&
-            curl --fail --silent https://raw.githubusercontent.com/motlin/claude-code-plugins/main/.claude-plugin/marketplace.json |
-            jq -r '.plugins[].name | select(. != "iterm2-titles")' |
-            while read -r plugin; do claude plugin install "${plugin}@motlin-claude-code-plugins"; done
-        description: Installing motlin-claude-code-plugins (excluding iterm2-titles)
-      - claude plugin marketplace add anthropics/claude-plugins-official
-      - claude plugin install chrome-devtools-mcp@claude-plugins-official
-      - claude plugin install claude-md-management@claude-plugins-official
-      - claude plugin install code-simplifier@claude-plugins-official
-      - claude plugin install hookify@claude-plugins-official
-      - claude plugin install plugin-dev@claude-plugins-official
-      - claude plugin install skill-creator@claude-plugins-official
-      - claude plugin install typescript-lsp@claude-plugins-official
-      - claude plugin marketplace add trailofbits/skills-curated
-      - claude plugin install humanizer@skills-curated
-      - claude plugin install skill-extractor@skills-curated
+      - command: ./scripts/install-agent-tools.sh
+        description: Installing shared Claude and Codex plugins and skills
