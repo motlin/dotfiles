@@ -74,6 +74,39 @@ function install_or_update_claude_plugin() {
     fi
 }
 
+function uninstall_stale_claude_plugins() {
+    local installed_plugins
+    local plugin_identifier
+    local stale_plugin_identifiers=(
+        agent-sdk-dev@claude-code-plugins
+        claude-opus-4-5-migration@claude-code-plugins
+        code-review@claude-code-plugins
+        commit-commands@claude-code-plugins
+        explanatory-output-style@claude-code-plugins
+        feature-dev@claude-code-plugins
+        frontend-design@claude-code-plugins
+        hookify@claude-code-plugins
+        learning-output-style@claude-code-plugins
+        plugin-dev@claude-code-plugins
+        pr-review-toolkit@claude-code-plugins
+    )
+
+    installed_plugins="$(claude plugin list --json)"
+
+    for plugin_identifier in "${stale_plugin_identifiers[@]}"; do
+        if jq --exit-status \
+            --arg plugin_identifier "${plugin_identifier}" \
+            'any(.[]; .id == $plugin_identifier and .scope == "user")' \
+            <<<"${installed_plugins}" >/dev/null; then
+            claude plugin uninstall \
+                --prune \
+                --yes \
+                --scope user \
+                "${plugin_identifier}"
+        fi
+    done
+}
+
 function install_motlin_claude_plugins() {
     local installed_plugins
     local marketplace_manifest
@@ -194,3 +227,4 @@ install_motlin_claude_plugins
 install_official_claude_plugins
 install_motlin_codex_plugins
 install_shared_skills
+uninstall_stale_claude_plugins
