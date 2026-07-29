@@ -1,10 +1,7 @@
-# Unlike zshrc.mac, this does not activate mise. Everything mise fetches comes
-# from the public internet, which is blocked here unless tunnelled through
-# gssproxy2, so mise is not practical to use on this machine.
-
-# Point node-gyp at the headers of whichever node is already on PATH, so it does
-# not try to download them from nodejs.org — that download is blocked here.
-export npm_config_nodedir="$(node -e "console.log(require('path').dirname(require('path').dirname(process.execPath)))")"
+# Point node-gyp at the headers of whichever node is already on PATH, so it does not try to download them from nodejs.org.
+# npm 11 deprecated npm_config_* variables for node-gyp options.
+unset npm_config_nodedir
+export npm_package_config_node_gyp_nodedir="$(node -e "console.log(require('path').dirname(require('path').dirname(process.execPath)))")"
 
 # oh-my-zsh's own auto-update is off (see OMZ_UPDATE_MODE in env.2s) because its
 # git pull has to go through a network proxy helper. Drive it here instead,
