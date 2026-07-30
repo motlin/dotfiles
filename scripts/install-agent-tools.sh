@@ -178,6 +178,44 @@ function install_official_claude_plugins() {
     done
 }
 
+function install_used_claude_plugins() {
+    local installed_plugins
+
+    ensure_claude_marketplace \
+        "caveman" \
+        "motlin/caveman"
+    ensure_claude_marketplace \
+        "claude-reflect-marketplace" \
+        "bayramannakov/claude-reflect"
+    ensure_claude_marketplace \
+        "glebis-skills" \
+        "glebis/claude-skills"
+    ensure_claude_marketplace \
+        "mattpocock" \
+        "mattpocock/skills"
+    ensure_claude_marketplace \
+        "thedotmack" \
+        "thedotmack/claude-mem"
+
+    installed_plugins="$(claude plugin list --json)"
+
+    install_or_update_claude_plugin \
+        "caveman@caveman" \
+        "${installed_plugins}"
+    install_or_update_claude_plugin \
+        "claude-reflect@claude-reflect-marketplace" \
+        "${installed_plugins}"
+    install_or_update_claude_plugin \
+        "daydream@glebis-skills" \
+        "${installed_plugins}"
+    install_or_update_claude_plugin \
+        "mattpocock-skills@mattpocock" \
+        "${installed_plugins}"
+    install_or_update_claude_plugin \
+        "claude-mem@thedotmack" \
+        "${installed_plugins}"
+}
+
 function ensure_codex_marketplace() {
     local marketplaces
     local source_type
@@ -265,6 +303,7 @@ function install_github_stack_tools() {
 
 install_motlin_claude_plugins
 install_official_claude_plugins
+install_used_claude_plugins
 install_motlin_codex_plugins
 install_shared_skills
 install_github_stack_tools
