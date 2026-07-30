@@ -85,6 +85,9 @@
       ~/.config/ghostty:
           path: config/ghostty
           create: true
+      ~/.config/herdr/config.toml:
+          path: config/herdr/config.toml
+          create: true
       ~/.config/git/config:
           path: config/git/config
           create: true

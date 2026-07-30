@@ -1,0 +1,11 @@
+onboarding = false
+
+[keys]
+prefix = "backtick"
+
+[theme]
+name = "one-dark"
+auto_switch = false
+
+[ui]
+agent_panel_sort = "spaces"
