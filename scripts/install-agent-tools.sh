@@ -159,7 +159,6 @@ function install_official_claude_plugins() {
     local plugin_identifier
     local plugin_name
     local plugin_names=(
-        chrome-devtools-mcp
         claude-md-management
         code-simplifier
         hookify

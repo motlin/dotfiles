@@ -57,5 +57,6 @@
         description: 🎨 Installing powerline
       - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
         description: 🔐 Injecting secrets into bin/woof
+      - claude plugin install chrome-devtools-mcp@claude-plugins-official
       - claude plugin install context7@claude-plugins-official
       - claude plugin install imessage@claude-plugins-official
