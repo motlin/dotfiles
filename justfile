@@ -1,7 +1,8 @@
 set shell := ["bash", "-O", "globstar", "-c"]
 set dotenv-filename := ".envrc"
 
-bash_scripts := "install bashrc bash_profile scripts/*.sh bin/add-eol bin/clean-worktrees bin/datagrip bin/describe-image bin/idea bin/pycharm bin/rgb bin/rustrover bin/set-url bin/should-skip-commit bin/tm bin/webstorm bin/woof bin/woof.tpl bin/worktree"
+# Excludes the JetBrains Toolbox launchers in bin/; Toolbox owns their formatting.
+bash_scripts := "install bashrc bash_profile scripts/*.sh bin/add-eol bin/clean-worktrees bin/describe-image bin/rgb bin/set-url bin/should-skip-commit bin/tm bin/woof bin/woof.tpl bin/worktree"
 
 # Sourced shell files (no shebang) that lint cleanly as bash. Add more as zsh-only syntax is fixed or excluded.
 sourced_scripts := "alias alias.mac env"
