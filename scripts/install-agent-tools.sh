@@ -44,7 +44,36 @@ function ensure_claude_marketplace() {
         return
     fi
 
-    echo "Using existing Claude ${marketplace_name} ${source_type} marketplace."
+    # A directory-sourced marketplace never refreshes, so plugins installed from it are
+    # frozen at whatever the local checkout held. Migrate it to the github source. The
+    # name is unchanged, so <plugin>@${marketplace_name} identifiers stay valid and the
+    # caller's install loop reinstalls everything from the fresh source in the same run.
+    echo "Migrating Claude ${marketplace_name} from ${source_type} source to github ${marketplace_source}." >&2
+    # Removal can be refused while plugins from the marketplace are still installed. Only
+    # uninstall them in that case, so plugins the install loop does not restore survive.
+    if ! claude plugin marketplace remove "${marketplace_name}"; then
+        uninstall_claude_marketplace_plugins "${marketplace_name}"
+        claude plugin marketplace remove "${marketplace_name}"
+    fi
+    claude plugin marketplace add "${marketplace_source}"
+}
+
+function uninstall_claude_marketplace_plugins() {
+    local marketplace_name="$1"
+    local plugin_identifier
+
+    while IFS= read -r plugin_identifier; do
+        claude plugin uninstall \
+            --prune \
+            --yes \
+            --scope user \
+            "${plugin_identifier}"
+    done < <(
+        claude plugin list --json |
+            jq --raw-output \
+                --arg marketplace_name "@${marketplace_name}" \
+                '.[] | .id | select(endswith($marketplace_name))'
+    )
 }
 
 function claude_marketplace_manifest() {
@@ -173,7 +202,10 @@ function ensure_codex_marketplace() {
     elif [[ "${source_type}" == "git" ]]; then
         codex plugin marketplace upgrade "motlin-claude-code-plugins"
     else
-        echo "Using existing Codex motlin-claude-code-plugins ${source_type} marketplace."
+        # As with Claude, a local marketplace never refreshes. Migrate it to the git source.
+        echo "Migrating Codex motlin-claude-code-plugins from ${source_type} source to git." >&2
+        codex plugin marketplace remove "motlin-claude-code-plugins"
+        codex plugin marketplace add "motlin/claude-code-plugins"
     fi
 }
 
