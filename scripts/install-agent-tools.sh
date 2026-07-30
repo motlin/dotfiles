@@ -44,13 +44,9 @@ function ensure_claude_marketplace() {
         return
     fi
 
-    # A directory-sourced marketplace never refreshes, so plugins installed from it are
-    # frozen at whatever the local checkout held. Migrate it to the github source. The
-    # name is unchanged, so <plugin>@${marketplace_name} identifiers stay valid and the
-    # caller's install loop reinstalls everything from the fresh source in the same run.
+    # Directory-sourced marketplaces do not refresh.
     echo "Migrating Claude ${marketplace_name} from ${source_type} source to github ${marketplace_source}." >&2
-    # Removal can be refused while plugins from the marketplace are still installed. Only
-    # uninstall them in that case, so plugins the install loop does not restore survive.
+    # Claude may refuse removal while marketplace plugins remain installed.
     if ! claude plugin marketplace remove "${marketplace_name}"; then
         uninstall_claude_marketplace_plugins "${marketplace_name}"
         claude plugin marketplace remove "${marketplace_name}"
@@ -202,7 +198,7 @@ function ensure_codex_marketplace() {
     elif [[ "${source_type}" == "git" ]]; then
         codex plugin marketplace upgrade "motlin-claude-code-plugins"
     else
-        # As with Claude, a local marketplace never refreshes. Migrate it to the git source.
+        # Local marketplaces do not refresh.
         echo "Migrating Codex motlin-claude-code-plugins from ${source_type} source to git." >&2
         codex plugin marketplace remove "motlin-claude-code-plugins"
         codex plugin marketplace add "motlin/claude-code-plugins"
