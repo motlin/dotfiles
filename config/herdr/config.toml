@@ -2,10 +2,14 @@ onboarding = false
 
 [keys]
 prefix = "backtick"
+focus_agent = "prefix+alt+1..9"
 
 [theme]
 name = "one-dark"
 auto_switch = false
 
 [ui]
-agent_panel_sort = "spaces"
+agent_panel_sort = "priority"
+
+[ui.sound]
+enabled = false
