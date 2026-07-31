@@ -30,6 +30,7 @@ precommit: format lint
 push:
     git pushf public refs/heads/public:main
     git pushf private refs/heads/private:main
+    git pushf public refs/heads/work:work
 
 upstream_remote := env('UPSTREAM_REMOTE', "public")
 upstream_branch := env('UPSTREAM_BRANCH', "main")
