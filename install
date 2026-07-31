@@ -3,7 +3,7 @@
 set -e
 
 # Prevent npm 11 from reading the deprecated node-gyp option inherited from older shells.
-unset npm_config_nodedir
+unset npm_config_nodedir NPM_CONFIG_NODEDIR
 
 DEFAULT_CONFIG_PREFIX="install"
 CONFIG_SUFFIX=".conf.yaml"
