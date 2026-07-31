@@ -28,6 +28,7 @@ precommit: format lint
     pre-commit run --all-files
 
 push:
+    git show-ref --verify --quiet refs/heads/public || git branch --track public public/main
     git pushf public refs/heads/public:main
     git pushf private refs/heads/private:main
     git pushf public refs/heads/work:work
