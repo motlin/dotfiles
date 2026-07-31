@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-for required_command in claude codex jq npx; do
+for required_command in claude codex gh jq npx; do
     if ! command -v "${required_command}" >/dev/null 2>&1; then
         echo "${required_command} is required to install agent plugins and skills." >&2
         exit 1
@@ -250,8 +250,22 @@ function install_shared_skills() {
         --yes
 }
 
+function install_github_stack_tools() {
+    local agent
+
+    gh extension install github/gh-stack --force
+
+    for agent in claude-code codex; do
+        gh skill install github/gh-stack gh-stack \
+            --agent "${agent}" \
+            --scope user \
+            --force
+    done
+}
+
 install_motlin_claude_plugins
 install_official_claude_plugins
 install_motlin_codex_plugins
 install_shared_skills
+install_github_stack_tools
 uninstall_stale_claude_plugins
