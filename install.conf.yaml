@@ -19,6 +19,10 @@
         description: 📦 Installing dotbot
       - command: >-
             ./scripts/clone-or-update.sh git-clones
+            https://github.com/dandavison/delta.git
+        description: 📥 Cloning/updating Delta themes
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
             https://github.com/ohmyzsh/ohmyzsh.git
         description: 📥 Cloning/updating ohmyzsh
       - command: >-
@@ -99,6 +103,9 @@
           create: true
       ~/.config/git/config-factorio-blueprints:
           path: config/git/config-factorio-blueprints
+          create: true
+      ~/.config/delta/themes.gitconfig:
+          path: git-clones/dandavison/delta/themes.gitconfig
           create: true
       ~/.config/powerline:
           path: config/powerline

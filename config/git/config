@@ -125,6 +125,31 @@
 	# 📡 Use untracked cache
 	# https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor/
 	untrackedCache = true
+
+# diff-so-fancy or delta
+# https://github.com/dandavison/delta
+[core]
+	pager = delta --features \"default-feature $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)\"
+[interactive]
+	diffFilter = delta --color-only --features \"default-feature $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)\"
+
+[delta "default-feature"]
+	# use n and N to move between diff sections
+	navigate = true
+	# delta detects terminal colors automatically; set one of these to disable auto-detection
+	# dark = true
+	# light = true
+	true-color = always
+	tabs = 4
+	line-numbers = false
+
+[delta "light-mode"]
+	light = true
+	features = hoopoe
+
+[delta "dark-mode"]
+	light = false
+	features = colibri
 [diff]
 	# 🔍 Git should detect both renames and copies. Theoretically slows down git.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames
@@ -147,7 +172,7 @@
 	algorithm = histogram
 
 	# 🎨 https://blog.gitbutler.com/how-git-core-devs-configure-git#better-diff
-	colorMoved = plain
+	colorMoved = default
 [rerere]
 	# 🧞 The git rerere functionality is a bit of a hidden feature. The name stands for "reuse recorded resolution" and, as the name implies, it allows you to ask Git to remember how you've resolved a hunk conflict so that the next time it sees the same conflict, Git can resolve it for you automatically.
 	# https://blog.gitbutler.com/how-git-core-devs-configure-git#reuse-recorded-resolutions
@@ -298,6 +323,8 @@
 	fixupTargetAlwaysSHA = false
 
 # 🔗 https://git-scm.com/docs/git-config#_includes
+[include]
+	path = ~/.config/delta/themes.gitconfig
 [include]
 	path = ~/.config/git/config.local
 [pager]

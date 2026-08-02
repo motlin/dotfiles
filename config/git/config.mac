@@ -37,41 +37,6 @@
 	cmd = ~/.bin/idea merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
 	trustExitCode = false
 
-# diff-so-fancy or delta
-# https://github.com/dandavison/delta
-[core]
-	pager = delta --features default-feature "$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)"
-[interactive]
-	diffFilter = delta --color-only --features default-feature "$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)"
-
-[delta "default-feature"]
-	# use n and N to move between diff sections
-	navigate = true
-	# delta detects terminal colors automatically; set one of these to disable auto-detection
-	# dark = true
-	# light = true
-	true-color = always
-	tabs = 4
-	line-numbers = false
-
-[delta "light-mode"]
-	light = true
-	features = hoopoe
-
-[delta "dark-mode"]
-	light = false
-	features = colibri
-	# features = calochortus-lyallii
-	# features = github
-	# features = chameleon
-	# features = arctic-fox
-	# features = calochortus-lyallii
-
-[diff]
-	colorMoved = default
-[include]
-	path = ~/projects/open-source/delta/themes.gitconfig
-
 [credential "https://github.com"]
 	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
