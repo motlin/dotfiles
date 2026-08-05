@@ -147,3 +147,7 @@
         description: 'Patching tmux-resurrect with PR #541 (symlink race fix)'
       - command: ./scripts/install-agent-tools.sh
         description: Installing shared Claude and Codex plugins and skills
+      - command: herdr integration install claude
+        description: Installing Herdr Claude integration
+      - command: herdr integration install codex
+        description: Installing Herdr Codex integration
