@@ -110,10 +110,13 @@ function uninstall_stale_claude_plugins() {
         explanatory-output-style@claude-code-plugins
         feature-dev@claude-code-plugins
         frontend-design@claude-code-plugins
+        ghostty-titles@motlin-claude-code-plugins
         hookify@claude-code-plugins
+        iterm2-titles@motlin-claude-code-plugins
         learning-output-style@claude-code-plugins
         plugin-dev@claude-code-plugins
         pr-review-toolkit@claude-code-plugins
+        tmux-titles@motlin-claude-code-plugins
     )
 
     installed_plugins="$(claude plugin list --json)"
@@ -149,7 +152,12 @@ function install_motlin_claude_plugins() {
         install_or_update_claude_plugin "${plugin_identifier}" "${installed_plugins}"
     done < <(
         jq --exit-status --raw-output \
-            '.plugins[].name | select(. != "iterm2-titles")' \
+            '.plugins[].name
+            | select(
+                . != "ghostty-titles"
+                and . != "iterm2-titles"
+                and . != "tmux-titles"
+            )' \
             "${marketplace_manifest}"
     )
 }
