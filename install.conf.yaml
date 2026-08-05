@@ -143,6 +143,8 @@
         description: 🛠️ Installing mise tools
 
 - shell:
+      - command: ./scripts/remove-claude-mem.sh
+        description: Removing Claude-mem and its stored data
       - command: ./scripts/patch-tmux-resurrect.sh
         description: 'Patching tmux-resurrect with PR #541 (symlink race fix)'
       - command: ./scripts/install-agent-tools.sh

@@ -201,9 +201,6 @@ function install_used_claude_plugins() {
     ensure_claude_marketplace \
         "mattpocock" \
         "mattpocock/skills"
-    ensure_claude_marketplace \
-        "thedotmack" \
-        "thedotmack/claude-mem"
 
     installed_plugins="$(claude plugin list --json)"
 
@@ -218,9 +215,6 @@ function install_used_claude_plugins() {
         "${installed_plugins}"
     install_or_update_claude_plugin \
         "mattpocock-skills@mattpocock" \
-        "${installed_plugins}"
-    install_or_update_claude_plugin \
-        "claude-mem@thedotmack" \
         "${installed_plugins}"
 }
 
