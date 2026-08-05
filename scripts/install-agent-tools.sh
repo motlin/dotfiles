@@ -298,6 +298,9 @@ function install_shared_skills() {
 
 function install_github_stack_tools() {
     local agent
+    local GH_HOST="github.com"
+
+    export GH_HOST
 
     gh extension install github/gh-stack --force
 
