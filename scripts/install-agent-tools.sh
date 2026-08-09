@@ -263,7 +263,12 @@ function install_motlin_codex_plugins() {
             '[.installed[], .available[]]
             | .[]
             | select(.installPolicy == "AVAILABLE")
-            | .pluginId' \
+            | .pluginId
+            | select(
+                . != "ghostty-titles@motlin-claude-code-plugins"
+                and . != "iterm2-titles@motlin-claude-code-plugins"
+                and . != "tmux-titles@motlin-claude-code-plugins"
+            )' \
             <<<"${plugin_catalog}"
     )
 }
