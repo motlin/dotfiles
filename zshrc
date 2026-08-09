@@ -194,3 +194,8 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Re-enforce correct PATH order after direnv/oh-my-zsh may have reordered
 path_enforce_order
+
+if [[ -r "$HOME/projects/herdr-shell-status/herdr-shell-status.plugin.zsh" ]]; then
+  path=("$HOME/projects/herdr-shell-status/bin" $path)
+  source "$HOME/projects/herdr-shell-status/herdr-shell-status.plugin.zsh"
+fi
