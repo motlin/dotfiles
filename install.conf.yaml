@@ -27,6 +27,10 @@
         description: 📥 Cloning/updating ohmyzsh
       - command: >-
             ./scripts/clone-or-update.sh git-clones
+            https://github.com/motlin/herdr-shell-status.git
+        description: 📥 Cloning/updating herdr-shell-status
+      - command: >-
+            ./scripts/clone-or-update.sh git-clones
             https://github.com/zsh-users/zsh-autosuggestions
         description: 📥 Cloning/updating zsh-autosuggestions
       - command: >-
@@ -114,6 +118,9 @@
       ~/.hushlogin:
       ~/.minttyrc:
       ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
+      ~/.oh-my-zsh/custom/plugins/herdr-shell-status:
+          create: true
+          path: git-clones/motlin/herdr-shell-status
       ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions:
           create: true
           path: git-clones/zsh-users/zsh-autosuggestions

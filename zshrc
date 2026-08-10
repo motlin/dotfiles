@@ -100,7 +100,7 @@ export SAVEHIST=1000000
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
 ZSH_ALIAS_FINDER_AUTOMATIC=true
-plugins=(bgnotify alias-finder fzf gh zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(bgnotify alias-finder fzf gh herdr-shell-status zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -194,8 +194,3 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Re-enforce correct PATH order after direnv/oh-my-zsh may have reordered
 path_enforce_order
-
-if [[ -r "$HOME/projects/herdr-shell-status/herdr-shell-status.plugin.zsh" ]]; then
-  path=("$HOME/projects/herdr-shell-status/bin" $path)
-  source "$HOME/projects/herdr-shell-status/herdr-shell-status.plugin.zsh"
-fi
