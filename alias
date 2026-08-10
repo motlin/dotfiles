@@ -53,7 +53,7 @@ alias web='gh pr view --web'
 alias j='just --global-justfile'
 alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 
-alias c='claude --chrome --verbose'
+alias c='claude --chrome'
 alias cc='c --continue'
 alias cr='c --resume'
 # alias yolo='c --permission-mode acceptEdits'
