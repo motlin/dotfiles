@@ -184,54 +184,65 @@ function install_or_update_claude_plugin() {
     enable_claude_plugin "${plugin_identifier}"
 }
 
-function uninstall_stale_claude_plugins() {
+function prune_unmanaged_claude_plugins() {
     local installed_plugins
+    local managed_marketplaces
     local plugin_identifier
-    local plugin_name
-    # /code-review ships with Claude itself, so the plugin only duplicates it.
-    # bash-audit-log and ratchet no longer exist in the marketplace, and the
-    # anthropic-agent-skills marketplace is no longer registered, so those
-    # plugins can never update. Everything installed should be enabled, so
-    # anything left dark belongs here instead.
-    local stale_plugin_identifiers=(
-        agent-sdk-dev@claude-plugins-official
-        bash-audit-log@motlin-claude-code-plugins
-        claude-code-setup@claude-plugins-official
-        claude-opus-4-5-migration@claude-plugins-official
-        code-review@claude-plugins-official
-        commit-commands@claude-plugins-official
-        document-skills@anthropic-agent-skills
-        example-skills@anthropic-agent-skills
-        explanatory-output-style@claude-plugins-official
-        feature-dev@claude-plugins-official
-        github@claude-plugins-official
-        learning-output-style@claude-plugins-official
-        mcp-server-dev@claude-plugins-official
-        playwright@claude-plugins-official
-        pr-review-toolkit@claude-plugins-official
-        ratchet@motlin-claude-code-plugins
-        serena@claude-plugins-official
-    )
+    local updated_settings
 
-    for plugin_name in "${TITLE_PLUGIN_NAMES[@]}"; do
-        stale_plugin_identifiers+=("${plugin_name}@${MOTLIN_MARKETPLACE}")
-    done
+    if ((${#CLAUDE_MANAGED_MARKETPLACES[@]} == 0)); then
+        return
+    fi
+    if ((${#CLAUDE_DESIRED_PLUGIN_IDENTIFIERS[@]} == 0)); then
+        return
+    fi
 
+    managed_marketplaces="$(
+        jq -c -n '$ARGS.positional' \
+            --args "${CLAUDE_MANAGED_MARKETPLACES[@]}"
+    )"
     installed_plugins="$(claude plugin list --json)"
 
-    for plugin_identifier in "${stale_plugin_identifiers[@]}"; do
-        if jq --exit-status \
-            --arg plugin_identifier "${plugin_identifier}" \
-            'any(.[]; .id == $plugin_identifier and .scope == "user")' \
-            <<<"${installed_plugins}" >/dev/null; then
-            claude plugin uninstall \
-                --prune \
-                --yes \
-                --scope user \
-                "${plugin_identifier}"
-        fi
+    while IFS= read -r plugin_identifier; do
+        claude plugin uninstall \
+            --prune \
+            --yes \
+            --scope user \
+            "${plugin_identifier}"
         forget_claude_plugin "${plugin_identifier}"
-    done
+    done < <(
+        jq --raw-output \
+            --argjson managed_marketplaces "${managed_marketplaces}" \
+            '.[]
+            | select(.scope == "user")
+            | .id
+            | select(
+                (split("@")[-1] | IN($managed_marketplaces[]))
+                and (IN($ARGS.positional[]) | not)
+            )' \
+            --args "${CLAUDE_DESIRED_PLUGIN_IDENTIFIERS[@]}" \
+            <<<"${installed_plugins}"
+    )
+
+    if [[ ! -f "${CLAUDE_SETTINGS_FILE}" ]]; then
+        return
+    fi
+
+    updated_settings="$(
+        jq --argjson managed_marketplaces "${managed_marketplaces}" \
+            'if (.enabledPlugins? | type) == "object"
+            then .enabledPlugins |= with_entries(
+                select((
+                    (.key | split("@")[-1] | IN($managed_marketplaces[]))
+                    and (.key | IN($ARGS.positional[]) | not)
+                ) | not)
+            )
+            else .
+            end' \
+            "${CLAUDE_SETTINGS_FILE}" \
+            --args "${CLAUDE_DESIRED_PLUGIN_IDENTIFIERS[@]}"
+    )"
+    rewrite_claude_settings "${updated_settings}"
 }
 
 function install_motlin_claude_plugins() {
@@ -374,5 +385,5 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     install_motlin_codex_plugins
     install_shared_skills
     install_github_stack_tools
-    uninstall_stale_claude_plugins
+    prune_unmanaged_claude_plugins
 fi
