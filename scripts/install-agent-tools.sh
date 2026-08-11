@@ -43,9 +43,8 @@ function rewrite_claude_settings() {
     fi
 }
 
-# Claude only loads a plugin when settings.json enables it, so a freshly
-# installed plugin stays dark until its key exists. Existing keys are left
-# alone, including deliberate false values.
+# Declared plugins are installed and enabled. A false enabledPlugins value is
+# a bug that the next install heals.
 function enable_claude_plugin() {
     local plugin_identifier="$1"
     local updated_settings
@@ -57,13 +56,43 @@ function enable_claude_plugin() {
     updated_settings="$(
         jq --arg plugin_identifier "${plugin_identifier}" \
             'if (.enabledPlugins? | type) == "object"
-                and (.enabledPlugins | has($plugin_identifier))
-            then .
-            else .enabledPlugins[$plugin_identifier] = true
+            then .enabledPlugins[$plugin_identifier] = true
+            else .
             end' \
             "${CLAUDE_SETTINGS_FILE}"
     )"
     rewrite_claude_settings "${updated_settings}"
+}
+
+function check_disabled_claude_plugins() {
+    local disabled_plugin_found
+    local plugin_identifier
+
+    if [[ ! -f "${CLAUDE_SETTINGS_FILE}" ]]; then
+        return
+    fi
+
+    disabled_plugin_found=""
+    while IFS= read -r plugin_identifier; do
+        printf 'Claude plugin %s is disabled in %s.\n' \
+            "${plugin_identifier}" \
+            "${CLAUDE_SETTINGS_FILE}" >&2
+        disabled_plugin_found="1"
+    done < <(
+        jq --raw-output \
+            'if (.enabledPlugins? | type) == "object"
+            then .enabledPlugins
+                | to_entries[]
+                | select(.value == false)
+                | .key
+            else empty
+            end' \
+            "${CLAUDE_SETTINGS_FILE}"
+    )
+
+    if [[ -n "${disabled_plugin_found}" && "${CLAUDE_PLUGIN_PRUNE_DRY_RUN:-}" != "1" ]]; then
+        return 1
+    fi
 }
 
 # Claude reinstalls any plugin still named in enabledPlugins, whatever the
@@ -411,4 +440,5 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     install_shared_skills
     install_github_stack_tools
     prune_unmanaged_claude_plugins
+    check_disabled_claude_plugins
 fi
