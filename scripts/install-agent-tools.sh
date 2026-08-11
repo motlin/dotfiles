@@ -55,10 +55,7 @@ function enable_claude_plugin() {
 
     updated_settings="$(
         jq --arg plugin_identifier "${plugin_identifier}" \
-            'if (.enabledPlugins? | type) == "object"
-            then .enabledPlugins[$plugin_identifier] = true
-            else .
-            end' \
+            '.enabledPlugins[$plugin_identifier] = true' \
             "${CLAUDE_SETTINGS_FILE}"
     )"
     rewrite_claude_settings "${updated_settings}"
