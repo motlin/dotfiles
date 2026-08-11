@@ -11,7 +11,6 @@ done
 
 readonly CLAUDE_SETTINGS_FILE="${HOME}/.claude/settings.json"
 readonly MOTLIN_MARKETPLACE="motlin-claude-code-plugins"
-# shellcheck disable=SC2034
 readonly CLAUDE_MARKETPLACE_SPECS=(
     "caveman|motlin/caveman|caveman"
     "claude-reflect-marketplace|bayramannakov/claude-reflect|claude-reflect"
@@ -258,60 +257,32 @@ function install_motlin_claude_plugins() {
     )
 }
 
-function install_official_claude_plugins() {
+function sync_claude_marketplaces() {
     local installed_plugins
+    local marketplace_spec
+    local name
+    local -a name_array
     local plugin_identifier
     local plugin_name
-    local plugin_names=(
-        claude-md-management
-        code-simplifier
-        hookify
-        plugin-dev
-        skill-creator
-        typescript-lsp
-    )
+    local names
+    local source
 
-    ensure_claude_marketplace \
-        "claude-plugins-official" \
-        "anthropics/claude-plugins-official"
-    installed_plugins="$(claude plugin list --json)"
-
-    for plugin_name in "${plugin_names[@]}"; do
-        plugin_identifier="${plugin_name}@claude-plugins-official"
-        install_or_update_claude_plugin "${plugin_identifier}" "${installed_plugins}"
+    for marketplace_spec in "${CLAUDE_MARKETPLACE_SPECS[@]}"; do
+        IFS='|' read -r name source names <<<"${marketplace_spec}"
+        ensure_claude_marketplace "${name}" "${source}"
     done
-}
-
-function install_used_claude_plugins() {
-    local installed_plugins
-
-    ensure_claude_marketplace \
-        "caveman" \
-        "motlin/caveman"
-    ensure_claude_marketplace \
-        "claude-reflect-marketplace" \
-        "bayramannakov/claude-reflect"
-    ensure_claude_marketplace \
-        "glebis-skills" \
-        "glebis/claude-skills"
-    ensure_claude_marketplace \
-        "mattpocock" \
-        "mattpocock/skills"
 
     installed_plugins="$(claude plugin list --json)"
 
-    install_or_update_claude_plugin \
-        "caveman@caveman" \
-        "${installed_plugins}"
-    install_or_update_claude_plugin \
-        "claude-reflect@claude-reflect-marketplace" \
-        "${installed_plugins}"
-    install_or_update_claude_plugin \
-        "daydream@glebis-skills" \
-        "${installed_plugins}"
-    install_or_update_claude_plugin \
-        "mattpocock-skills@mattpocock" \
-        "${installed_plugins}"
+    for marketplace_spec in "${CLAUDE_MARKETPLACE_SPECS[@]}"; do
+        IFS='|' read -r name source names <<<"${marketplace_spec}"
+        read -r -a name_array <<<"${names}"
+
+        for plugin_name in "${name_array[@]}"; do
+            plugin_identifier="${plugin_name}@${name}"
+            install_or_update_claude_plugin "${plugin_identifier}" "${installed_plugins}"
+        done
+    done
 }
 
 function ensure_codex_marketplace() {
@@ -373,20 +344,6 @@ function install_motlin_codex_plugins() {
 }
 
 function install_shared_skills() {
-    local installed_plugins
-
-    ensure_claude_marketplace \
-        "skills-curated" \
-        "trailofbits/skills-curated"
-    installed_plugins="$(claude plugin list --json)"
-
-    install_or_update_claude_plugin \
-        "humanizer@skills-curated" \
-        "${installed_plugins}"
-    install_or_update_claude_plugin \
-        "skill-extractor@skills-curated" \
-        "${installed_plugins}"
-
     npx --yes skills add "trailofbits/skills-curated" \
         --global \
         --agent codex \
@@ -413,8 +370,7 @@ function install_github_stack_tools() {
 # Sourcing the script exposes the functions without installing anything.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     install_motlin_claude_plugins
-    install_official_claude_plugins
-    install_used_claude_plugins
+    sync_claude_marketplaces
     install_motlin_codex_plugins
     install_shared_skills
     install_github_stack_tools
