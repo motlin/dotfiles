@@ -159,6 +159,13 @@ function remove_claude_mem_directories() {
 }
 
 function remove_claude_mem_metadata() {
+    # A leftover enabledPlugins key makes Claude reinstall the plugin on startup.
+    rewrite_json \
+        'if (.enabledPlugins? | type) == "object"
+        then del(.enabledPlugins["'"${CLAUDE_MEM_PLUGIN}"'"])
+        else . end' \
+        "${HOME}/.claude/settings.json"
+
     rewrite_json \
         'if (.permissions.allow? | type) == "array" then
             .permissions.allow |= map(
