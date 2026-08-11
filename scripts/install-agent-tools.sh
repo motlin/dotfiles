@@ -20,6 +20,9 @@ readonly CLAUDE_MARKETPLACE_SPECS=(
     "skills-curated|trailofbits/skills-curated|humanizer skill-extractor"
     "claude-plugins-official|anthropics/claude-plugins-official|chrome-devtools-mcp claude-md-management code-simplifier context7 frontend-design hookify imessage plugin-dev skill-creator typescript-lsp"
 )
+# Provisioning helpers populate these registries so pruning follows the actual install paths.
+CLAUDE_MANAGED_MARKETPLACES=()
+CLAUDE_DESIRED_PLUGIN_IDENTIFIERS=()
 readonly TITLE_PLUGIN_NAMES=(
     ghostty-titles
     iterm2-titles
@@ -93,6 +96,8 @@ function ensure_claude_marketplace() {
     local source_type
     local source_repository
 
+    CLAUDE_MANAGED_MARKETPLACES+=("${marketplace_name}")
+
     marketplaces="$(claude plugin marketplace list --json)"
     source_type="$(
         jq --raw-output \
@@ -165,6 +170,8 @@ function claude_marketplace_manifest() {
 function install_or_update_claude_plugin() {
     local plugin_identifier="$1"
     local installed_plugins="$2"
+
+    CLAUDE_DESIRED_PLUGIN_IDENTIFIERS+=("${plugin_identifier}")
 
     if jq --exit-status \
         --arg plugin_identifier "${plugin_identifier}" \
