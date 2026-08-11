@@ -11,6 +11,15 @@ done
 
 readonly CLAUDE_SETTINGS_FILE="${HOME}/.claude/settings.json"
 readonly MOTLIN_MARKETPLACE="motlin-claude-code-plugins"
+# shellcheck disable=SC2034
+readonly CLAUDE_MARKETPLACE_SPECS=(
+    "caveman|motlin/caveman|caveman"
+    "claude-reflect-marketplace|bayramannakov/claude-reflect|claude-reflect"
+    "glebis-skills|glebis/claude-skills|daydream"
+    "mattpocock|mattpocock/skills|mattpocock-skills"
+    "skills-curated|trailofbits/skills-curated|humanizer skill-extractor"
+    "claude-plugins-official|anthropics/claude-plugins-official|chrome-devtools-mcp claude-md-management code-simplifier context7 frontend-design hookify imessage plugin-dev skill-creator typescript-lsp"
+)
 readonly TITLE_PLUGIN_NAMES=(
     ghostty-titles
     iterm2-titles
