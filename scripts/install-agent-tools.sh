@@ -174,18 +174,28 @@ function uninstall_stale_claude_plugins() {
     local plugin_identifier
     local plugin_name
     # /code-review ships with Claude itself, so the plugin only duplicates it.
-    # bash-audit-log and ratchet no longer exist in the marketplace.
+    # bash-audit-log and ratchet no longer exist in the marketplace, and the
+    # anthropic-agent-skills marketplace is no longer registered, so those
+    # plugins can never update. Everything installed should be enabled, so
+    # anything left dark belongs here instead.
     local stale_plugin_identifiers=(
         agent-sdk-dev@claude-plugins-official
         bash-audit-log@motlin-claude-code-plugins
+        claude-code-setup@claude-plugins-official
         claude-opus-4-5-migration@claude-plugins-official
         code-review@claude-plugins-official
         commit-commands@claude-plugins-official
+        document-skills@anthropic-agent-skills
+        example-skills@anthropic-agent-skills
         explanatory-output-style@claude-plugins-official
         feature-dev@claude-plugins-official
+        github@claude-plugins-official
         learning-output-style@claude-plugins-official
+        mcp-server-dev@claude-plugins-official
+        playwright@claude-plugins-official
         pr-review-toolkit@claude-plugins-official
         ratchet@motlin-claude-code-plugins
+        serena@claude-plugins-official
     )
 
     for plugin_name in "${TITLE_PLUGIN_NAMES[@]}"; do
