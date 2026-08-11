@@ -204,12 +204,16 @@ function prune_unmanaged_claude_plugins() {
     installed_plugins="$(claude plugin list --json)"
 
     while IFS= read -r plugin_identifier; do
-        claude plugin uninstall \
-            --prune \
-            --yes \
-            --scope user \
-            "${plugin_identifier}"
-        forget_claude_plugin "${plugin_identifier}"
+        if [[ "${CLAUDE_PLUGIN_PRUNE_DRY_RUN:-}" == "1" ]]; then
+            printf 'Would uninstall Claude plugin %s.\n' "${plugin_identifier}"
+        else
+            claude plugin uninstall \
+                --prune \
+                --yes \
+                --scope user \
+                "${plugin_identifier}"
+            forget_claude_plugin "${plugin_identifier}"
+        fi
     done < <(
         jq --raw-output \
             --argjson managed_marketplaces "${managed_marketplaces}" \
@@ -225,6 +229,27 @@ function prune_unmanaged_claude_plugins() {
     )
 
     if [[ ! -f "${CLAUDE_SETTINGS_FILE}" ]]; then
+        return
+    fi
+
+    if [[ "${CLAUDE_PLUGIN_PRUNE_DRY_RUN:-}" == "1" ]]; then
+        while IFS= read -r plugin_identifier; do
+            printf 'Would remove Claude enabledPlugins key %s.\n' "${plugin_identifier}"
+        done < <(
+            jq --raw-output \
+                --argjson managed_marketplaces "${managed_marketplaces}" \
+                'if (.enabledPlugins? | type) == "object"
+                then .enabledPlugins
+                    | keys[]
+                    | select(
+                        (split("@")[-1] | IN($managed_marketplaces[]))
+                        and (IN($ARGS.positional[]) | not)
+                    )
+                else empty
+                end' \
+                "${CLAUDE_SETTINGS_FILE}" \
+                --args "${CLAUDE_DESIRED_PLUGIN_IDENTIFIERS[@]}"
+        )
         return
     fi
 
