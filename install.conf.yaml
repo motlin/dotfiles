@@ -19,43 +19,43 @@
         description: 📦 Installing dotbot
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/dandavison/delta.git
+            https://github.com/dandavison/delta.git pinned
         description: 📥 Cloning/updating Delta themes
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/ohmyzsh/ohmyzsh.git
+            https://github.com/ohmyzsh/ohmyzsh.git pinned
         description: 📥 Cloning/updating ohmyzsh
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/motlin/herdr-shell-status.git
+            https://github.com/motlin/herdr-shell-status.git pinned
         description: 📥 Cloning/updating herdr-shell-status
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-autosuggestions
+            https://github.com/zsh-users/zsh-autosuggestions pinned
         description: 📥 Cloning/updating zsh-autosuggestions
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-history-substring-search
+            https://github.com/zsh-users/zsh-history-substring-search pinned
         description: 📥 Cloning/updating zsh-history-substring-search
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-syntax-highlighting.git
+            https://github.com/zsh-users/zsh-syntax-highlighting.git pinned
         description: 📥 Cloning/updating zsh-syntax-highlighting
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/romkatv/powerlevel10k.git
+            https://github.com/romkatv/powerlevel10k.git pinned
         description: 📥 Cloning/updating powerlevel10k
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/NoahTheDuke/vim-just.git
+            https://github.com/NoahTheDuke/vim-just.git pinned
         description: 📥 Cloning/updating vim-just
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/motlin/claude-code-prompts.git
+            https://github.com/motlin/claude-code-prompts.git writable
         description: 📥 Cloning/updating claude-code-prompts
       - command: >-
             ./scripts/clone-or-update.sh git-clones
-            https://github.com/tmux-plugins/tpm
+            https://github.com/tmux-plugins/tpm pinned
         description: 📥 Cloning/updating tpm
       - command: >-
             which powerline || echo
