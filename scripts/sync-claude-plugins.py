@@ -13,6 +13,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 
 
 CLAUDE_SETTINGS = os.path.expanduser("~/.claude/settings.json")
@@ -313,6 +314,179 @@ def confirm_actions(
     return actions_to_apply
 
 
+def action_is_selected(actions, action_name, field, value):
+    return any(
+        action["action"] == action_name and action.get(field) == value
+        for action in actions
+    )
+
+
+def uninstall_plugin(plugin_id):
+    sh([
+        "claude",
+        "plugin",
+        "uninstall",
+        "--prune",
+        "--yes",
+        "--scope",
+        "user",
+        plugin_id,
+    ])
+
+
+def apply_marketplaces(config, marketplaces, installed, actions):
+    marketplaces_by_name = {
+        marketplace["name"]: marketplace for marketplace in marketplaces
+    }
+    uninstalled_plugin_ids = set()
+
+    for specification in config["claudeMarketplaces"]:
+        name = specification["name"]
+        source = specification["source"]
+        marketplace = marketplaces_by_name.get(name)
+
+        if marketplace is None:
+            if action_is_selected(actions, "add", "marketplace", name):
+                sh(["claude", "plugin", "marketplace", "add", source])
+            continue
+
+        if marketplace["source"] == "github":
+            if marketplace["repo"] != source:
+                raise ValueError(
+                    f"Marketplace {name} source mismatch: expected "
+                    f"{source}, found {marketplace['repo']}"
+                )
+            sh(["claude", "plugin", "marketplace", "update", name])
+            continue
+
+        if not action_is_selected(actions, "migrate", "marketplace", name):
+            continue
+
+        print(
+            f"Migrating Claude {name} from {marketplace['source']} "
+            f"source to github {source}.",
+            file=sys.stderr,
+        )
+        remove_command = [
+            "claude",
+            "plugin",
+            "marketplace",
+            "remove",
+            name,
+        ]
+        try:
+            sh(remove_command)
+        except subprocess.CalledProcessError:
+            for plugin in installed:
+                if plugin["id"].rpartition("@")[2] != name:
+                    continue
+                uninstall_plugin(plugin["id"])
+                uninstalled_plugin_ids.add(plugin["id"])
+            sh(remove_command)
+        sh(["claude", "plugin", "marketplace", "add", source])
+
+    return uninstalled_plugin_ids
+
+
+def settings_bytes(settings):
+    return (json.dumps(settings, indent=2) + "\n").encode()
+
+
+def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
+    contents = settings_bytes(settings)
+    directory = os.path.dirname(path)
+    prefix = f"{os.path.basename(path)}.agent-tools."
+    descriptor, temporary_path = tempfile.mkstemp(dir=directory, prefix=prefix)
+
+    try:
+        if os.path.exists(path):
+            os.chmod(temporary_path, os.stat(path).st_mode)
+        with os.fdopen(descriptor, "wb") as temporary_file:
+            descriptor = None
+            temporary_file.write(contents)
+            temporary_file.flush()
+            os.fsync(temporary_file.fileno())
+
+        with open(path, "rb") as settings_file:
+            if settings_file.read() == contents:
+                os.unlink(temporary_path)
+                return False
+
+        os.replace(temporary_path, path)
+        return True
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+        if os.path.exists(temporary_path):
+            os.unlink(temporary_path)
+
+
+def reconcile_settings(actions, path=CLAUDE_SETTINGS):
+    if not os.path.exists(path):
+        return False
+
+    enable_ids = [
+        action["id"] for action in actions if action["action"] == "enable"
+    ]
+    forget_ids = [
+        action["id"] for action in actions if action["action"] == "forget"
+    ]
+    if not enable_ids and not forget_ids:
+        return False
+
+    settings = read_json(path)
+    updated_settings = dict(settings)
+    enabled_plugins = updated_settings.get("enabledPlugins")
+    if enabled_plugins is None:
+        if not enable_ids:
+            return False
+        enabled_plugins = {}
+    elif not isinstance(enabled_plugins, dict):
+        raise ValueError("Claude settings enabledPlugins must be an object")
+    else:
+        enabled_plugins = dict(enabled_plugins)
+    updated_settings["enabledPlugins"] = enabled_plugins
+
+    for plugin_id in enable_ids:
+        if plugin_id not in enabled_plugins:
+            enabled_plugins[plugin_id] = True
+    for plugin_id in forget_ids:
+        enabled_plugins.pop(plugin_id, None)
+
+    if updated_settings == settings:
+        return False
+    return write_settings_atomic(updated_settings, path)
+
+
+def apply_actions(config, marketplaces, installed, actions):
+    uninstalled_plugin_ids = apply_marketplaces(
+        config,
+        marketplaces,
+        installed,
+        actions,
+    )
+
+    for action in actions:
+        if action["action"] == "add" and "id" in action:
+            sh(["claude", "plugin", "install", action["id"]])
+        elif action["action"] == "unchanged":
+            operation = (
+                "install"
+                if action["id"] in uninstalled_plugin_ids
+                else "update"
+            )
+            sh(["claude", "plugin", operation, action["id"]])
+
+    for action in actions:
+        if (
+            action["action"] == "remove"
+            and action["id"] not in uninstalled_plugin_ids
+        ):
+            uninstall_plugin(action["id"])
+
+    reconcile_settings(actions)
+
+
 def parse_args(args=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -348,11 +522,16 @@ def main(args=None):
         print(json.dumps(actions, indent=2))
     else:
         print(format_report(actions, verbose=options.verbose))
-    confirm_actions(
+    actions_to_apply = confirm_actions(
         actions,
         yes=options.yes,
         dry_run=options.dry_run,
     )
+    if actions_to_apply or (
+        not options.dry_run
+        and (options.yes or not sys.stdin.isatty())
+    ):
+        apply_actions(config, *state[:2], actions_to_apply)
     return 0
 
 

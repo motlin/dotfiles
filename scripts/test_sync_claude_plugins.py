@@ -4,6 +4,8 @@ import importlib.util
 import io
 import json
 import pathlib
+import subprocess
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 from unittest import mock
@@ -351,14 +353,19 @@ def test_json_flag_emits_raw_action_records():
         mock.patch.object(module, "read_json", return_value={}),
         mock.patch.object(module, "research", return_value=([], [], {}, {})),
         mock.patch.object(module, "compute_actions", return_value=actions),
+        mock.patch.object(module, "apply_actions") as apply_actions,
         mock.patch.object(module.sys, "stdin", io.StringIO()),
         redirect_stdout(output),
     ):
         result = module.main(["--json"])
 
     ASSERTIONS.assertEqual(
-        (result, output.getvalue()),
-        (0, f"{json.dumps(actions, indent=2)}\n"),
+        (result, output.getvalue(), apply_actions.mock_calls),
+        (
+            0,
+            f"{json.dumps(actions, indent=2)}\n",
+            [mock.call({}, [], [], actions)],
+        ),
     )
 
 
@@ -488,6 +495,280 @@ def test_dry_run_skips_all_actions_without_reading_stdin():
     )
 
 
+def test_apply_orders_marketplaces_plugins_prune_and_settings():
+    module = load_sync_module()
+    config = {
+        "titlePluginNames": [],
+        "claudeMarketplaces": [
+            {
+                "name": "example-marketplace",
+                "source": "example/marketplace",
+                "plugins": ["alpha-plugin", "beta-plugin"],
+            },
+            {
+                "name": "second-marketplace",
+                "source": "example/second-marketplace",
+                "plugins": [],
+            },
+        ],
+    }
+    marketplaces = [
+        marketplace(
+            name="example-marketplace",
+            repo="example/marketplace",
+        ),
+    ]
+    installed = [
+        installed_plugin(
+            "beta-plugin",
+            marketplace_name="example-marketplace",
+        ),
+        installed_plugin(
+            "old-plugin",
+            marketplace_name="example-marketplace",
+        ),
+    ]
+    actions = [
+        {
+            "action": "add",
+            "marketplace": "second-marketplace",
+            "source": "example/second-marketplace",
+        },
+        {"action": "add", "id": "alpha-plugin@example-marketplace"},
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+        {"action": "unchanged", "id": "beta-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+    ]
+
+    with (
+        mock.patch.object(module, "sh") as shell,
+        mock.patch.object(module, "reconcile_settings") as reconcile_settings,
+    ):
+        module.apply_actions(
+            config,
+            marketplaces,
+            installed,
+            actions,
+        )
+
+    ASSERTIONS.assertEqual(
+        (shell.mock_calls, reconcile_settings.mock_calls),
+        (
+            [
+                mock.call([
+                    "claude", "plugin", "marketplace", "update",
+                    "example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "marketplace", "add",
+                    "example/second-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "install",
+                    "alpha-plugin@example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "update",
+                    "beta-plugin@example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "uninstall", "--prune", "--yes",
+                    "--scope", "user", "old-plugin@example-marketplace",
+                ]),
+            ],
+            [mock.call(actions)],
+        ),
+    )
+
+
+def test_marketplace_migration_retries_after_uninstalling_plugins():
+    module = load_sync_module()
+    config = config_for(
+        ["alpha-plugin"],
+        name="example-marketplace",
+        source="example/marketplace",
+    )
+    marketplaces = [
+        marketplace(
+            name="example-marketplace",
+            repo="/tmp/test/example-marketplace",
+            source="directory",
+        ),
+    ]
+    installed = [
+        installed_plugin(
+            "alpha-plugin",
+            marketplace_name="example-marketplace",
+        ),
+        installed_plugin(
+            "old-plugin",
+            marketplace_name="example-marketplace",
+        ),
+    ]
+    actions = [
+        {
+            "action": "migrate",
+            "marketplace": "example-marketplace",
+            "source": "example/marketplace",
+        },
+        {"action": "unchanged", "id": "alpha-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+    ]
+    removal_error = subprocess.CalledProcessError(
+        1,
+        ["claude", "plugin", "marketplace", "remove", "example-marketplace"],
+    )
+
+    with (
+        mock.patch.object(
+            module,
+            "sh",
+            side_effect=[removal_error, "", "", "", "", ""],
+        ) as shell,
+        mock.patch.object(module, "reconcile_settings") as reconcile_settings,
+        mock.patch.object(module.sys, "stderr", io.StringIO()) as error_stream,
+    ):
+        module.apply_actions(
+            config,
+            marketplaces,
+            installed,
+            actions,
+        )
+
+    ASSERTIONS.assertEqual(
+        (
+            shell.mock_calls,
+            reconcile_settings.mock_calls,
+            error_stream.getvalue(),
+        ),
+        (
+            [
+                mock.call([
+                    "claude", "plugin", "marketplace", "remove",
+                    "example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "uninstall", "--prune", "--yes",
+                    "--scope", "user", "alpha-plugin@example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "uninstall", "--prune", "--yes",
+                    "--scope", "user", "old-plugin@example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "marketplace", "remove",
+                    "example-marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "marketplace", "add",
+                    "example/marketplace",
+                ]),
+                mock.call([
+                    "claude", "plugin", "install",
+                    "alpha-plugin@example-marketplace",
+                ]),
+            ],
+            [mock.call(actions)],
+            "Migrating Claude example-marketplace from directory source to "
+            "github example/marketplace.\n",
+        ),
+    )
+
+
+def test_settings_reconciliation_preserves_existing_false_value():
+    module = load_sync_module()
+    settings = {
+        "enabledPlugins": {
+            "beta-plugin@example-marketplace": False,
+            "old-plugin@example-marketplace": False,
+        },
+    }
+    actions = [
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+    ]
+
+    with (
+        mock.patch.object(module.os.path, "exists", return_value=True),
+        mock.patch.object(module, "read_json", return_value=settings),
+        mock.patch.object(
+            module,
+            "write_settings_atomic",
+            return_value=True,
+        ) as write_settings,
+    ):
+        changed = module.reconcile_settings(
+            actions,
+            "/tmp/test/settings.json",
+        )
+
+    ASSERTIONS.assertEqual(
+        (changed, settings, write_settings.mock_calls),
+        (
+            True,
+            {
+                "enabledPlugins": {
+                    "beta-plugin@example-marketplace": False,
+                    "old-plugin@example-marketplace": False,
+                },
+            },
+            [
+                mock.call(
+                    {
+                        "enabledPlugins": {
+                            "beta-plugin@example-marketplace": False,
+                            "alpha-plugin@example-marketplace": True,
+                        },
+                    },
+                    "/tmp/test/settings.json",
+                ),
+            ],
+        ),
+    )
+
+
+def test_atomic_settings_write_replaces_only_changed_bytes():
+    module = load_sync_module()
+    scratch_directory = SYNC_SCRIPT.parent.parent / ".llm"
+    settings = {"enabledPlugins": {"alpha-plugin@example-marketplace": True}}
+
+    with tempfile.TemporaryDirectory(dir=scratch_directory) as directory:
+        settings_path = pathlib.Path(directory) / "settings.json"
+        settings_path.write_text('{"enabledPlugins": {}}\n')
+        first_result = module.write_settings_atomic(settings, str(settings_path))
+
+        with mock.patch.object(module.os, "replace") as replace:
+            second_result = module.write_settings_atomic(
+                settings,
+                str(settings_path),
+            )
+
+        result = (
+            first_result,
+            second_result,
+            settings_path.read_text(),
+            replace.mock_calls,
+            sorted(path.name for path in pathlib.Path(directory).iterdir()),
+        )
+
+    ASSERTIONS.assertEqual(
+        result,
+        (
+            True,
+            False,
+            "{\n"
+            '  "enabledPlugins": {\n'
+            '    "alpha-plugin@example-marketplace": true\n'
+            "  }\n"
+            "}\n",
+            [],
+            ["settings.json"],
+        ),
+    )
+
+
 TEST_FUNCTIONS = (
     test_undeclared_user_scope_plugin_is_removed,
     test_project_scope_plugin_is_spared,
@@ -507,6 +788,10 @@ TEST_FUNCTIONS = (
     test_non_tty_confirmation_skips_destructive_actions,
     test_yes_flag_allows_removals_without_reading_stdin,
     test_dry_run_skips_all_actions_without_reading_stdin,
+    test_apply_orders_marketplaces_plugins_prune_and_settings,
+    test_marketplace_migration_retries_after_uninstalling_plugins,
+    test_settings_reconciliation_preserves_existing_false_value,
+    test_atomic_settings_write_replaces_only_changed_bytes,
 )
 
 
