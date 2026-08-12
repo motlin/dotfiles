@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Test the pure diff logic used by sync-claude-plugins.py."""
 import importlib.util
+import io
+import json
 import pathlib
 import unittest
+from contextlib import redirect_stdout
+from unittest import mock
 
 
 ASSERTIONS = unittest.TestCase()
@@ -11,10 +15,15 @@ MANAGED_MARKETPLACE = "motlin-claude-code-plugins"
 MANAGED_SOURCE = "motlin/claude-code-plugins"
 
 
-def compute_actions(config, marketplaces, installed, settings, manifests):
+def load_sync_module():
     specification = importlib.util.spec_from_file_location("sync_claude_plugins", SYNC_SCRIPT)
     module = importlib.util.module_from_spec(specification)
     specification.loader.exec_module(module)
+    return module
+
+
+def compute_actions(config, marketplaces, installed, settings, manifests):
+    module = load_sync_module()
     return module.compute_actions(config, marketplaces, installed, settings, manifests)
 
 
@@ -229,6 +238,129 @@ def test_github_marketplace_repo_mismatch_raises():
         )
 
 
+def test_default_report_summarizes_plugins_and_settings_actions():
+    module = load_sync_module()
+    actions = [
+        {"action": "unchanged", "id": "alpha-plugin@example-marketplace"},
+        {"action": "add", "id": "beta-plugin@example-marketplace"},
+        {"action": "enable", "id": "beta-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@second-marketplace"},
+        {"action": "forget", "id": "orphan-plugin@second-marketplace"},
+    ]
+
+    report = module.format_report(actions)
+
+    ASSERTIONS.assertEqual(
+        report,
+        "Marketplace                   Add  Remove  Unchanged\n"
+        "----------------------------------------------------\n"
+        "example-marketplace             1       0          1\n"
+        "second-marketplace              0       1          0\n"
+        "----------------------------------------------------\n"
+        "TOTAL                           1       1          1\n"
+        "\n"
+        "Changes:\n"
+        "  + beta-plugin@example-marketplace\n"
+        "  - old-plugin@second-marketplace\n"
+        "\n"
+        "Enable state: 1 enabledPlugins keys to add\n"
+        "Settings: 1 orphaned enabledPlugins keys\n"
+        "Note: unchanged plugins are still refreshed with `claude plugin update`.",
+    )
+
+
+def test_verbose_report_lists_every_plugin_action():
+    module = load_sync_module()
+    actions = [
+        {"action": "unchanged", "id": "alpha-plugin@example-marketplace"},
+        {"action": "add", "id": "beta-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+    ]
+
+    report = module.format_report(actions, verbose=True)
+
+    ASSERTIONS.assertEqual(
+        report,
+        "Marketplace                   Add  Remove  Unchanged\n"
+        "----------------------------------------------------\n"
+        "example-marketplace             1       1          1\n"
+        "----------------------------------------------------\n"
+        "TOTAL                           1       1          1\n"
+        "\n"
+        "Changes:\n"
+        "  = alpha-plugin@example-marketplace\n"
+        "  + beta-plugin@example-marketplace\n"
+        "  - old-plugin@example-marketplace\n"
+        "\n"
+        "Enable state: 0 enabledPlugins keys to add\n"
+        "Settings: 0 orphaned enabledPlugins keys\n"
+        "Note: unchanged plugins are still refreshed with `claude plugin update`.",
+    )
+
+
+def test_report_lists_marketplace_actions_separately():
+    module = load_sync_module()
+    actions = [
+        {
+            "action": "add",
+            "marketplace": "example-marketplace",
+            "source": "example/marketplace",
+        },
+        {"action": "pending", "marketplace": "example-marketplace"},
+        {
+            "action": "migrate",
+            "marketplace": "second-marketplace",
+            "source": "example/second-marketplace",
+        },
+    ]
+
+    report = module.format_report(actions)
+
+    ASSERTIONS.assertEqual(
+        report,
+        "Marketplace                   Add  Remove  Unchanged\n"
+        "----------------------------------------------------\n"
+        "example-marketplace             0       0          0\n"
+        "second-marketplace              0       0          0\n"
+        "----------------------------------------------------\n"
+        "TOTAL                           0       0          0\n"
+        "\n"
+        "Changes:\n"
+        "  None\n"
+        "\n"
+        "Marketplaces:\n"
+        "  + example-marketplace (example/marketplace)\n"
+        "  ? example-marketplace plugins pending\n"
+        "  ~ second-marketplace -> example/second-marketplace\n"
+        "\n"
+        "Enable state: 0 enabledPlugins keys to add\n"
+        "Settings: 0 orphaned enabledPlugins keys\n"
+        "Note: unchanged plugins are still refreshed with `claude plugin update`.",
+    )
+
+
+def test_json_flag_emits_raw_action_records():
+    module = load_sync_module()
+    actions = [
+        {"action": "add", "id": "alpha-plugin@example-marketplace"},
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+    ]
+    output = io.StringIO()
+
+    with (
+        mock.patch.object(module, "read_json", return_value={}),
+        mock.patch.object(module, "research", return_value=([], [], {}, {})),
+        mock.patch.object(module, "compute_actions", return_value=actions),
+        redirect_stdout(output),
+    ):
+        result = module.main(["--json"])
+
+    ASSERTIONS.assertEqual(
+        (result, output.getvalue()),
+        (0, f"{json.dumps(actions, indent=2)}\n"),
+    )
+
+
 TEST_FUNCTIONS = (
     test_undeclared_user_scope_plugin_is_removed,
     test_project_scope_plugin_is_spared,
@@ -239,6 +371,10 @@ TEST_FUNCTIONS = (
     test_orphaned_enabled_plugin_key_is_forgotten,
     test_existing_false_enabled_plugin_value_is_preserved,
     test_github_marketplace_repo_mismatch_raises,
+    test_default_report_summarizes_plugins_and_settings_actions,
+    test_verbose_report_lists_every_plugin_action,
+    test_report_lists_marketplace_actions_separately,
+    test_json_flag_emits_raw_action_records,
 )
 
 

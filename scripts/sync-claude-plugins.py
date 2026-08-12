@@ -6,14 +6,21 @@ marketplace manifests. Diff computation is pure so callers can report or apply
 the returned actions separately.
 
 Usage:
-    sync-claude-plugins.py
+    sync-claude-plugins.py [--verbose] [--json]
 """
+import argparse
 import json
 import os
 import subprocess
+import sys
 
 
 CLAUDE_SETTINGS = os.path.expanduser("~/.claude/settings.json")
+CONFIG_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "install-agent-tools.config.json",
+)
+PLUGIN_ACTIONS = ("add", "remove", "unchanged")
 
 
 def sh(args):
@@ -148,3 +155,149 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
             actions.append({"action": "forget", "id": plugin_id})
 
     return actions
+
+
+def action_marketplace(action):
+    if "id" in action:
+        return action["id"].rpartition("@")[2]
+    return action["marketplace"]
+
+
+def format_summary_table(actions):
+    marketplace_names = {
+        action_marketplace(action)
+        for action in actions
+        if "id" in action or "marketplace" in action
+    }
+    counts = {
+        name: {plugin_action: 0 for plugin_action in PLUGIN_ACTIONS}
+        for name in marketplace_names
+    }
+
+    for action in actions:
+        if action["action"] not in PLUGIN_ACTIONS or "id" not in action:
+            continue
+        counts[action_marketplace(action)][action["action"]] += 1
+
+    marketplace_width = max(
+        28,
+        len("Marketplace"),
+        *(len(name) for name in marketplace_names),
+    )
+    header = (
+        f"{'Marketplace':<{marketplace_width}}  "
+        f"{'Add':>3}  {'Remove':>6}  {'Unchanged':>9}"
+    )
+    separator = "-" * len(header)
+    lines = [header, separator]
+
+    for name in sorted(marketplace_names):
+        marketplace_counts = counts[name]
+        lines.append(
+            f"{name:<{marketplace_width}}  "
+            f"{marketplace_counts['add']:>3}  "
+            f"{marketplace_counts['remove']:>6}  "
+            f"{marketplace_counts['unchanged']:>9}"
+        )
+
+    totals = {
+        plugin_action: sum(
+            marketplace_counts[plugin_action]
+            for marketplace_counts in counts.values()
+        )
+        for plugin_action in PLUGIN_ACTIONS
+    }
+    lines.extend([
+        separator,
+        f"{'TOTAL':<{marketplace_width}}  "
+        f"{totals['add']:>3}  {totals['remove']:>6}  "
+        f"{totals['unchanged']:>9}",
+    ])
+    return lines
+
+
+def format_marketplace_actions(actions):
+    lines = []
+    symbols = {"add": "+", "migrate": "~", "pending": "?"}
+
+    for action in actions:
+        if "marketplace" not in action:
+            continue
+        if action["action"] == "add":
+            detail = f"{action['marketplace']} ({action['source']})"
+        elif action["action"] == "migrate":
+            detail = f"{action['marketplace']} -> {action['source']}"
+        elif action["action"] == "pending":
+            detail = f"{action['marketplace']} plugins pending"
+        else:
+            continue
+        lines.append(f"  {symbols[action['action']]} {detail}")
+
+    return lines
+
+
+def format_report(actions, verbose=False):
+    lines = format_summary_table(actions)
+    lines.extend(["", "Changes:"])
+    symbols = {"add": "+", "remove": "-", "unchanged": "="}
+    listed_actions = [
+        action
+        for action in actions
+        if "id" in action
+        and action["action"] in PLUGIN_ACTIONS
+        and (verbose or action["action"] != "unchanged")
+    ]
+    if listed_actions:
+        lines.extend(
+            f"  {symbols[action['action']]} {action['id']}"
+            for action in listed_actions
+        )
+    else:
+        lines.append("  None")
+
+    marketplace_lines = format_marketplace_actions(actions)
+    if marketplace_lines:
+        lines.extend(["", "Marketplaces:", *marketplace_lines])
+
+    enable_count = sum(action["action"] == "enable" for action in actions)
+    orphan_count = sum(action["action"] == "forget" for action in actions)
+    lines.extend([
+        "",
+        f"Enable state: {enable_count} enabledPlugins keys to add",
+        f"Settings: {orphan_count} orphaned enabledPlugins keys",
+        "Note: unchanged plugins are still refreshed with "
+        "`claude plugin update`.",
+    ])
+    return "\n".join(lines)
+
+
+def parse_args(args=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="list every plugin action, including unchanged plugins",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="emit raw action records as JSON",
+    )
+    return parser.parse_args(args)
+
+
+def main(args=None):
+    options = parse_args(args)
+    config = read_json(CONFIG_PATH)
+    state = research(config)
+    actions = compute_actions(config, *state)
+
+    if options.json:
+        print(json.dumps(actions, indent=2))
+    else:
+        print(format_report(actions, verbose=options.verbose))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
