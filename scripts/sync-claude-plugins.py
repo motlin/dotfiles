@@ -6,7 +6,7 @@ marketplace manifests. Diff computation is pure so callers can report or apply
 the returned actions separately.
 
 Usage:
-    sync-claude-plugins.py [--verbose] [--json]
+    sync-claude-plugins.py [--verbose] [--json] [--yes] [--dry-run]
 """
 import argparse
 import json
@@ -21,6 +21,7 @@ CONFIG_PATH = os.path.join(
     "install-agent-tools.config.json",
 )
 PLUGIN_ACTIONS = ("add", "remove", "unchanged")
+UNATTENDED_ACTIONS = frozenset(("add", "enable", "pending", "unchanged"))
 
 
 def sh(args):
@@ -271,6 +272,47 @@ def format_report(actions, verbose=False):
     return "\n".join(lines)
 
 
+def confirm_actions(
+    actions,
+    yes=False,
+    dry_run=False,
+    input_stream=None,
+    output_stream=None,
+):
+    input_stream = sys.stdin if input_stream is None else input_stream
+    output_stream = sys.stderr if output_stream is None else output_stream
+
+    if dry_run:
+        return []
+    if yes:
+        return actions
+    if input_stream.isatty():
+        print(
+            "Apply these changes? [y/N] ",
+            end="",
+            flush=True,
+            file=output_stream,
+        )
+        answer = input_stream.readline().strip().lower()
+        if answer in ("y", "yes"):
+            return actions
+        print("No changes applied.", file=output_stream)
+        return []
+
+    actions_to_apply = [
+        action
+        for action in actions
+        if action["action"] in UNATTENDED_ACTIONS
+    ]
+    if len(actions_to_apply) != len(actions):
+        print(
+            "Skipping removals because stdin is not a TTY; re-run this "
+            "script manually to review and confirm them.",
+            file=output_stream,
+        )
+    return actions_to_apply
+
+
 def parse_args(args=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -282,6 +324,16 @@ def parse_args(args=None):
         "--json",
         action="store_true",
         help="emit raw action records as JSON",
+    )
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="apply all changes, including removals, without prompting",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="report changes without applying them",
     )
     return parser.parse_args(args)
 
@@ -296,6 +348,11 @@ def main(args=None):
         print(json.dumps(actions, indent=2))
     else:
         print(format_report(actions, verbose=options.verbose))
+    confirm_actions(
+        actions,
+        yes=options.yes,
+        dry_run=options.dry_run,
+    )
     return 0
 
 

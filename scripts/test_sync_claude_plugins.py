@@ -351,6 +351,7 @@ def test_json_flag_emits_raw_action_records():
         mock.patch.object(module, "read_json", return_value={}),
         mock.patch.object(module, "research", return_value=([], [], {}, {})),
         mock.patch.object(module, "compute_actions", return_value=actions),
+        mock.patch.object(module.sys, "stdin", io.StringIO()),
         redirect_stdout(output),
     ):
         result = module.main(["--json"])
@@ -358,6 +359,132 @@ def test_json_flag_emits_raw_action_records():
     ASSERTIONS.assertEqual(
         (result, output.getvalue()),
         (0, f"{json.dumps(actions, indent=2)}\n"),
+    )
+
+
+def test_confirmation_from_tty_requires_explicit_approval():
+    module = load_sync_module()
+    actions = [
+        {"action": "add", "id": "alpha-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+    ]
+    input_stream = io.StringIO("yes\n")
+    output_stream = io.StringIO()
+
+    with mock.patch.object(input_stream, "isatty", return_value=True):
+        actions_to_apply = module.confirm_actions(
+            actions,
+            input_stream=input_stream,
+            output_stream=output_stream,
+        )
+
+    ASSERTIONS.assertEqual(
+        (actions_to_apply, output_stream.getvalue()),
+        (actions, "Apply these changes? [y/N] "),
+    )
+
+
+def test_confirmation_from_tty_declines_on_empty_response():
+    module = load_sync_module()
+    actions = [
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+    ]
+    input_stream = io.StringIO("\n")
+    output_stream = io.StringIO()
+
+    with mock.patch.object(input_stream, "isatty", return_value=True):
+        actions_to_apply = module.confirm_actions(
+            actions,
+            input_stream=input_stream,
+            output_stream=output_stream,
+        )
+
+    ASSERTIONS.assertEqual(
+        (actions_to_apply, output_stream.getvalue()),
+        ([], "Apply these changes? [y/N] No changes applied.\n"),
+    )
+
+
+def test_non_tty_confirmation_skips_destructive_actions():
+    module = load_sync_module()
+    actions = [
+        {"action": "add", "id": "alpha-plugin@example-marketplace"},
+        {"action": "unchanged", "id": "beta-plugin@example-marketplace"},
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+        {
+            "action": "migrate",
+            "marketplace": "second-marketplace",
+            "source": "example/second-marketplace",
+        },
+    ]
+    output_stream = io.StringIO()
+
+    actions_to_apply = module.confirm_actions(
+        actions,
+        input_stream=io.StringIO(),
+        output_stream=output_stream,
+    )
+
+    ASSERTIONS.assertEqual(
+        (actions_to_apply, output_stream.getvalue()),
+        (
+            [
+                {"action": "add", "id": "alpha-plugin@example-marketplace"},
+                {
+                    "action": "unchanged",
+                    "id": "beta-plugin@example-marketplace",
+                },
+                {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+            ],
+            "Skipping removals because stdin is not a TTY; re-run this "
+            "script manually to review and confirm them.\n",
+        ),
+    )
+
+
+def test_yes_flag_allows_removals_without_reading_stdin():
+    module = load_sync_module()
+    actions = [
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+    ]
+    input_stream = mock.Mock()
+    output_stream = io.StringIO()
+
+    actions_to_apply = module.confirm_actions(
+        actions,
+        yes=True,
+        input_stream=input_stream,
+        output_stream=output_stream,
+    )
+
+    ASSERTIONS.assertEqual(
+        (actions_to_apply, input_stream.mock_calls, output_stream.getvalue()),
+        (actions, [], ""),
+    )
+
+
+def test_dry_run_skips_all_actions_without_reading_stdin():
+    module = load_sync_module()
+    actions = [
+        {"action": "add", "id": "alpha-plugin@example-marketplace"},
+        {"action": "remove", "id": "old-plugin@example-marketplace"},
+    ]
+    input_stream = mock.Mock()
+    output_stream = io.StringIO()
+
+    actions_to_apply = module.confirm_actions(
+        actions,
+        dry_run=True,
+        input_stream=input_stream,
+        output_stream=output_stream,
+    )
+
+    ASSERTIONS.assertEqual(
+        (actions_to_apply, input_stream.mock_calls, output_stream.getvalue()),
+        ([], [], ""),
     )
 
 
@@ -375,6 +502,11 @@ TEST_FUNCTIONS = (
     test_verbose_report_lists_every_plugin_action,
     test_report_lists_marketplace_actions_separately,
     test_json_flag_emits_raw_action_records,
+    test_confirmation_from_tty_requires_explicit_approval,
+    test_confirmation_from_tty_declines_on_empty_response,
+    test_non_tty_confirmation_skips_destructive_actions,
+    test_yes_flag_allows_removals_without_reading_stdin,
+    test_dry_run_skips_all_actions_without_reading_stdin,
 )
 
 
