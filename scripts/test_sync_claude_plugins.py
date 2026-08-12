@@ -79,7 +79,11 @@ def test_project_scope_plugin_is_spared():
         config_for([]),
         [marketplace()],
         [installed_plugin("project-helper", scope="project")],
-        {"enabledPlugins": {}},
+        {
+            "enabledPlugins": {
+                "project-helper@motlin-claude-code-plugins": False,
+            },
+        },
         {},
     )
 
@@ -480,6 +484,7 @@ def test_dry_run_skips_all_actions_without_reading_stdin():
         {"action": "remove", "id": "old-plugin@example-marketplace"},
     ]
     input_stream = mock.Mock()
+    input_stream.isatty.return_value = False
     output_stream = io.StringIO()
 
     actions_to_apply = module.confirm_actions(
@@ -491,7 +496,12 @@ def test_dry_run_skips_all_actions_without_reading_stdin():
 
     ASSERTIONS.assertEqual(
         (actions_to_apply, input_stream.mock_calls, output_stream.getvalue()),
-        ([], [], ""),
+        (
+            [],
+            [mock.call.isatty()],
+            "Removals are deferred because stdin is not a TTY; re-run this "
+            "script manually to review and confirm them.\n",
+        ),
     )
 
 
@@ -729,6 +739,36 @@ def test_settings_reconciliation_preserves_existing_false_value():
     )
 
 
+def test_settings_reconciliation_creates_missing_settings_file():
+    module = load_sync_module()
+    actions = [
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+    ]
+    scratch_directory = SYNC_SCRIPT.parent.parent / ".llm"
+
+    with tempfile.TemporaryDirectory(dir=scratch_directory) as directory:
+        settings_path = pathlib.Path(directory) / "claude" / "settings.json"
+        changed = module.reconcile_settings(actions, str(settings_path))
+        result = (
+            changed,
+            settings_path.read_text(),
+            sorted(path.name for path in settings_path.parent.iterdir()),
+        )
+
+    ASSERTIONS.assertEqual(
+        result,
+        (
+            True,
+            "{\n"
+            '  "enabledPlugins": {\n'
+            '    "alpha-plugin@example-marketplace": true\n'
+            "  }\n"
+            "}\n",
+            ["settings.json"],
+        ),
+    )
+
+
 def test_atomic_settings_write_replaces_only_changed_bytes():
     module = load_sync_module()
     scratch_directory = SYNC_SCRIPT.parent.parent / ".llm"
@@ -791,6 +831,7 @@ TEST_FUNCTIONS = (
     test_apply_orders_marketplaces_plugins_prune_and_settings,
     test_marketplace_migration_retries_after_uninstalling_plugins,
     test_settings_reconciliation_preserves_existing_false_value,
+    test_settings_reconciliation_creates_missing_settings_file,
     test_atomic_settings_write_replaces_only_changed_bytes,
 )
 

@@ -88,6 +88,9 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
         marketplace["name"]: marketplace for marketplace in marketplaces
     }
     installed_ids = {plugin["id"] for plugin in installed}
+    non_user_plugin_ids = {
+        plugin["id"] for plugin in installed if plugin["scope"] != "user"
+    }
     enabled_plugins = settings.get("enabledPlugins", {})
     desired_ids = set()
     pending_marketplaces = set()
@@ -153,6 +156,7 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
             marketplace_name in managed_marketplaces
             and marketplace_name not in pending_marketplaces
             and plugin_id not in desired_ids
+            and plugin_id not in non_user_plugin_ids
         ):
             actions.append({"action": "forget", "id": plugin_id})
 
@@ -282,8 +286,17 @@ def confirm_actions(
 ):
     input_stream = sys.stdin if input_stream is None else input_stream
     output_stream = sys.stderr if output_stream is None else output_stream
+    has_deferred_removals = any(
+        action["action"] not in UNATTENDED_ACTIONS for action in actions
+    )
 
     if dry_run:
+        if not input_stream.isatty() and has_deferred_removals:
+            print(
+                "Removals are deferred because stdin is not a TTY; re-run "
+                "this script manually to review and confirm them.",
+                file=output_stream,
+            )
         return []
     if yes:
         return actions
@@ -305,7 +318,7 @@ def confirm_actions(
         for action in actions
         if action["action"] in UNATTENDED_ACTIONS
     ]
-    if len(actions_to_apply) != len(actions):
+    if has_deferred_removals:
         print(
             "Skipping removals because stdin is not a TTY; re-run this "
             "script manually to review and confirm them.",
@@ -396,6 +409,13 @@ def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
     contents = settings_bytes(settings)
     directory = os.path.dirname(path)
     prefix = f"{os.path.basename(path)}.agent-tools."
+
+    if os.path.exists(path):
+        with open(path, "rb") as settings_file:
+            if settings_file.read() == contents:
+                return False
+
+    os.makedirs(directory, exist_ok=True)
     descriptor, temporary_path = tempfile.mkstemp(dir=directory, prefix=prefix)
 
     try:
@@ -407,11 +427,6 @@ def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
             temporary_file.flush()
             os.fsync(temporary_file.fileno())
 
-        with open(path, "rb") as settings_file:
-            if settings_file.read() == contents:
-                os.unlink(temporary_path)
-                return False
-
         os.replace(temporary_path, path)
         return True
     finally:
@@ -422,9 +437,6 @@ def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
 
 
 def reconcile_settings(actions, path=CLAUDE_SETTINGS):
-    if not os.path.exists(path):
-        return False
-
     enable_ids = [
         action["id"] for action in actions if action["action"] == "enable"
     ]
@@ -434,7 +446,7 @@ def reconcile_settings(actions, path=CLAUDE_SETTINGS):
     if not enable_ids and not forget_ids:
         return False
 
-    settings = read_json(path)
+    settings = read_json(path) if os.path.exists(path) else {}
     updated_settings = dict(settings)
     enabled_plugins = updated_settings.get("enabledPlugins")
     if enabled_plugins is None:
