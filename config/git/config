@@ -120,7 +120,7 @@
     children = "!PARENT=$(git rev-parse ${1:-HEAD}); git rev-list --all --parents | awk -v p=\"$PARENT\" 'NF==2 && $2==p {print $1}'; :"
 
 	today = !git commit --message \"Update $(date +%Y-%m-%d).\"
-	clean-worktrees = "!f() { git worktree list --porcelain | awk '/^worktree /{print substr($0,10)}' | tail -n +2 | while IFS= read -r w; do out=$(git worktree remove \"$w\" 2>&1) && echo \"removed: $w\" || echo \"kept:    $w — ${out#fatal: }\"; done; git worktree prune; }; f"
+	clean-worktrees = "!f() { cur=$(git rev-parse --absolute-git-dir); unset GIT_DIR GIT_WORK_TREE; git worktree list --porcelain | awk \"/^worktree /{print substr(\\$0,10)}\" | tail -n +2 | while IFS= read -r w; do if [ \"$(git -C \"$w\" rev-parse --absolute-git-dir 2>/dev/null)\" = \"$cur\" ]; then echo \"skipped: $w — current worktree\"; continue; fi; out=$(git worktree remove \"$w\" 2>&1) && echo \"removed: $w\" || echo \"kept:    $w — ${out#fatal: }\"; done; git worktree prune; }; f"
 [core]
 	editor = vim
 	# 📡 Use untracked cache
