@@ -1,0 +1,57 @@
+{
+	"titlePluginNames": ["ghostty-titles", "iterm2-titles", "tmux-titles"],
+	"claudeMarketplaces": [
+		{
+			"name": "caveman",
+			"source": "motlin/caveman",
+			"plugins": ["caveman"]
+		},
+		{
+			"name": "claude-reflect-marketplace",
+			"source": "bayramannakov/claude-reflect",
+			"plugins": ["claude-reflect"]
+		},
+		{
+			"name": "glebis-skills",
+			"source": "glebis/claude-skills",
+			"plugins": ["daydream"]
+		},
+		{
+			"name": "mattpocock",
+			"source": "mattpocock/skills",
+			"plugins": ["mattpocock-skills"]
+		},
+		{
+			"name": "skills-curated",
+			"source": "trailofbits/skills-curated",
+			"plugins": ["humanizer", "skill-extractor"]
+		},
+		{
+			"name": "claude-plugins-official",
+			"source": "anthropics/claude-plugins-official",
+			"plugins": [
+				"chrome-devtools-mcp",
+				"claude-code-setup",
+				"claude-md-management",
+				"code-simplifier",
+				"context7",
+				"frontend-design",
+				"github",
+				"hookify",
+				"imessage",
+				"mcp-server-dev",
+				"playwright",
+				"plugin-dev",
+				"serena",
+				"skill-creator",
+				"typescript-lsp"
+			]
+		},
+		{
+			"name": "motlin-claude-code-plugins",
+			"source": "motlin/claude-code-plugins",
+			"plugins": "*",
+			"excludePlugins": ["ghostty-titles", "iterm2-titles", "tmux-titles"]
+		}
+	]
+}
