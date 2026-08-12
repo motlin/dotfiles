@@ -150,8 +150,6 @@
         description: 🛠️ Installing mise tools
 
 - shell:
-      - command: ./scripts/patch-tmux-resurrect.sh
-        description: 'Patching tmux-resurrect with PR #541 (symlink race fix)'
       - command: ./scripts/install-agent-tools.sh
         description: Installing shared Claude and Codex plugins and skills
       - command: herdr integration install claude
