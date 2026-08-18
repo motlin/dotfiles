@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 # Prevent npm 11 from reading the deprecated node-gyp option inherited from older shells.
 unset npm_config_nodedir NPM_CONFIG_NODEDIR
@@ -8,9 +8,45 @@ unset npm_config_nodedir NPM_CONFIG_NODEDIR
 DEFAULT_CONFIG_PREFIX="install"
 CONFIG_SUFFIX=".conf.yaml"
 DOTBOT_DIR="dotbot"
+MISE_INSTALLER_LOCATION="https://mise.run"
+MISE_DOWNLOAD_RESTRICTED_CONFIGURATION="2s"
 
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+function configuration_requested() {
+    local expected_configuration="$1"
+    local requested_configuration
+
+    shift
+    for requested_configuration in "$@"; do
+        if [[ "${requested_configuration}" == "${expected_configuration}" ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+if configuration_requested "${MISE_DOWNLOAD_RESTRICTED_CONFIGURATION}" "$@"; then
+    export DOTFILES_INSTALL_MISE_TOOLS=false
+else
+    export DOTFILES_INSTALL_MISE_TOOLS=true
+    if ! command -v mise >/dev/null 2>&1; then
+        if ! command -v curl >/dev/null 2>&1; then
+            echo "curl is required to bootstrap mise." >&2
+            exit 1
+        fi
+
+        curl --fail --location --show-error "${MISE_INSTALLER_LOCATION}" | sh
+        export PATH="${HOME}/.local/bin:${PATH}"
+
+        if ! command -v mise >/dev/null 2>&1; then
+            echo "mise was installed but is not available on PATH." >&2
+            exit 1
+        fi
+    fi
+fi
 
 cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive

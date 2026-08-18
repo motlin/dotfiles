@@ -14,6 +14,11 @@ cd ~/.dotfiles
 
 This works even on a freshly installed system.
 
+If `mise` is not already available, the installer bootstraps it with the
+official `https://mise.run` installer before applying the Dotbot configuration.
+The restricted `2s` profile never downloads mise or runs `mise install`; it
+uses tools supplied through the work environment instead.
+
 ## ⚙️ How It Works
 
 The standard Dotbot setup uses `./install` to run a single configuration file on every host. However, this repository follows the [multiple-target pattern](https://github.com/anishathalye/dotbot/pull/11#issuecomment-73082152) to support environment-specific configurations.

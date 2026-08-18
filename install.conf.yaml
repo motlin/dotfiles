@@ -146,7 +146,9 @@
       ~/.zshenv:
 
 - shell:
-      - command: mise install
+      - command: >-
+            if [ "${DOTFILES_INSTALL_MISE_TOOLS}" = true ]; then
+            mise install; else echo 'Skipping mise tools for restricted profile'; fi
         description: 🛠️ Installing mise tools
 
 - shell:
