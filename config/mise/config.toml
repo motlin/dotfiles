@@ -13,7 +13,7 @@ node = "26.7.0"
 "npm:strip-ansi-cli" = "4.0.0"
 "npm:trash" = "10.1.1"
 "npm:trash-cli" = "7.2.0"
-rust = "nightly"
+rust = "1.97.1"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
