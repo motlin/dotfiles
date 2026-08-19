@@ -42,7 +42,6 @@
 				"mcp-server-dev",
 				"playwright",
 				"plugin-dev",
-				"serena",
 				"skill-creator",
 				"typescript-lsp"
 			]
