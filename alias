@@ -57,7 +57,7 @@ alias c='claude --chrome'
 alias cc='c --continue'
 alias cr='c --resume'
 # alias yolo='c --permission-mode acceptEdits'
-alias yolo='codex --dangerously-bypass-approvals-and-sandbox'
+alias yolo='codex'
 
 # 🔧 Plugin command aliases; claude's /name form commented out, codex's $name form live.
 # shellcheck disable=SC2154 # $git and friends are prompt names, not variables.
