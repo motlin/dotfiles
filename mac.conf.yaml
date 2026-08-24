@@ -3,6 +3,7 @@
           relink: true
           force: false
       shell:
+          quiet: true
           stdout: true
           stderr: true
 
@@ -17,7 +18,7 @@
 # source is missing. secrets.tpl is gitignored, so a fresh clone has none;
 # touch keeps the link source present without clobbering an existing secrets.
 - shell:
-      - command: if [ -f secrets.tpl ]; then op inject --force --in-file secrets.tpl --out-file secrets; else touch secrets; fi && chmod 600 secrets
+      - command: if [ -f secrets.tpl ]; then ./scripts/run-quietly.sh op inject --force --in-file secrets.tpl --out-file secrets; else touch secrets; fi && chmod 600 secrets
         description: 🔐 Resolving op:// references into secrets
 
 - link:
@@ -53,10 +54,7 @@
           path: zshrc.mac
 
 - shell:
-      - command: pipx install powerline-status
+      - command: ./scripts/run-quietly.sh pipx install powerline-status
         description: 🎨 Installing powerline
-      - command: op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
+      - command: ./scripts/run-quietly.sh op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
         description: 🔐 Injecting secrets into bin/woof
-      - claude plugin install chrome-devtools-mcp@claude-plugins-official
-      - claude plugin install context7@claude-plugins-official
-      - claude plugin install imessage@claude-plugins-official

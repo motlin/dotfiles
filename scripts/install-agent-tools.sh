@@ -62,8 +62,7 @@ function install_motlin_codex_plugins() {
         codex plugin add "${plugin_identifier}"
     done < <(
         jq --exit-status --raw-output \
-            '[.installed[], .available[]]
-            | .[]
+            '.available[]
             | select(.installPolicy == "AVAILABLE")
             | .pluginId
             | select(IN($ARGS.positional[]) | not)' \

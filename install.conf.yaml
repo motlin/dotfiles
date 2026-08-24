@@ -5,6 +5,7 @@
           force: false
           backup: true
       shell:
+          quiet: true
           stdout: true
           stderr: true
 
@@ -15,51 +16,51 @@
             git remote get-url upstream >/dev/null 2>&1 ||
             git remote add upstream https://github.com/motlin/dotfiles.git
         description: 🔗 Setting up upstream remote for dotfiles
-      - command: git submodule update --init dotbot
+      - command: ./scripts/run-quietly.sh git submodule update --init dotbot
         description: 📦 Installing dotbot
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/dandavison/delta.git pinned
         description: 📥 Cloning/updating Delta themes
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/ohmyzsh/ohmyzsh.git pinned
         description: 📥 Cloning/updating ohmyzsh
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/motlin/herdr-shell-status.git pinned
         description: 📥 Cloning/updating herdr-shell-status
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/zsh-users/zsh-autosuggestions pinned
         description: 📥 Cloning/updating zsh-autosuggestions
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/zsh-users/zsh-history-substring-search pinned
         description: 📥 Cloning/updating zsh-history-substring-search
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/zsh-users/zsh-syntax-highlighting.git pinned
         description: 📥 Cloning/updating zsh-syntax-highlighting
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/romkatv/powerlevel10k.git pinned
         description: 📥 Cloning/updating powerlevel10k
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/NoahTheDuke/vim-just.git pinned
         description: 📥 Cloning/updating vim-just
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/motlin/claude-code-prompts.git writable
         description: 📥 Cloning/updating claude-code-prompts
       - command: >-
-            ./scripts/clone-or-update.sh git-clones
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
             https://github.com/tmux-plugins/tpm pinned
         description: 📥 Cloning/updating tpm
       - command: >-
-            which powerline || echo
-            'Warning: powerline not found on PATH'
+            command -v powerline >/dev/null || echo
+            'Warning: powerline not found on PATH' >&2
         stdout: true
         stderr: true
         description: Check for powerline binary
@@ -148,13 +149,14 @@
 - shell:
       - command: >-
             if [ "${DOTFILES_INSTALL_MISE_TOOLS}" = true ]; then
-            mise install; else echo 'Skipping mise tools for restricted profile'; fi
+            ./scripts/run-quietly.sh mise install;
+            else echo 'Skipping mise tools for restricted profile'; fi
         description: 🛠️ Installing mise tools
 
 - shell:
-      - command: ./scripts/install-agent-tools.sh
+      - command: ./scripts/run-quietly.sh ./scripts/install-agent-tools.sh
         description: Installing shared Claude and Codex plugins and skills
-      - command: herdr integration install claude
+      - command: ./scripts/run-quietly.sh herdr integration install claude
         description: Installing Herdr Claude integration
-      - command: herdr integration install codex
+      - command: ./scripts/run-quietly.sh herdr integration install codex
         description: Installing Herdr Codex integration

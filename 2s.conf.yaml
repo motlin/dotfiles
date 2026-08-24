@@ -3,6 +3,7 @@
           relink: true
           force: false
       shell:
+          quiet: true
           stdout: true
           stderr: true
 
