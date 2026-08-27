@@ -28,6 +28,13 @@ function configuration_requested() {
     return 1
 }
 
+for conf in "${DEFAULT_CONFIG_PREFIX}" "${@}"; do
+    if [[ ! -f "${BASEDIR}/${conf}${CONFIG_SUFFIX}" ]]; then
+        echo "No such profile: ${conf}${CONFIG_SUFFIX}" >&2
+        exit 1
+    fi
+done
+
 if configuration_requested "${MISE_DOWNLOAD_RESTRICTED_CONFIGURATION}" "$@"; then
     export DOTFILES_INSTALL_MISE_TOOLS=false
 else
