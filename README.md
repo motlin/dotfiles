@@ -42,6 +42,12 @@ The repository supports multiple environments through separate configuration fil
 
 Configurations apply in order, allowing environment-specific settings to override the base.
 
+Broot is macOS-only in the public profiles: `mac.conf.yaml` installs it and
+generates the Zsh launcher. The shared Bash and Zsh configurations source a
+launcher only when it exists, so other environments leave `br` undefined. A
+Linux profile must install broot and generate the corresponding launcher before
+`br` becomes available there.
+
 ## 🔧 Local Override Pattern
 
 A key design in _my_ dotfiles is the use of `.local` files for environment-specific overrides. The base configuration files source their `.local` counterparts if they exist:
