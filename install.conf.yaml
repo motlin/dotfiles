@@ -20,35 +20,35 @@
         description: 📦 Installing dotbot
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/dandavison/delta.git pinned
+            https://github.com/dandavison/delta.git read-only
         description: 📥 Cloning/updating Delta themes
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/ohmyzsh/ohmyzsh.git pinned
+            https://github.com/ohmyzsh/ohmyzsh.git read-only
         description: 📥 Cloning/updating ohmyzsh
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/motlin/herdr-shell-status.git pinned
+            https://github.com/motlin/herdr-shell-status.git read-only
         description: 📥 Cloning/updating herdr-shell-status
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-autosuggestions pinned
+            https://github.com/zsh-users/zsh-autosuggestions read-only
         description: 📥 Cloning/updating zsh-autosuggestions
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-history-substring-search pinned
+            https://github.com/zsh-users/zsh-history-substring-search read-only
         description: 📥 Cloning/updating zsh-history-substring-search
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/zsh-users/zsh-syntax-highlighting.git pinned
+            https://github.com/zsh-users/zsh-syntax-highlighting.git read-only
         description: 📥 Cloning/updating zsh-syntax-highlighting
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/romkatv/powerlevel10k.git pinned
+            https://github.com/romkatv/powerlevel10k.git read-only
         description: 📥 Cloning/updating powerlevel10k
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/NoahTheDuke/vim-just.git pinned
+            https://github.com/NoahTheDuke/vim-just.git read-only
         description: 📥 Cloning/updating vim-just
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
@@ -56,7 +56,7 @@
         description: 📥 Cloning/updating claude-code-prompts
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/tmux-plugins/tpm pinned
+            https://github.com/tmux-plugins/tpm read-only
         description: 📥 Cloning/updating tpm
       - command: >-
             command -v powerline >/dev/null || echo

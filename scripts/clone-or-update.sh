@@ -3,15 +3,15 @@
 set -euo pipefail
 
 # Modes:
-#   pinned   - the checkout mirrors upstream and nothing local is worth keeping,
-#              so it is reset to origin/HEAD. Refuses when the checkout holds
-#              commits origin/HEAD does not, because the reset would drop them.
-#   writable - the checkout is edited in place (~/.claude symlinks into
-#              claude-code-prompts, and Claude Code rewrites settings.json), so
-#              it only fast-forwards and never touches the working tree.
+#   read-only - the checkout mirrors upstream and nothing local is worth keeping,
+#               so it is reset to origin/HEAD. Refuses when the checkout holds
+#               commits origin/HEAD does not, because the reset would drop them.
+#   writable  - the checkout is edited in place (~/.claude symlinks into
+#               claude-code-prompts, and Claude Code rewrites settings.json), so
+#               it only fast-forwards and never touches the working tree.
 
 if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <base-directory> <repository-url> <pinned|writable>" >&2
+    echo "Usage: $0 <base-directory> <repository-url> <read-only|writable>" >&2
     exit 1
 fi
 
@@ -20,9 +20,9 @@ REPO_URL="$2"
 MODE="$3"
 
 case "$MODE" in
-    pinned | writable) ;;
+    read-only | writable) ;;
     *)
-        echo "Unknown mode '$MODE'; expected 'pinned' or 'writable'." >&2
+        echo "Unknown mode '$MODE'; expected 'read-only' or 'writable'." >&2
         exit 1
         ;;
 esac
