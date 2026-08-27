@@ -236,13 +236,8 @@
 
 	trustExitCode = true
 [help]
-	# 🧠 Prompt before executing autocorrected commands
-	# https://blog.gitbutler.com/how-git-core-devs-configure-git#autocorrect-prompting
-	# Example:
-	# git helo
-	# WARNING: You called a Git command named 'helo', which does not exist.
-	# Run 'help' instead [y/N]?
-	autocorrect = prompt
+	# 🚫 Do not run or prompt to run autocorrected commands
+	autocorrect = 0
 [status]
 	# 📋 git status should show a summary of commits for modified submodules.
 	# https://git-scm.com/docs/git-config#Documentation/git-config.txt-statussubmoduleSummary
