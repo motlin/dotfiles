@@ -141,6 +141,11 @@ setopt HIST_SAVE_BY_COPY
 source ~/.alias
 [ -f ~/.alias.local ] && source ~/.alias.local
 
+# broot --install appends machine-absolute source lines and repeats whenever the
+# existing line differs, including guarded lines. Install profiles generate each
+# launcher with broot --print-shell-function <shell> instead.
+[[ ! -f ~/.config/broot/launcher/zsh/br ]] || source ~/.config/broot/launcher/zsh/br
+
 export DISABLE_AUTO_TITLE="true"
 
 # Set terminal title to just the directory name

@@ -30,6 +30,12 @@ if [ -e ~/.alias ]; then
     . ~/.alias
 fi
 
+# See zshrc for why install profiles generate this launcher instead of using broot --install.
+if [ -f ~/.config/broot/launcher/bash/br ]; then
+    # shellcheck source=/dev/null
+    . ~/.config/broot/launcher/bash/br
+fi
+
 # Aliases that are not to be shared between different hosts/environments
 if [ -e ~/.alias.host ]; then
     # shellcheck source=/dev/null
