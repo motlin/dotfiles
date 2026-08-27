@@ -65,6 +65,7 @@ ANSI_BG_BRIGHT_WHITE := `tput setab 15`
 [group('console')]
 @_run command:
     echo "{{ANSI_BOLD}}Running command: {{ANSI_NORMAL}}{{command}}{{ANSI_NORMAL}}"
+    # mise installs strip-ansi-cli globally; avoid npx so npm registry lookups cannot stall this recipe.
     eval "$(echo "{{command}}" | strip-ansi)"
 
 # `echo` text in each color
