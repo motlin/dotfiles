@@ -1,4 +1,4 @@
 {
 	"globs": ["**/*.md"],
-	"ignores": ["node_modules", ".llm", "git-clones", "dotbot", "vim/pack"],
+	"ignores": ["node_modules", ".llm", ".remember", "git-clones", "dotbot", "vim/pack"],
 }
