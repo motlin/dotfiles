@@ -745,6 +745,7 @@ def test_settings_reconciliation_creates_missing_settings_file():
         {"action": "enable", "id": "alpha-plugin@example-marketplace"},
     ]
     scratch_directory = SYNC_SCRIPT.parent.parent / ".llm"
+    scratch_directory.mkdir(exist_ok=True)
 
     with tempfile.TemporaryDirectory(dir=scratch_directory) as directory:
         settings_path = pathlib.Path(directory) / "claude" / "settings.json"
@@ -772,6 +773,7 @@ def test_settings_reconciliation_creates_missing_settings_file():
 def test_atomic_settings_write_replaces_only_changed_bytes():
     module = load_sync_module()
     scratch_directory = SYNC_SCRIPT.parent.parent / ".llm"
+    scratch_directory.mkdir(exist_ok=True)
     settings = {"enabledPlugins": {"alpha-plugin@example-marketplace": True}}
 
     with tempfile.TemporaryDirectory(dir=scratch_directory) as directory:
