@@ -54,6 +54,10 @@
           path: zshrc.mac
 
 - shell:
+      - command: brew list broot > /dev/null 2>&1 || brew install broot
+        description: 🌲 Installing broot
+      - command: mkdir -p ~/.config/broot/launcher/zsh && broot --print-shell-function zsh > ~/.config/broot/launcher/zsh/br
+        description: 🐚 Writing the broot zsh launcher
       - command: ./scripts/run-quietly.sh pipx install powerline-status
         description: 🎨 Installing powerline
       - command: ./scripts/run-quietly.sh op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
