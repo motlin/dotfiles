@@ -10,6 +10,7 @@ CONFIG_SUFFIX=".conf.yaml"
 DOTBOT_DIR="dotbot"
 MISE_INSTALLER_LOCATION="https://mise.run"
 MISE_DOWNLOAD_RESTRICTED_CONFIGURATION="2s"
+VERBOSE_OPTION="--verbose"
 
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -28,7 +29,14 @@ function configuration_requested() {
     return 1
 }
 
+export DOTFILES_INSTALL_VERBOSE=false
+
 for conf in "${DEFAULT_CONFIG_PREFIX}" "${@}"; do
+    if [[ "${conf}" == "${VERBOSE_OPTION}" ]]; then
+        export DOTFILES_INSTALL_VERBOSE=true
+        continue
+    fi
+
     if [[ ! -f "${BASEDIR}/${conf}${CONFIG_SUFFIX}" ]]; then
         echo "No such profile: ${conf}${CONFIG_SUFFIX}" >&2
         exit 1
@@ -60,5 +68,13 @@ git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --quiet --init --recursive "${DOTBOT_DIR}"
 
 for conf in "${DEFAULT_CONFIG_PREFIX}" "${@}"; do
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${conf}${CONFIG_SUFFIX}"
+    if [[ "${conf}" == "${VERBOSE_OPTION}" ]]; then
+        continue
+    fi
+
+    if [[ "${DOTFILES_INSTALL_VERBOSE}" == true ]]; then
+        "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -vv -d "${BASEDIR}" -c "${conf}${CONFIG_SUFFIX}"
+    else
+        "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${conf}${CONFIG_SUFFIX}"
+    fi
 done

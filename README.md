@@ -12,6 +12,9 @@ cd ~/.dotfiles
 ./install mac  # For macOS
 ```
 
+Use `./install --verbose mac` to stream every Dotbot shell command while
+diagnosing an installation failure.
+
 This works even on a freshly installed system.
 
 If `mise` is not already available, the installer bootstraps it with the
