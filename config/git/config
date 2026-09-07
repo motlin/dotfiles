@@ -130,9 +130,9 @@
 # diff-so-fancy or delta
 # https://github.com/dandavison/delta
 [core]
-	pager = delta --features \"default-feature $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)\"
+	pager = delta --features \"default-feature dark-mode\"
 [interactive]
-	diffFilter = delta --color-only --features \"default-feature $(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark-mode || echo light-mode)\"
+	diffFilter = delta --color-only --features \"default-feature dark-mode\"
 
 [delta "default-feature"]
 	# use n and N to move between diff sections
