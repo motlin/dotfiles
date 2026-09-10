@@ -1,85 +1,125 @@
 #!/usr/bin/env bash
 
-# Clean git worktrees whose branches have been merged into upstream
-# Usage: ./clean-worktrees.sh
+# Remove git worktrees that are safe to remove.
+#
+# `git worktree remove` refuses outright once a worktree has ever had submodules
+# initialized, clean or not, and --force does not override it. For those, verify by
+# hand that nothing would be lost, then trash the directory and let
+# `git worktree prune` clear the administrative files.
+#
+# Nothing is lost when the tree is clean, HEAD is reachable from a ref that outlives
+# the worktree, and every submodule commit is on a remote. That last condition is
+# stricter because a submodule's object store lives under the worktree's own
+# administrative directory and is deleted along with it.
 
 set -Eeuo pipefail
 
 UPSTREAM_REMOTE=${UPSTREAM_REMOTE:-origin}
 UPSTREAM_BRANCH=${UPSTREAM_BRANCH:-main}
-UPSTREAM_REF="$UPSTREAM_REMOTE/$UPSTREAM_BRANCH"
 
 # ANSI color codes
 YELLOW='\033[0;33m'
 WHITE='\033[0;37m'
 RESET='\033[0m'
 
-# Check if we're in a git repository
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
     echo "Error: Not in a git repository" >&2
     exit 1
 fi
 
-# Fetch the latest from upstream
+# Echo why a worktree must not be deleted by hand, or nothing when it is safe.
+unsafe_reason() {
+    local worktree=$1
+    local submodule submodule_dir branch
+
+    if [ -n "$(git -C "$worktree" status --porcelain)" ]; then
+        echo "uncommitted changes"
+        return
+    fi
+
+    # A branch ref lives in the common directory and outlives its worktree, so only a
+    # detached HEAD can strand commits, and only when no surviving ref reaches them.
+    if ! git -C "$worktree" symbolic-ref -q HEAD >/dev/null &&
+        [ -z "$(git -C "$worktree" for-each-ref --contains HEAD --count=1)" ]; then
+        echo "detached HEAD not reachable from any branch or tag"
+        return
+    fi
+
+    while read -r submodule; do
+        [ -n "$submodule" ] || continue
+        submodule_dir="$worktree/$submodule"
+        [ -e "$submodule_dir/.git" ] || continue
+
+        if [ -z "$(git -C "$submodule_dir" branch -r --contains HEAD 2>/dev/null)" ]; then
+            echo "submodule $submodule not pushed"
+            return
+        fi
+
+        while read -r branch; do
+            [ -n "$branch" ] || continue
+            if [ -z "$(git -C "$submodule_dir" branch -r --contains "$branch" 2>/dev/null)" ]; then
+                echo "submodule $submodule branch $branch not pushed"
+                return
+            fi
+        done < <(git -C "$submodule_dir" for-each-ref --format='%(refname:short)' refs/heads)
+    done < <(git -C "$worktree" submodule status --recursive 2>/dev/null | awk '{print $2}')
+}
+
 echo "Fetching latest from $UPSTREAM_REMOTE..." >&2
 git fetch "$UPSTREAM_REMOTE" "$UPSTREAM_BRANCH" --quiet
 
-# Get all worktrees
-worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)
+# Resolve the invoking worktree before unsetting the environment the loop must not
+# inherit, so the loop can tell which worktree to skip.
+current_git_dir=$(git rev-parse --absolute-git-dir)
+unset GIT_DIR GIT_WORK_TREE
 
-echo "Checking worktrees against $UPSTREAM_REF..." >&2
-echo >&2
-
-# Collect worktrees to remove
-declare -a worktrees_to_remove=()
-
-# Process each worktree
-while IFS= read -r worktree_path; do
-    # Skip if it's the main worktree
-    if [ "$worktree_path" = "$(git rev-parse --show-toplevel)" ]; then
-        continue
-    fi
-
-    # Get the branch name for this worktree
-    branch=$(git -C "$worktree_path" branch --show-current 2>/dev/null || echo "")
-
-    # Skip if no branch (detached HEAD)
-    if [ -z "$branch" ]; then
-        continue
-    fi
-
-    # Check if the branch is an ancestor of upstream
-    if git merge-base --is-ancestor "$branch" "$UPSTREAM_REF" 2>/dev/null; then
-        worktrees_to_remove+=("$worktree_path|$branch")
-    fi
-done <<<"$worktrees"
-
-if [ ${#worktrees_to_remove[@]} -gt 0 ]; then
-    echo >&2
-    echo -e "${WHITE}Found ${YELLOW}${#worktrees_to_remove[@]}${WHITE} worktree(s) ready to clean${RESET}" >&2
-    echo >&2
-fi
-
-# Now remove the collected worktrees
 removed_count=0
-failed_count=0
+kept_count=0
 
-for entry in "${worktrees_to_remove[@]}"; do
-    IFS='|' read -r worktree_path branch <<<"$entry"
-    if output=$(git worktree remove "$worktree_path" 2>&1); then
-        echo -e "${WHITE}✅ Removed ${YELLOW}$worktree_path${WHITE} (branch: ${YELLOW}$branch${WHITE})${RESET}"
-        ((removed_count++)) || true
-    else
-        echo -e "${WHITE}❌ Failed to remove ${YELLOW}$worktree_path${WHITE} (branch: ${YELLOW}$branch${WHITE})${RESET}" >&2
-        echo "   $output" >&2
-        ((failed_count++)) || true
+while read -r worktree; do
+    if [ "$(git -C "$worktree" rev-parse --absolute-git-dir 2>/dev/null)" = "$current_git_dir" ]; then
+        echo -e "${WHITE}⏭️  Skipped ${YELLOW}$worktree${WHITE} (current worktree)${RESET}" >&2
+        continue
     fi
-done
+
+    if output=$(git worktree remove "$worktree" 2>&1); then
+        echo -e "${WHITE}✅ Removed ${YELLOW}$worktree${RESET}"
+        removed_count=$((removed_count + 1))
+        continue
+    fi
+
+    case "$output" in
+    *"containing submodules"*)
+        reason=$(unsafe_reason "$worktree")
+        if [ -n "$reason" ]; then
+            echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} ($reason)${RESET}" >&2
+            kept_count=$((kept_count + 1))
+            continue
+        fi
+
+        if ! command -v trash >/dev/null 2>&1; then
+            echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (install trash-cli to remove worktrees with submodules)${RESET}" >&2
+            kept_count=$((kept_count + 1))
+            continue
+        fi
+
+        trash "$worktree"
+        echo -e "${WHITE}✅ Removed ${YELLOW}$worktree${WHITE} (submodules; verified nothing would be lost)${RESET}"
+        removed_count=$((removed_count + 1))
+        ;;
+    *)
+        echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (${output#fatal: })${RESET}" >&2
+        kept_count=$((kept_count + 1))
+        ;;
+    esac
+done < <(git worktree list --porcelain | awk '/^worktree /{print substr($0, 10)}' | tail -n +2)
+
+git worktree prune
 
 echo >&2
-if [ $removed_count -eq 0 ] && [ $failed_count -eq 0 ]; then
+if [ $removed_count -eq 0 ] && [ $kept_count -eq 0 ]; then
     echo "No worktrees found that can be cleaned." >&2
 else
-    [ $removed_count -gt 0 ] && echo "Successfully removed $removed_count worktree(s)." >&2
-    [ $failed_count -gt 0 ] && echo "Failed to remove $failed_count worktree(s)." >&2
+    [ $removed_count -gt 0 ] && echo "Removed $removed_count worktree(s)." >&2
+    [ $kept_count -gt 0 ] && echo "Kept $kept_count worktree(s)." >&2
 fi
