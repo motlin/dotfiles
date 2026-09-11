@@ -318,6 +318,13 @@
 	# 🏷️ By default, git-absorb will create fixup commits with their messages pointing to the target commit's summary, and if there are duplicate summaries, will fallback to pointing to the target's SHA.
 	fixupTargetAlwaysSHA = false
 
+# 🪝 https://git-scm.com/docs/git-hook
+# Config-based hooks stack with a repository's own .git/hooks, which runs last, instead of
+# replacing them the way core.hooksPath would. Requires git 2.54 or later.
+[hook "strip-agent-trailer"]
+	event = commit-msg
+	command = ~/.config/git/hooks/strip-agent-trailer
+
 # 🔗 https://git-scm.com/docs/git-config#_includes
 [include]
 	path = ~/.config/delta/themes.gitconfig

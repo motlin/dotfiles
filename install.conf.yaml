@@ -106,6 +106,9 @@
       ~/.config/git/attributes:
           path: config/git/attributes
           create: true
+      ~/.config/git/hooks:
+          path: config/git/hooks
+          create: true
       ~/.config/git/config-factorio-blueprints:
           path: config/git/config-factorio-blueprints
           create: true

@@ -1,0 +1,13 @@
+#!/bin/sh
+# Remove the session trailer coding agents append to commit messages.
+#
+# Claude Code adds "Claude-Session:" whenever the session runs under Remote Control, so the
+# commit links back to the session that produced it. Subagents each add their own session,
+# which is why this cannot be handled per-repo or per-agent.
+#
+# Registered as a config-based hook rather than a file in .git/hooks or a core.hooksPath
+# directory, so it stacks with whatever hooks a repository already installs instead of
+# replacing them. See git-hook(1), git 2.54 and later.
+#
+# perl -i rather than sed -i, which needs an argument on BSD and rejects one on GNU.
+perl -ni -e 'print unless /^Claude-Session:/' "$1"
