@@ -46,21 +46,23 @@ alias cr='c --resume'
 alias rc='claude rc --permission-mode auto --spawn worktree'
 # alias yolo='c --permission-mode acceptEdits'
 alias yolo='codex'
+# One generation behind codex's default model, for routine plugin commands.
+alias lite='yolo --model gpt-5.6-sol'
 
 # 🔧 Plugin command aliases; claude's /name form commented out, codex's $name form live.
 # shellcheck disable=SC2154 # $git and friends are prompt names, not variables.
 # alias commit='yolo /git:commit'
-alias commit='yolo "\$git:commit"'
+alias commit='lite "\$git:commit"'
 # alias conflicts='yolo /git:conflicts'
-alias conflicts='yolo "\$git:conflicts"'
+alias conflicts='lite "\$git:conflicts"'
 # alias rebase-all='yolo /git:rebase-all'
-alias rebase-all='yolo "\$git:rebase-all"'
+alias rebase-all='lite "\$git:rebase-all"'
 # shellcheck disable=SC2154
 # alias fix='yolo /build:fix'
-alias fix='yolo "\$build:fix"'
+alias fix='lite "\$build:fix"'
 # shellcheck disable=SC2154
 # alias add-task='yolo /markdown-tasks:add-one-task'
-alias add-task='yolo "\$markdown-tasks:add-one-task"'
+alias add-task='lite "\$markdown-tasks:add-one-task"'
 # alias do-all-tasks='yolo /markdown-tasks:do-all-tasks'
 alias do-all-tasks='yolo "\$markdown-tasks:do-all-tasks"'
 
