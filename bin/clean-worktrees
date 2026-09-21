@@ -89,28 +89,28 @@ while read -r worktree; do
     fi
 
     case "$output" in
-    *"containing submodules"*)
-        reason=$(unsafe_reason "$worktree")
-        if [ -n "$reason" ]; then
-            echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} ($reason)${RESET}" >&2
-            kept_count=$((kept_count + 1))
-            continue
-        fi
+        *"containing submodules"*)
+            reason=$(unsafe_reason "$worktree")
+            if [ -n "$reason" ]; then
+                echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} ($reason)${RESET}" >&2
+                kept_count=$((kept_count + 1))
+                continue
+            fi
 
-        if ! command -v trash >/dev/null 2>&1; then
-            echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (install trash-cli to remove worktrees with submodules)${RESET}" >&2
-            kept_count=$((kept_count + 1))
-            continue
-        fi
+            if ! command -v trash >/dev/null 2>&1; then
+                echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (install trash-cli to remove worktrees with submodules)${RESET}" >&2
+                kept_count=$((kept_count + 1))
+                continue
+            fi
 
-        trash "$worktree"
-        echo -e "${WHITE}✅ Removed ${YELLOW}$worktree${WHITE} (submodules; verified nothing would be lost)${RESET}"
-        removed_count=$((removed_count + 1))
-        ;;
-    *)
-        echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (${output#fatal: })${RESET}" >&2
-        kept_count=$((kept_count + 1))
-        ;;
+            trash "$worktree"
+            echo -e "${WHITE}✅ Removed ${YELLOW}$worktree${WHITE} (submodules; verified nothing would be lost)${RESET}"
+            removed_count=$((removed_count + 1))
+            ;;
+        *)
+            echo -e "${WHITE}❌ Kept ${YELLOW}$worktree${WHITE} (${output#fatal: })${RESET}" >&2
+            kept_count=$((kept_count + 1))
+            ;;
     esac
 done < <(git worktree list --porcelain | awk '/^worktree /{print substr($0, 10)}' | tail -n +2)
 
