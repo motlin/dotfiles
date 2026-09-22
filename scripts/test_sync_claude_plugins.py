@@ -7,7 +7,7 @@ import pathlib
 import subprocess
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from unittest import mock
 
 
@@ -55,6 +55,73 @@ def installed_plugin(name, marketplace_name=MANAGED_MARKETPLACE,
         "scope": scope,
         "enabled": enabled,
     }
+
+
+def test_failed_command_prints_output_and_preserves_failure():
+    module = load_sync_module()
+    output = io.StringIO()
+    command = ["example-command"]
+    error = subprocess.CalledProcessError(
+        1, command, output="Checking plugin\n", stderr="Plugin not found\n",
+    )
+    with (
+        mock.patch.object(module.subprocess, "run", side_effect=error),
+        redirect_stderr(output),
+        ASSERTIONS.assertRaises(subprocess.CalledProcessError) as raised,
+    ):
+        module.sh(command)
+
+    ASSERTIONS.assertEqual(
+        (raised.exception, output.getvalue()),
+        (error, "Checking plugin\nPlugin not found\n"),
+    )
+
+
+def test_refresh_plans_from_updated_catalog_and_dry_run_does_not_update():
+    for refresh in (True, False):
+        module = load_sync_module()
+        config = config_for("*")
+        marketplaces = [marketplace()]
+        installed = [installed_plugin("retired-plugin")]
+        manifest = {"plugins": [{"name": "retired-plugin"}]}
+
+        def shell(command):
+            if command == ["claude", "plugin", "marketplace", "list", "--json"]:
+                return json.dumps(marketplaces)
+            if command == ["claude", "plugin", "list", "--json"]:
+                return json.dumps(installed)
+            ASSERTIONS.assertEqual(command, [
+                "claude", "plugin", "marketplace", "update", MANAGED_MARKETPLACE,
+            ])
+            manifest["plugins"] = []
+            return ""
+
+        with (
+            mock.patch.object(module, "sh", side_effect=shell) as commands,
+            mock.patch.object(module.os.path, "exists", return_value=False),
+            mock.patch.object(module, "read_json", return_value=manifest),
+        ):
+            state = module.research(config, refresh=refresh)
+        actions = module.compute_actions(config, *state)
+
+        expected_commands = [
+            mock.call(["claude", "plugin", "marketplace", "list", "--json"]),
+            mock.call(["claude", "plugin", "list", "--json"]),
+        ]
+        if refresh:
+            expected_commands.append(mock.call([
+                "claude", "plugin", "marketplace", "update", MANAGED_MARKETPLACE,
+            ]))
+        plugin_id = f"retired-plugin@{MANAGED_MARKETPLACE}"
+        expected_actions = (
+            [{"action": "remove", "id": plugin_id}]
+            if refresh else [
+                {"action": "unchanged", "id": plugin_id},
+                {"action": "enable", "id": plugin_id},
+            ]
+        )
+        ASSERTIONS.assertEqual((commands.mock_calls, actions),
+                               (expected_commands, expected_actions))
 
 
 def test_undeclared_user_scope_plugin_is_removed():
@@ -566,10 +633,6 @@ def test_apply_orders_marketplaces_plugins_prune_and_settings():
         (shell.mock_calls, reconcile_settings.mock_calls),
         (
             [
-                mock.call([
-                    "claude", "plugin", "marketplace", "update",
-                    "example-marketplace",
-                ]),
                 mock.call([
                     "claude", "plugin", "marketplace", "add",
                     "example/second-marketplace",

@@ -26,12 +26,17 @@ UNATTENDED_ACTIONS = frozenset(("add", "enable", "pending", "unchanged"))
 
 
 def sh(args):
-    return subprocess.run(
-        args,
-        capture_output=True,
-        check=True,
-        text=True,
-    ).stdout
+    try:
+        return subprocess.run(
+            args,
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout
+    except subprocess.CalledProcessError as error:
+        print(error.stdout or "", end="", file=sys.stderr)
+        print(error.stderr or "", end="", file=sys.stderr)
+        raise
 
 
 def read_json(path):
@@ -39,7 +44,7 @@ def read_json(path):
         return json.load(file)
 
 
-def research(config):
+def research(config, refresh=False):
     marketplaces = json.loads(
         sh(["claude", "plugin", "marketplace", "list", "--json"])
     )
@@ -51,10 +56,17 @@ def research(config):
     manifests = {}
 
     for specification in config["claudeMarketplaces"]:
-        if specification["plugins"] != "*":
-            continue
         marketplace = marketplaces_by_name.get(specification["name"])
         if marketplace is None:
+            continue
+        if refresh and marketplace["source"] == "github":
+            if marketplace["repo"] != specification["source"]:
+                raise ValueError(
+                    f"Marketplace {specification['name']} source mismatch: expected "
+                    f"{specification['source']}, found {marketplace['repo']}"
+                )
+            sh(["claude", "plugin", "marketplace", "update", specification["name"]])
+        if specification["plugins"] != "*":
             continue
         manifest_path = os.path.join(
             marketplace["installLocation"],
@@ -369,7 +381,6 @@ def apply_marketplaces(config, marketplaces, installed, actions):
                     f"Marketplace {name} source mismatch: expected "
                     f"{source}, found {marketplace['repo']}"
                 )
-            sh(["claude", "plugin", "marketplace", "update", name])
             continue
 
         if not action_is_selected(actions, "migrate", "marketplace", name):
@@ -527,7 +538,7 @@ def parse_args(args=None):
 def main(args=None):
     options = parse_args(args)
     config = read_json(CONFIG_PATH)
-    state = research(config)
+    state = research(config, refresh=not options.dry_run)
     actions = compute_actions(config, *state)
 
     if options.json:
