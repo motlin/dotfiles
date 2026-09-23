@@ -46,8 +46,7 @@ alias cr='c --resume'
 alias rc='claude rc --permission-mode auto --spawn worktree'
 # alias yolo='c --permission-mode acceptEdits'
 alias yolo='codex'
-# One generation behind codex's default model, for routine plugin commands.
-alias lite='yolo --model gpt-5.6-sol'
+alias lite='yolo --model gpt-6-sol'
 
 # 🔧 Plugin command aliases; claude's /name form commented out, codex's $name form live.
 # shellcheck disable=SC2154 # $git and friends are prompt names, not variables.
