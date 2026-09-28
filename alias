@@ -33,7 +33,7 @@ alias up3='cd ../../..'
 alias up4='cd ../../../..'
 
 alias now='date +"%Y-%m-%d %H:%M:%S"'
-alias log="TZ='EST+5' ts '%Y-%m-%d %H:%M:%.S'"
+alias tslog="TZ='EST+5' ts '%Y-%m-%d %H:%M:%.S'"
 
 alias cat='bat'
 alias lg='lazygit'

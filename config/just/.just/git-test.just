@@ -3,9 +3,13 @@ fail_fast := env('FAIL_FAST', "false")
 git_tests := env('GIT_TESTS', "default")
 
 # `git-test` on the range of commits between a configurable upstream/main and {{BRANCH}}
+# --worktree runs git-test in a sibling <repo>-test-worktree (created detached if missing) instead of
+# checking commits out in the current checkout; pass extra git-test flags after `--`.
 [group('git-test')]
-test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
+[arg("WORKTREE", long="worktree", value="true")]
+test-branch BRANCH="HEAD" TESTS=git_tests WORKTREE="false" *FLAGS="--retest --verbose --verbose":
     #!/usr/bin/env bash
+    set -euo pipefail
     branch="{{BRANCH}}"
     if [ "$branch" = "HEAD" ]; then
         branch=$(git branch --show-current)
@@ -15,7 +19,16 @@ test-branch BRANCH="HEAD" TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     fi
     echo "$branch" > JUSTFILE_BRANCH
     tests=$([ -n "{{TESTS}}" ] && echo "--tests {{TESTS}}" || echo "")
-    just --global-justfile _run "git test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
+    git_dir=""
+    if [ "{{WORKTREE}}" = "true" ]; then
+        repo=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
+        worktree="${repo}-test-worktree"
+        if [ ! -d "$worktree" ]; then
+            just --global-justfile _run "git worktree add --detach {{ANSI_YELLOW}}${worktree}{{ANSI_DEFAULT}} ${branch}"
+        fi
+        git_dir="-C ${worktree} "
+    fi
+    just --global-justfile _run "git ${git_dir}test run {{ANSI_GRAY}}${tests}{{ANSI_DEFAULT}} {{FLAGS}} {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}}..{{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}${branch}{{ANSI_NORMAL}}"
 
 # `git-test` on a single commit
 [group('git-test')]
@@ -43,7 +56,7 @@ test-all TESTS=git_tests *FLAGS="--retest --verbose --verbose":
     for branch in "${branches[@]}"
     do
         echo -n "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total_branches}] "
-        just --global-justfile _run "{{ANSI_BRIGHT_RED}}just{{ANSI_DEFAULT}} --global-justfile test-branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}\"${branch}\"{{ANSI_NORMAL}} {{ANSI_GRAY}}'{{TESTS}}'{{ANSI_DEFAULT}} {{FLAGS}}"
+        just --global-justfile _run "{{ANSI_BRIGHT_RED}}just{{ANSI_DEFAULT}} --global-justfile test-branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}\"${branch}\"{{ANSI_NORMAL}} {{ANSI_GRAY}}'{{TESTS}}'{{ANSI_DEFAULT}} -- {{FLAGS}}"
         ((current++))
     done
 
