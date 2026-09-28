@@ -79,6 +79,25 @@ function install_shared_skills() {
         --yes
 }
 
+function install_claude_skills() {
+    local source
+    local skills
+
+    while IFS=$'\t' read -r source skills; do
+        # shellcheck disable=SC2086 # skills is a space-separated list
+        npx --yes skills add "${source}" \
+            --global \
+            --agent claude-code \
+            --skill ${skills} \
+            --yes
+    done < <(
+        jq --raw-output '.claudeSkills[] | [.source, (.skills | join(" "))] | @tsv' \
+            "${BASEDIR}/install-agent-tools.config.json"
+    )
+
+    npx --yes skills update --global --yes
+}
+
 function install_github_stack_tools() {
     local agent
     local GH_HOST="github.com"
@@ -100,5 +119,6 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     "${BASEDIR}/sync-claude-plugins.py"
     install_motlin_codex_plugins
     install_shared_skills
+    install_claude_skills
     install_github_stack_tools
 fi

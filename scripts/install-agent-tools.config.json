@@ -1,5 +1,27 @@
 {
 	"titlePluginNames": ["ghostty-titles", "iterm2-titles", "tmux-titles"],
+	"claudeSkills": [
+		{
+			"source": "cloudflare/skills",
+			"skills": [
+				"agents-sdk",
+				"cloudflare",
+				"cloudflare-email-service",
+				"cloudflare-one",
+				"cloudflare-one-migrations",
+				"durable-objects",
+				"sandbox-stable",
+				"turnstile-spin",
+				"web-perf",
+				"workers-best-practices",
+				"wrangler"
+			]
+		},
+		{
+			"source": "maxim-saplin/goal-sloc",
+			"skills": ["goal-sloc"]
+		}
+	],
 	"claudeMarketplaces": [
 		{
 			"name": "caveman",
