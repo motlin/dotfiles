@@ -2,7 +2,8 @@ onboarding = false
 
 [keys]
 prefix = "backtick"
-focus_agent = "prefix+alt+1..9"
+focus_agent = "prefix+1..9"
+switch_tab = "prefix+alt+1..9"
 
 [theme]
 name = "one-dark"
