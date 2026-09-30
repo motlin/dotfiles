@@ -11,3 +11,6 @@ CLAUDE.local.md
 **/.worktrees/
 
 .envrc
+
+# Written by `just --global-justfile test-branch`
+JUSTFILE_BRANCH
