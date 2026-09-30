@@ -64,6 +64,12 @@
         stdout: true
         stderr: true
         description: Check for powerline binary
+      # 🧹 Migration: ~/.config/powerline used to be a symlink to the whole
+      # config/powerline directory. The per-file links below would resolve
+      # through it, back into this repository, and overwrite the files they
+      # point at.
+      - command: test ! -L ~/.config/powerline || rm ~/.config/powerline
+        description: 🧹 Removing legacy powerline directory symlink
 
 - link:
       ~/.Xdefaults:
@@ -115,8 +121,10 @@
       ~/.config/delta/themes.gitconfig:
           path: git-clones/dandavison/delta/themes.gitconfig
           create: true
-      ~/.config/powerline:
-          path: config/powerline
+      # Link the file, not the directory, so a machine-specific profile can
+      # override a single theme file.
+      ~/.config/powerline/themes/tmux/default.json:
+          path: config/powerline/themes/tmux/default.json
           create: true
       ~/.env:
       ~/.hushlogin:
