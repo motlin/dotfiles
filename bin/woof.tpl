@@ -12,11 +12,6 @@ MESSAGE="$1"
 
 echo -e "$MESSAGE"
 
-if [ "${SILENT:-false}" != true ]; then
-    VOICE=${VOICE:-Serena (Premium)}
-    say --voice "${VOICE}" "$MESSAGE" &
-fi
-
 curl --silent \
     --output /dev/null \
     --form-string "token={{ op://Development/pushover.net/PUSHOVER_TOKEN }}" \

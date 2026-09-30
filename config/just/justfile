@@ -16,5 +16,5 @@ scc:
     scc **/src/{main,test}
 
 # Override this with a command called `woof` which notifies you in whatever ways you prefer.
-# My `woof` command uses `echo`, `say`, and sends a Pushover notification.
+# My `woof` command uses `echo` and sends a Pushover notification.
 echo_command := env('ECHO_COMMAND', "echo")
