@@ -41,7 +41,10 @@ git -C "$TARGET_DIR" fetch origin
 
 if [ "$MODE" = "writable" ]; then
     if ! git -C "$TARGET_DIR" merge --ff-only origin/HEAD; then
-        echo "$TARGET_DIR has diverged from origin/HEAD; push or rebase it, then rerun." >&2
+        echo "$TARGET_DIR has diverged from origin/HEAD." >&2
+        echo "The usual cause is rebasing it onto a public upstream, which rewrites commits origin already has. If that is what happened, republish it:" >&2
+        echo "    git -C $TARGET_DIR push --force-with-lease origin HEAD" >&2
+        echo "Otherwise push or rebase it. Either way, rerun afterwards." >&2
         exit 1
     fi
     exit 0
