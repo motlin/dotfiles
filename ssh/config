@@ -1,6 +1,8 @@
 Host *
   AddKeysToAgent yes
   UseKeychain yes
+  # mac.conf.yaml links this to the 1Password SSH agent socket.
+  IdentityAgent "~/.1password/agent.sock"
 
 Host github.com
   IdentityFile ~/.ssh/id_ed25519
