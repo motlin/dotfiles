@@ -37,12 +37,13 @@
 	cmd = ~/.bin/idea merge $(cd $(dirname \"$LOCAL\") && pwd)/$(basename \"$LOCAL\") $(cd $(dirname \"$REMOTE\") && pwd)/$(basename \"$REMOTE\") $(cd $(dirname \"$BASE\") && pwd)/$(basename \"$BASE\") $(cd $(dirname \"$MERGED\") && pwd)/$(basename \"$MERGED\")
 	trustExitCode = false
 
+# Only gh run through op's plugin has a token.
 [credential "https://github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !op plugin run -- gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !op plugin run -- gh auth git-credential
 
 [includeIf "gitdir:~/projects/FactorioBlueprints/"]
     path = ~/.config/git/config-factorio-blueprints
