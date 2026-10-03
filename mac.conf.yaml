@@ -63,3 +63,13 @@
         description: 🎨 Installing powerline
       - command: ./scripts/mac/op-inject-if-signed-in.sh bin/woof.tpl bin/woof && if [ -f bin/woof ]; then chmod +x bin/woof; fi
         description: 🔐 Injecting secrets into bin/woof
+      - command: ./scripts/run-quietly.sh ./scripts/mac/defaults.sh
+        description: ⚙️ Applying macOS System Settings
+      - command: ./scripts/run-quietly.sh ./scripts/mac/default-apps.sh
+        description: 🎬 Setting IINA as the default video player
+      - command: >-
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
+            https://github.com/motlin/jetbrains-settings.git read-only
+        description: 📥 Cloning/updating jetbrains-settings
+      - command: ./scripts/mac/jetbrains-settings.sh git-clones/motlin/jetbrains-settings
+        description: 🎨 Installing JetBrains color schemes and templates
