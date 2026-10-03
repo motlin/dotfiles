@@ -13,20 +13,21 @@
       - ~/.1password
       - ~/.config/yt-dlp
 
-# Must precede the link block: ~/.secrets.local targets `secrets`, which does
-# not exist until op resolves the template, and dotbot fails a link whose
-# source is missing. secrets.tpl is gitignored, so a fresh clone has none;
-# touch keeps the link source present without clobbering an existing secrets.
+# Before the link block: ~/.secrets.local needs `secrets` to exist even when op can't fill it.
 - shell:
-      - command: if [ -f secrets.tpl ]; then ./scripts/run-quietly.sh op inject --force --in-file secrets.tpl --out-file secrets; else touch secrets; fi && chmod 600 secrets
+      - command: if [ -f secrets.tpl ]; then ./scripts/mac/op-inject-if-signed-in.sh secrets.tpl secrets; fi && touch secrets && chmod 600 secrets
         description: 🔐 Resolving op:// references into secrets
 
 - link:
-      ~/.1password/agent.sock: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
+      # The socket appears once the 1Password SSH agent is turned on.
+      ~/.1password/agent.sock:
+          path: ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
+          ignore-missing: true
       ~/.alias.local:
           path: alias.mac
       ~/.config/1Password/ssh/agent.toml:
           path: config/1Password/ssh/agent.toml
+          create: true
           force: true
       ~/.config/yt-dlp/config:
           path: config/yt-dlp/config
@@ -60,5 +61,5 @@
         description: 🐚 Writing the broot zsh launcher
       - command: ./scripts/run-quietly.sh pipx install powerline-status
         description: 🎨 Installing powerline
-      - command: ./scripts/run-quietly.sh op inject --force --in-file bin/woof.tpl --out-file bin/woof --force && chmod +x bin/woof
+      - command: ./scripts/mac/op-inject-if-signed-in.sh bin/woof.tpl bin/woof && if [ -f bin/woof ]; then chmod +x bin/woof; fi
         description: 🔐 Injecting secrets into bin/woof

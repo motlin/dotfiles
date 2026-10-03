@@ -7,7 +7,10 @@ autoload -U add-zsh-hook
 eval "$(brew shellenv)"
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 
-source ~/.config/op/plugins.sh
+# `op plugin init gh` creates this; a fresh Mac has not run it yet.
+if [[ -f ~/.config/op/plugins.sh ]]; then
+    source ~/.config/op/plugins.sh
+fi
 
 # Cache op completions to avoid triggering 1Password popup on every shell start
 if [[ ! -f ~/.cache/op-completion.zsh ]] || [[ $(stat -f %m /opt/homebrew/bin/op) -gt $(stat -f %m ~/.cache/op-completion.zsh) ]]; then
