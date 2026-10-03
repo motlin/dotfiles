@@ -59,6 +59,10 @@
             https://github.com/tmux-plugins/tpm read-only
         description: 📥 Cloning/updating tpm
       - command: >-
+            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
+            https://github.com/motlin/git-test.git read-only
+        description: 📥 Cloning/updating git-test
+      - command: >-
             command -v powerline >/dev/null || echo
             'Warning: powerline not found on PATH' >&2
         stdout: true
@@ -128,6 +132,9 @@
           create: true
       ~/.env:
       ~/.hushlogin:
+      ~/.local/bin/git-test:
+          path: git-clones/motlin/git-test/bin/git-test
+          create: true
       ~/.minttyrc:
       ~/.oh-my-zsh: git-clones/ohmyzsh/ohmyzsh
       ~/.oh-my-zsh/custom/plugins/herdr-shell-status:
