@@ -65,6 +65,8 @@
         description: 🔐 Injecting secrets into bin/woof
       - command: ./scripts/run-quietly.sh ./scripts/mac/defaults.sh
         description: ⚙️ Applying macOS System Settings
+      - command: ./scripts/run-quietly.sh ./scripts/mac/install-1password-agent-tools.sh
+        description: 🔐 Adding the 1Password MCP server to Claude and Codex
       - command: ./scripts/run-quietly.sh ./scripts/mac/default-apps.sh
         description: 🎬 Setting IINA as the default video player
       - command: >-
