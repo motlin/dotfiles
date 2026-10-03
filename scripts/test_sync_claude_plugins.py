@@ -435,7 +435,7 @@ def test_json_flag_emits_raw_action_records():
         (
             0,
             f"{json.dumps(actions, indent=2)}\n",
-            [mock.call({}, [], [], actions)],
+            [mock.call({}, [], [], {}, actions)],
         ),
     )
 
@@ -618,6 +618,8 @@ def test_apply_orders_marketplaces_plugins_prune_and_settings():
         {"action": "forget", "id": "old-plugin@example-marketplace"},
     ]
 
+    settings = {"enabledPlugins": {"beta-plugin@example-marketplace": False}}
+
     with (
         mock.patch.object(module, "sh") as shell,
         mock.patch.object(module, "reconcile_settings") as reconcile_settings,
@@ -626,6 +628,7 @@ def test_apply_orders_marketplaces_plugins_prune_and_settings():
             config,
             marketplaces,
             installed,
+            settings,
             actions,
         )
 
@@ -650,7 +653,7 @@ def test_apply_orders_marketplaces_plugins_prune_and_settings():
                     "--scope", "user", "old-plugin@example-marketplace",
                 ]),
             ],
-            [mock.call(actions)],
+            [mock.call(actions, settings)],
         ),
     )
 
@@ -707,6 +710,7 @@ def test_marketplace_migration_retries_after_uninstalling_plugins():
             config,
             marketplaces,
             installed,
+            {},
             actions,
         )
 
@@ -743,7 +747,7 @@ def test_marketplace_migration_retries_after_uninstalling_plugins():
                     "alpha-plugin@example-marketplace",
                 ]),
             ],
-            [mock.call(actions)],
+            [mock.call(actions, {})],
             "Migrating Claude example-marketplace from directory source to "
             "github example/marketplace.\n",
         ),
@@ -774,6 +778,7 @@ def test_settings_reconciliation_preserves_existing_false_value():
     ):
         changed = module.reconcile_settings(
             actions,
+            settings,
             "/tmp/test/settings.json",
         )
 
@@ -802,6 +807,86 @@ def test_settings_reconciliation_preserves_existing_false_value():
     )
 
 
+def test_settings_reconciliation_restores_values_claude_overwrote():
+    module = load_sync_module()
+    original_settings = {
+        "enabledPlugins": {
+            "beta-plugin@example-marketplace": False,
+            "old-plugin@example-marketplace": True,
+        },
+        "extraKnownMarketplaces": {
+            "example-marketplace": {
+                "source": {"source": "github", "repo": "example/marketplace"},
+                "autoUpdate": True,
+            },
+        },
+        "theme": "auto",
+    }
+    settings_after_claude = {
+        "enabledPlugins": {
+            "beta-plugin@example-marketplace": True,
+            "old-plugin@example-marketplace": True,
+            "alpha-plugin@example-marketplace": True,
+        },
+        "extraKnownMarketplaces": {
+            "example-marketplace": {
+                "source": {"source": "github", "repo": "example/marketplace"},
+            },
+            "second-marketplace": {
+                "source": {"source": "github", "repo": "example/second-marketplace"},
+            },
+        },
+        "theme": "auto",
+    }
+    actions = [
+        {"action": "enable", "id": "alpha-plugin@example-marketplace"},
+        {"action": "forget", "id": "old-plugin@example-marketplace"},
+    ]
+
+    with (
+        mock.patch.object(module.os.path, "exists", return_value=True),
+        mock.patch.object(module, "read_json", return_value=settings_after_claude),
+        mock.patch.object(
+            module,
+            "write_settings_atomic",
+            return_value=True,
+        ) as write_settings,
+    ):
+        changed = module.reconcile_settings(
+            actions,
+            original_settings,
+            "/tmp/test/settings.json",
+        )
+
+    ASSERTIONS.assertEqual(
+        (changed, write_settings.mock_calls),
+        (
+            True,
+            [
+                mock.call(
+                    {
+                        "enabledPlugins": {
+                            "beta-plugin@example-marketplace": False,
+                            "alpha-plugin@example-marketplace": True,
+                        },
+                        "extraKnownMarketplaces": {
+                            "example-marketplace": {
+                                "source": {"source": "github", "repo": "example/marketplace"},
+                                "autoUpdate": True,
+                            },
+                            "second-marketplace": {
+                                "source": {"source": "github", "repo": "example/second-marketplace"},
+                            },
+                        },
+                        "theme": "auto",
+                    },
+                    "/tmp/test/settings.json",
+                ),
+            ],
+        ),
+    )
+
+
 def test_settings_reconciliation_creates_missing_settings_file():
     module = load_sync_module()
     actions = [
@@ -812,7 +897,7 @@ def test_settings_reconciliation_creates_missing_settings_file():
 
     with tempfile.TemporaryDirectory(dir=scratch_directory) as directory:
         settings_path = pathlib.Path(directory) / "claude" / "settings.json"
-        changed = module.reconcile_settings(actions, str(settings_path))
+        changed = module.reconcile_settings(actions, {}, str(settings_path))
         result = (
             changed,
             settings_path.read_text(),
@@ -874,6 +959,16 @@ def test_atomic_settings_write_replaces_only_changed_bytes():
     )
 
 
+
+def test_settings_bytes_keep_non_ascii_characters_unescaped():
+    module = load_sync_module()
+
+    ASSERTIONS.assertEqual(
+        module.settings_bytes({"note": "a \u2014 b \u2192 c"}),
+        '{\n  "note": "a \u2014 b \u2192 c"\n}\n'.encode(),
+    )
+
+
 TEST_FUNCTIONS = (
     test_undeclared_user_scope_plugin_is_removed,
     test_project_scope_plugin_is_spared,
@@ -896,8 +991,10 @@ TEST_FUNCTIONS = (
     test_apply_orders_marketplaces_plugins_prune_and_settings,
     test_marketplace_migration_retries_after_uninstalling_plugins,
     test_settings_reconciliation_preserves_existing_false_value,
+    test_settings_reconciliation_restores_values_claude_overwrote,
     test_settings_reconciliation_creates_missing_settings_file,
     test_atomic_settings_write_replaces_only_changed_bytes,
+    test_settings_bytes_keep_non_ascii_characters_unescaped,
 )
 
 

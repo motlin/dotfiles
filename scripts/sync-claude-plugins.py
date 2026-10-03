@@ -413,7 +413,7 @@ def apply_marketplaces(config, marketplaces, installed, actions):
 
 
 def settings_bytes(settings):
-    return (json.dumps(settings, indent=2) + "\n").encode()
+    return (json.dumps(settings, indent=2, ensure_ascii=False) + "\n").encode()
 
 
 def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
@@ -447,28 +447,39 @@ def write_settings_atomic(settings, path=CLAUDE_SETTINGS):
             os.unlink(temporary_path)
 
 
-def reconcile_settings(actions, path=CLAUDE_SETTINGS):
+def restore_original_settings(settings, original_settings):
+    # `claude plugin install` enables every plugin it installs and `claude plugin
+    # marketplace add` rewrites the marketplace entry, so put back every value that
+    # was there before, one level deep, while keeping the entries Claude added.
+    restored_settings = dict(settings)
+    for key, original_value in original_settings.items():
+        value = settings.get(key)
+        if isinstance(value, dict) and isinstance(original_value, dict):
+            restored_settings[key] = {**value, **original_value}
+        else:
+            restored_settings[key] = original_value
+    return restored_settings
+
+
+def reconcile_settings(actions, original_settings, path=CLAUDE_SETTINGS):
     enable_ids = [
         action["id"] for action in actions if action["action"] == "enable"
     ]
     forget_ids = [
         action["id"] for action in actions if action["action"] == "forget"
     ]
-    if not enable_ids and not forget_ids:
-        return False
 
     settings = read_json(path) if os.path.exists(path) else {}
-    updated_settings = dict(settings)
+    updated_settings = restore_original_settings(settings, original_settings)
     enabled_plugins = updated_settings.get("enabledPlugins")
     if enabled_plugins is None:
-        if not enable_ids:
-            return False
         enabled_plugins = {}
     elif not isinstance(enabled_plugins, dict):
         raise ValueError("Claude settings enabledPlugins must be an object")
     else:
         enabled_plugins = dict(enabled_plugins)
-    updated_settings["enabledPlugins"] = enabled_plugins
+    if enabled_plugins or enable_ids:
+        updated_settings["enabledPlugins"] = enabled_plugins
 
     for plugin_id in enable_ids:
         if plugin_id not in enabled_plugins:
@@ -481,7 +492,7 @@ def reconcile_settings(actions, path=CLAUDE_SETTINGS):
     return write_settings_atomic(updated_settings, path)
 
 
-def apply_actions(config, marketplaces, installed, actions):
+def apply_actions(config, marketplaces, installed, settings, actions):
     uninstalled_plugin_ids = apply_marketplaces(
         config,
         marketplaces,
@@ -507,7 +518,7 @@ def apply_actions(config, marketplaces, installed, actions):
         ):
             uninstall_plugin(action["id"])
 
-    reconcile_settings(actions)
+    reconcile_settings(actions, settings)
 
 
 def parse_args(args=None):
@@ -554,7 +565,7 @@ def main(args=None):
         not options.dry_run
         and (options.yes or not sys.stdin.isatty())
     ):
-        apply_actions(config, *state[:2], actions_to_apply)
+        apply_actions(config, *state[:3], actions_to_apply)
     return 0
 
 
