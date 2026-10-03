@@ -43,10 +43,20 @@ for conf in "${DEFAULT_CONFIG_PREFIX}" "${@}"; do
     fi
 done
 
+# On a fresh Mac nothing has put Homebrew on PATH yet, so scripts would run under /bin/bash 3.2, which lacks mapfile.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Native installers put claude and codex here; dotbot steps after them need them on PATH.
+export PATH="${HOME}/.local/bin:${PATH}"
+
 if configuration_requested "${MISE_DOWNLOAD_RESTRICTED_CONFIGURATION}" "$@"; then
     export DOTFILES_INSTALL_MISE_TOOLS=false
+    export DOTFILES_INSTALL_AGENT_CLIS=false
 else
     export DOTFILES_INSTALL_MISE_TOOLS=true
+    export DOTFILES_INSTALL_AGENT_CLIS=true
     if ! command -v mise >/dev/null 2>&1; then
         if ! command -v curl >/dev/null 2>&1; then
             echo "curl is required to bootstrap mise." >&2
@@ -54,13 +64,15 @@ else
         fi
 
         curl --fail --location --show-error "${MISE_INSTALLER_LOCATION}" | sh
-        export PATH="${HOME}/.local/bin:${PATH}"
 
         if ! command -v mise >/dev/null 2>&1; then
             echo "mise was installed but is not available on PATH." >&2
             exit 1
         fi
     fi
+
+    # Dotbot shells are not interactive, so zshrc.mac never activates mise; the shims expose node and npx.
+    eval "$(mise activate bash --shims)"
 fi
 
 cd "${BASEDIR}"

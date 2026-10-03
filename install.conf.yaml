@@ -165,6 +165,11 @@
         description: 🛠️ Installing mise tools
 
 - shell:
+      - command: >-
+            if [ "${DOTFILES_INSTALL_AGENT_CLIS}" = true ]; then
+            ./scripts/run-quietly.sh ./scripts/install-agent-clis.sh;
+            else echo 'Skipping agent CLIs for restricted profile'; fi
+        description: Installing Claude Code and Codex with their native installers
       - command: ./scripts/run-quietly.sh ./scripts/install-agent-tools.sh
         description: Installing shared Claude and Codex plugins and skills
       - command: ./scripts/run-quietly.sh herdr integration install claude

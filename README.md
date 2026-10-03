@@ -9,8 +9,10 @@ Clone this repository into `~/.dotfiles` and run the install script:
 ```bash
 git clone https://github.com/motlin/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-./install mac  # For macOS
+./install mac
 ```
+
+Use `mac` on macOS.
 
 Use `./install --verbose mac` to stream every Dotbot shell command while
 diagnosing an installation failure.
