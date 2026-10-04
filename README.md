@@ -47,8 +47,8 @@ The repository supports multiple environments through separate configuration fil
 
 Configurations apply in order, allowing environment-specific settings to override the base.
 
-Broot is macOS-only in the public profiles: `mac.conf.yaml` installs it and
-generates the Zsh launcher. The shared Bash and Zsh configurations source a
+Broot is macOS-only in the public profiles: the Brewfile installs it, and
+`mac.conf.yaml` generates the Zsh launcher. The shared Bash and Zsh configurations source a
 launcher only when it exists, so other environments leave `br` undefined. A
 Linux profile must install broot and generate the corresponding launcher before
 `br` becomes available there.
