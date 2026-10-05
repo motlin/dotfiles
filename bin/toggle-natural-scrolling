@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+"""Flip the scroll direction (natural scrolling) for the mouse and trackpad."""
+import ctypes
+
+FRAMEWORK = "/System/Library/PrivateFrameworks/PreferencePanesSupport.framework/PreferencePanesSupport"
+
+
+def load_framework():
+    framework = ctypes.CDLL(FRAMEWORK)
+    framework.swipeScrollDirection.restype = ctypes.c_bool
+    framework.setSwipeScrollDirection.argtypes = [ctypes.c_bool]
+    return framework
+
+
+# System Settings calls the same private function, which applies immediately.
+def toggle(framework):
+    natural = not framework.swipeScrollDirection()
+    framework.setSwipeScrollDirection(natural)
+    return natural
+
+
+if __name__ == "__main__":
+    print("natural scrolling on" if toggle(load_framework()) else "natural scrolling off")

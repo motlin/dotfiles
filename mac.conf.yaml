@@ -61,6 +61,12 @@
         description: 🎨 Installing powerline
       - command: ./scripts/mac/op-inject-if-signed-in.sh bin/woof.tpl bin/woof && if [ -f bin/woof ]; then chmod +x bin/woof; fi
         description: 🔐 Injecting secrets into bin/woof
+      # SteerMouse can only launch apps, so wrap the command in one; built once so the button's link stays valid.
+      - command: >-
+            mkdir -p ~/Applications &&
+            app=~/Applications/"Toggle Natural Scrolling.app" &&
+            { [ -d "$app" ] || osacompile -o "$app" -e 'do shell script "$HOME/.bin/toggle-natural-scrolling"'; }
+        description: 🖱️ Building the Toggle Natural Scrolling app for SteerMouse
       - command: ./scripts/run-quietly.sh ./scripts/mac/defaults.sh
         description: ⚙️ Applying macOS System Settings
       - command: ./scripts/run-quietly.sh ./scripts/mac/install-1password-agent-tools.sh
