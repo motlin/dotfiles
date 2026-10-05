@@ -67,9 +67,3 @@
         description: 🔐 Adding the 1Password MCP server to Claude and Codex
       - command: ./scripts/run-quietly.sh ./scripts/mac/default-apps.sh
         description: 🎬 Setting IINA as the default video player
-      - command: >-
-            ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/motlin/jetbrains-settings.git read-only
-        description: 📥 Cloning/updating jetbrains-settings
-      - command: ./scripts/mac/jetbrains-settings.sh git-clones/motlin/jetbrains-settings
-        description: 🎨 Installing JetBrains color schemes and templates
