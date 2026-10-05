@@ -190,6 +190,8 @@
         description: Installing Claude Code and Codex with their native installers
       - command: ./scripts/run-quietly.sh ./scripts/install-agent-tools.sh
         description: Installing shared Claude and Codex plugins and skills
+      - command: ./scripts/run-quietly.sh claude plugin enable cc-plugin-you-should-know@builtin
+        description: Enabling Claude's You should know plugin
       - command: ./scripts/run-quietly.sh herdr integration install claude
         description: Installing Herdr Claude integration
       - command: ./scripts/run-quietly.sh herdr integration install codex
