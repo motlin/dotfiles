@@ -9,5 +9,6 @@ bin/woof
 .claude/
 .llm/
 .ruff_cache/
+__pycache__/
 firebase-debug.log
 dotbot/
