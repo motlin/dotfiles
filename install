@@ -31,6 +31,7 @@ function configuration_requested() {
 
 export DOTFILES_INSTALL_VERBOSE=false
 
+# Validate every profile before applying any, so a typo in a later profile name fails fast instead of leaving the machine half-installed.
 for conf in "${DEFAULT_CONFIG_PREFIX}" "${@}"; do
     if [[ "${conf}" == "${VERBOSE_OPTION}" ]]; then
         export DOTFILES_INSTALL_VERBOSE=true
