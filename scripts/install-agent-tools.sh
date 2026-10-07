@@ -2,17 +2,40 @@
 
 set -euo pipefail
 
-for required_command in claude codex gh jq npx python3; do
-    if ! command -v "${required_command}" >/dev/null 2>&1; then
-        echo "${required_command} is required to install agent plugins and skills." >&2
-        exit 1
-    fi
-done
-
 BASEDIR="$(command cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly BASEDIR
 readonly MOTLIN_MARKETPLACE="motlin-claude-code-plugins"
 mapfile -t TITLE_PLUGIN_NAMES < <(jq -r '.titlePluginNames[]' "${BASEDIR}/install-agent-tools.config.json")
+
+# A profile can force Codex tools on or off; otherwise install them only where codex is present.
+function codex_tools_enabled() {
+    if [[ -n "${DOTFILES_INSTALL_CODEX_TOOLS:-}" ]]; then
+        [[ "${DOTFILES_INSTALL_CODEX_TOOLS}" == true ]]
+    else
+        command -v codex >/dev/null 2>&1
+    fi
+}
+
+agents=(claude-code)
+if codex_tools_enabled; then
+    agents+=(codex)
+fi
+
+function check_required_commands() {
+    local required_command
+    local required_commands=(claude gh jq npx python3)
+
+    if codex_tools_enabled; then
+        required_commands+=(codex)
+    fi
+
+    for required_command in "${required_commands[@]}"; do
+        if ! command -v "${required_command}" >/dev/null 2>&1; then
+            echo "${required_command} is required to install agent plugins and skills." >&2
+            exit 1
+        fi
+    done
+}
 
 function ensure_codex_marketplace() {
     local marketplaces
@@ -106,7 +129,7 @@ function install_github_stack_tools() {
 
     gh extension install github/gh-stack --force
 
-    for agent in claude-code codex; do
+    for agent in "${agents[@]}"; do
         gh skill install github/gh-stack gh-stack \
             --agent "${agent}" \
             --scope user \
@@ -116,9 +139,12 @@ function install_github_stack_tools() {
 
 # Sourcing the script exposes the functions without installing anything.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    check_required_commands
     "${BASEDIR}/sync-claude-plugins.py"
-    install_motlin_codex_plugins
-    install_shared_skills
+    if codex_tools_enabled; then
+        install_motlin_codex_plugins
+        install_shared_skills
+    fi
     install_claude_skills
     install_github_stack_tools
 fi
