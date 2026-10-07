@@ -2,3 +2,9 @@
 gui:
     # Pin the files pane to tree view.
     showFileTree: true
+git:
+    # Render diffs through delta with the same features as the shell pager in config/git/config.
+    diffRenderers:
+        - type: stdinFilter
+          colorArg: always
+          command: delta --paging=never --features "default-feature dark-mode"
