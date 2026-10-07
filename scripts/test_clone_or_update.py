@@ -9,8 +9,9 @@ import unittest
 
 CLONE_SCRIPT = pathlib.Path(__file__).with_name("clone-or-update.sh")
 
+# Drop GIT_DIR, GIT_INDEX_FILE and friends that a commit hook exports, or they leak into the test repositories.
 GIT_ENVIRONMENT = dict(
-    os.environ,
+    {name: value for name, value in os.environ.items() if not name.startswith("GIT_")},
     GIT_CONFIG_GLOBAL=os.devnull,
     GIT_CONFIG_NOSYSTEM="1",
     GIT_AUTHOR_NAME="Test Author",
