@@ -127,9 +127,16 @@
           create: true
       # Link the file, not the directory, so a machine-specific profile can
       # override a single theme file.
+      # Profiles run after this file, so once one has pointed the link
+      # elsewhere, leave it alone instead of flipping it back on every install.
+      # pwd -P, not $PWD: dotbot sets the cwd without rewriting the inherited PWD.
       ~/.config/powerline/themes/tmux/default.json:
           path: config/powerline/themes/tmux/default.json
           create: true
+          if: >-
+              f=~/.config/powerline/themes/tmux/default.json;
+              [ ! -L "$f" ] || [ "$(readlink "$f")" =
+              "$(pwd -P)/config/powerline/themes/tmux/default.json" ]
       ~/.env:
       ~/.hushlogin:
       ~/.local/bin/git-test:
