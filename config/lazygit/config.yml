@@ -8,3 +8,5 @@ git:
         - type: stdinFilter
           colorArg: always
           command: delta --paging=never --features "default-feature dark-mode"
+    # Auto-fetch only the current branch's remote instead of every remote.
+    fetchAll: false
