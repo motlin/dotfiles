@@ -29,6 +29,10 @@
           path: config/1Password/ssh/agent.toml
           create: true
           force: true
+      # macOS lazygit reads Application Support, not ~/.config.
+      ~/Library/Application Support/lazygit/config.yml:
+          path: config/lazygit/config.yml
+          create: true
       ~/.config/yt-dlp/config:
           path: config/yt-dlp/config
       ~/.config/git/config.local:

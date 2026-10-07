@@ -104,6 +104,10 @@
       ~/.config/ghostty:
           path: config/ghostty
           create: true
+      # Link the file, not the directory: lazygit writes state.yml beside it.
+      ~/.config/lazygit/config.yml:
+          path: config/lazygit/config.yml
+          create: true
       ~/.config/herdr/config.toml:
           path: config/herdr/config.toml
           create: true
