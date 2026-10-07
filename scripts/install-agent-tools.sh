@@ -127,7 +127,10 @@ function install_github_stack_tools() {
 
     export GH_HOST
 
-    gh extension install github/gh-stack --force
+    # --force would reinstall on every run; gh extension upgrade handles updates.
+    if ! gh extension list | grep --quiet 'github/gh-stack'; then
+        gh extension install github/gh-stack
+    fi
 
     for agent in "${agents[@]}"; do
         gh skill install github/gh-stack gh-stack \

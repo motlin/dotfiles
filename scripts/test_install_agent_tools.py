@@ -91,5 +91,46 @@ class CodexToolsEnabledTest(unittest.TestCase):
         self.assertEqual(self.enabled(), "no")
 
 
+class InstallGithubStackToolsTest(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.directory)
+        self.log_path = pathlib.Path(self.directory, "gh.log")
+        self.environment = dict(
+            os.environ,
+            PATH=f"{self.directory}:{os.environ['PATH']}",
+            DOTFILES_INSTALL_CODEX_TOOLS="false",
+        )
+
+    def install(self, installed_extensions):
+        write_fake_command(
+            self.directory,
+            "gh",
+            f'echo "$*" >> "{self.log_path}"\n'
+            f'if [ "$1 $2" = "extension list" ]; then printf "{installed_extensions}"; fi',
+        )
+        run_sourced("install_github_stack_tools", self.environment)
+        return self.log_path.read_text().splitlines()
+
+    def test_installs_extension_when_missing(self):
+        self.assertEqual(
+            self.install(""),
+            [
+                "extension list",
+                "extension install github/gh-stack",
+                "skill install github/gh-stack gh-stack --agent claude-code --scope user --force",
+            ],
+        )
+
+    def test_skips_extension_install_when_already_present(self):
+        self.assertEqual(
+            self.install("gh stack\\tgithub/gh-stack\\tv1.0.0\\n"),
+            [
+                "extension list",
+                "skill install github/gh-stack gh-stack --agent claude-code --scope user --force",
+            ],
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
