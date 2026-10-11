@@ -1,1 +1,3 @@
 alias rsync="rsync --archive --verbose --info=progress2 --human-readable --partial --exclude='._*' --exclude=.Trashes --exclude=.Spotlight-V100"
+# herdr: plain `herdr` = default session (local only); `herdr-later` = low-priority session with the SSH machines
+alias herdr-later='XDG_STATE_HOME=$HOME/.local/state/herdr-later herdr session attach later'
