@@ -38,7 +38,7 @@ repos:
             entry: env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts -p 'test_*.py'
             language: system
             pass_filenames: false
-            files: ^scripts/
+            files: ^(scripts/|config/just/)
 
           - id: markdownlint
             name: markdownlint

@@ -61,11 +61,12 @@ alias ra := rebase-all
 
 # Replay all branches onto configurable upstream/main or matching up-to-date origin branch
 [group('git-rebase')]
-replay-all: fetch
+replay-all KEEP_GOING="false": fetch
     #!/usr/bin/env bash
     set -Eeuo pipefail
 
     branches=($(git for-each-ref --format='%(refname:short)' refs/heads/ --sort -committerdate --no-contains {{upstream_remote}}/{{upstream_branch}}))
+    checked_out_branches=($(git worktree list --porcelain | sed -n 's|^branch refs/heads/||p'))
     total=${#branches[@]}
     current=0
     failed_branches=()
@@ -79,24 +80,38 @@ replay-all: fetch
             continue
         fi
 
+        # git replay moves refs without touching any checkout, which would leave the checkout with upstream's changes reversed and staged
+        checked_out_in_stack=""
+        for stacked_branch in $(git for-each-ref --format='%(refname:short)' refs/heads/ --merged "$branch" --no-merged {{upstream_remote}}/{{upstream_branch}}); do
+            for checked_out_branch in "${checked_out_branches[@]}"; do
+                if [ "$stacked_branch" = "$checked_out_branch" ]; then
+                    checked_out_in_stack="$stacked_branch"
+                fi
+            done
+        done
+        if [ -n "$checked_out_in_stack" ]; then
+            echo "[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_YELLOW}}Skipping{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} as {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$checked_out_in_stack{{ANSI_NORMAL}} is {{ANSI_BG_BRIGHT_MAGENTA}}{{ANSI_BLACK}}checked out{{ANSI_NORMAL}}"
+            continue
+        fi
+
         replay_message="[{{ANSI_YELLOW}}${current}{{ANSI_DEFAULT}}/${total}] {{ANSI_GREEN}}Replaying{{ANSI_NORMAL}} branch {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}} onto"
 
         replay_failed=false
         if git rev-parse --verify origin/$branch &>/dev/null; then
             if git merge-base --is-ancestor {{upstream_remote}}/{{upstream_branch}} origin/$branch; then
                 echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}origin/$branch{{ANSI_NORMAL}} (because origin/$branch exists and is {{ANSI_CYAN}}up-to-date{{ANSI_NORMAL}} with {{upstream_remote}}/{{upstream_branch}})"
-                if ! git replay --onto origin/$branch origin/$branch..$branch 2>&1; then
+                if ! git replay --contained --onto origin/$branch origin/$branch..$branch 2>&1; then
                     replay_failed=true
                 fi
             else
                 echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch exists but is {{ANSI_BLUE}}not an ancestor{{ANSI_NORMAL}})"
-                if ! git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
+                if ! git replay --contained --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
                     replay_failed=true
                 fi
             fi
         else
             echo "$replay_message {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} (because origin/$branch {{ANSI_MAGENTA}}does not exist{{ANSI_NORMAL}})"
-            if ! git replay --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
+            if ! git replay --contained --onto {{upstream_remote}}/{{upstream_branch}} {{upstream_remote}}/{{upstream_branch}}..$branch 2>&1; then
                 replay_failed=true
             fi
         fi
@@ -113,7 +128,9 @@ replay-all: fetch
         for branch in "${failed_branches[@]}"; do
             echo "  {{ANSI_RED}}-{{ANSI_NORMAL}} {{ANSI_BRIGHT_GREEN}}{{ANSI_BOLD}}$branch{{ANSI_NORMAL}}"
         done
-        exit 1
+        if [ "{{KEEP_GOING}}" != "true" ]; then
+            exit 1
+        fi
     fi
 
 alias r := replay-all
@@ -207,5 +224,5 @@ delete-branches-matching BRANCH_REGULAR_EXPRESSION: fetch
 delete-fix-branches: (delete-branches-matching '^fix-[0-9]+($|-)')
 
 [group('git-rebase')]
-git-all: rebase-all worktree-prune delete-merged
+git-all: _check-local-modifications (replay-all "true") rebase-all worktree-prune delete-merged
 alias g := git-all
