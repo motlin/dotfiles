@@ -1,0 +1,10 @@
+# Tools for developing the dotfiles repo, and bun for building Collie under git-clones.
+[tools]
+bun = "1.4.2"
+just = "1.58.0"
+node = "24.21.0"
+python = "3.15.0"
+pre-commit = "4.6.2"
+"pipx:yamllint" = "1.38.0"
+"npm:markdownlint-cli2" = "0.23.3"
+"npm:oxfmt" = "0.72.0"
