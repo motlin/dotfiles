@@ -183,6 +183,18 @@ class GitAllTest(RecipeTest):
             (True, True, ["conflicting"]),
         )
 
+    def test_replays_even_when_the_working_tree_has_local_modifications(self):
+        self.topic_branch("clean")
+        self.publish_upstream_change()
+        pathlib.Path(self.repository, "untracked").write_text("untracked\n")
+
+        result = just(self.repository, "git-all")
+
+        self.assertEqual(
+            (result.returncode != 0, contains_upstream(self.repository, "clean")),
+            (True, True),
+        )
+
     def test_rebases_only_the_branches_replay_cannot_handle(self):
         self.topic_branch("replayable")
         self.topic_branch("side")

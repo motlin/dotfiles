@@ -53,12 +53,6 @@ rebase-all: _check-local-modifications fetch
 
 alias ra := rebase-all
 
-# `git replay` onto configurable upstream/main (non-interactive, no autosquash)
-[group('git-rebase')]
-@replay: fetch
-    just --global-justfile _run "git replay --onto {{ANSI_BRIGHT_RED}}{{ANSI_BOLD}}{{upstream_remote}}/{{upstream_branch}}{{ANSI_NORMAL}} {{upstream_remote}}/{{upstream_branch}}..HEAD"
-    just --global-justfile _run "git reset --hard"
-
 # Replay all branches onto configurable upstream/main or matching up-to-date origin branch
 [group('git-rebase')]
 replay-all KEEP_GOING="false": fetch
@@ -224,5 +218,5 @@ delete-branches-matching BRANCH_REGULAR_EXPRESSION: fetch
 delete-fix-branches: (delete-branches-matching '^fix-[0-9]+($|-)')
 
 [group('git-rebase')]
-git-all: _check-local-modifications (replay-all "true") rebase-all worktree-prune delete-merged
+git-all: (replay-all "true") rebase-all worktree-prune delete-merged
 alias g := git-all
