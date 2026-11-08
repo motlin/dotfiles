@@ -161,11 +161,18 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
         for specification in config["claudeMarketplaces"]
     }
 
+    kept_ids = {
+        f"{plugin_name}@{specification['name']}"
+        for specification in config["claudeMarketplaces"]
+        for plugin_name in specification.get("keepPlugins", [])
+    }
+
     for plugin in installed:
         plugin_id = plugin["id"]
         marketplace_name = plugin_id.rpartition("@")[2]
         if (
-            plugin["scope"] == "user"
+            plugin_id not in kept_ids
+            and plugin["scope"] == "user"
             and marketplace_name in managed_marketplaces
             and marketplace_name not in pending_marketplaces
             and plugin_id not in desired_ids
@@ -178,6 +185,7 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
             marketplace_name in managed_marketplaces
             and marketplace_name not in pending_marketplaces
             and plugin_id not in desired_ids
+            and plugin_id not in kept_ids
             and plugin_id not in non_user_plugin_ids
         ):
             actions.append({"action": "forget", "id": plugin_id})

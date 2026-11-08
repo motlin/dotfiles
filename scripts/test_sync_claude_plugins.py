@@ -404,6 +404,48 @@ def test_set_enabled_runs_without_a_terminal_and_is_counted_in_the_report():
     ASSERTIONS.assertIn("Enable state: 1 enabledPlugins keys to add", module.format_report(actions))
 
 
+def test_kept_plugin_is_neither_removed_nor_forgotten():
+    config = config_with_disabled(["temporal-data"], [])
+    config["claudeMarketplaces"][0]["keepPlugins"] = ["claude-code-plans"]
+    actions = compute_actions(
+        config,
+        [marketplace()],
+        [installed_plugin("temporal-data"), installed_plugin("claude-code-plans")],
+        {
+            "enabledPlugins": {
+                "temporal-data@motlin-claude-code-plugins": True,
+                "claude-code-plans@motlin-claude-code-plugins": True,
+            },
+        },
+        {},
+    )
+
+    ASSERTIONS.assertEqual(actions, [
+        {"action": "unchanged", "id": "temporal-data@motlin-claude-code-plugins"},
+    ])
+
+
+def test_kept_plugin_enabled_state_is_left_alone():
+    config = config_with_disabled(["temporal-data"], [])
+    config["claudeMarketplaces"][0]["keepPlugins"] = ["claude-code-plans"]
+    actions = compute_actions(
+        config,
+        [marketplace()],
+        [installed_plugin("temporal-data"), installed_plugin("claude-code-plans")],
+        {
+            "enabledPlugins": {
+                "temporal-data@motlin-claude-code-plugins": True,
+                "claude-code-plans@motlin-claude-code-plugins": False,
+            },
+        },
+        {},
+    )
+
+    ASSERTIONS.assertEqual(actions, [
+        {"action": "unchanged", "id": "temporal-data@motlin-claude-code-plugins"},
+    ])
+
+
 def test_github_marketplace_repo_mismatch_raises():
     with ASSERTIONS.assertRaisesRegex(
         ValueError,
@@ -1091,6 +1133,8 @@ TEST_FUNCTIONS = (
     test_declared_marketplace_leaves_correct_enabled_state_alone,
     test_settings_reconciliation_applies_set_enabled_over_restored_values,
     test_set_enabled_runs_without_a_terminal_and_is_counted_in_the_report,
+    test_kept_plugin_is_neither_removed_nor_forgotten,
+    test_kept_plugin_enabled_state_is_left_alone,
     test_github_marketplace_repo_mismatch_raises,
     test_default_report_summarizes_plugins_and_settings_actions,
     test_verbose_report_lists_every_plugin_action,

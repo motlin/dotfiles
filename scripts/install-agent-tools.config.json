@@ -77,7 +77,8 @@
 			"source": "motlin/claude-code-plugins",
 			"plugins": "*",
 			"excludePlugins": ["ghostty-titles", "iterm2-titles", "tmux-titles"],
-			"disabledPlugins": ["investigation-report"]
+			"disabledPlugins": [],
+			"keepPlugins": ["claude-code-plans"]
 		}
 	]
 }
