@@ -22,7 +22,7 @@ CONFIG_PATH = os.path.join(
     "install-agent-tools.config.json",
 )
 PLUGIN_ACTIONS = ("add", "remove", "unchanged")
-UNATTENDED_ACTIONS = frozenset(("add", "enable", "pending", "unchanged"))
+UNATTENDED_ACTIONS = frozenset(("add", "enable", "set-enabled", "pending", "unchanged"))
 
 
 def sh(args):
@@ -143,7 +143,17 @@ def compute_actions(config, marketplaces, installed, settings, manifests):
             desired_ids.add(plugin_id)
             action = "unchanged" if plugin_id in installed_ids else "add"
             actions.append({"action": action, "id": plugin_id})
-            if plugin_id not in enabled_plugins:
+            if "disabledPlugins" in specification:
+                # The config owns this marketplace's enabled state, so a stray
+                # `false` is corrected instead of preserved.
+                wanted = plugin_name not in specification["disabledPlugins"]
+                if enabled_plugins.get(plugin_id) is not wanted:
+                    actions.append({
+                        "action": "set-enabled",
+                        "id": plugin_id,
+                        "enabled": wanted,
+                    })
+            elif plugin_id not in enabled_plugins:
                 actions.append({"action": "enable", "id": plugin_id})
 
     managed_marketplaces = {
@@ -277,7 +287,9 @@ def format_report(actions, verbose=False):
     if marketplace_lines:
         lines.extend(["", "Marketplaces:", *marketplace_lines])
 
-    enable_count = sum(action["action"] == "enable" for action in actions)
+    enable_count = sum(
+        action["action"] in ("enable", "set-enabled") for action in actions
+    )
     orphan_count = sum(action["action"] == "forget" for action in actions)
     lines.extend([
         "",
@@ -468,6 +480,11 @@ def reconcile_settings(actions, original_settings, path=CLAUDE_SETTINGS):
     forget_ids = [
         action["id"] for action in actions if action["action"] == "forget"
     ]
+    set_enabled = {
+        action["id"]: action["enabled"]
+        for action in actions
+        if action["action"] == "set-enabled"
+    }
 
     settings = read_json(path) if os.path.exists(path) else {}
     updated_settings = restore_original_settings(settings, original_settings)
@@ -478,12 +495,13 @@ def reconcile_settings(actions, original_settings, path=CLAUDE_SETTINGS):
         raise ValueError("Claude settings enabledPlugins must be an object")
     else:
         enabled_plugins = dict(enabled_plugins)
-    if enabled_plugins or enable_ids:
+    if enabled_plugins or enable_ids or set_enabled:
         updated_settings["enabledPlugins"] = enabled_plugins
 
     for plugin_id in enable_ids:
         if plugin_id not in enabled_plugins:
             enabled_plugins[plugin_id] = True
+    enabled_plugins.update(set_enabled)
     for plugin_id in forget_ids:
         enabled_plugins.pop(plugin_id, None)
 

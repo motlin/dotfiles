@@ -296,6 +296,114 @@ def test_existing_false_enabled_plugin_value_is_preserved():
     ])
 
 
+def config_with_disabled(plugins, disabled_plugins):
+    config = config_for(plugins)
+    config["claudeMarketplaces"][0]["disabledPlugins"] = disabled_plugins
+    return config
+
+
+def test_declared_marketplace_enables_a_plugin_that_was_switched_off():
+    actions = compute_actions(
+        config_with_disabled(["temporal-data"], []),
+        [marketplace()],
+        [installed_plugin("temporal-data")],
+        {"enabledPlugins": {"temporal-data@motlin-claude-code-plugins": False}},
+        {},
+    )
+
+    ASSERTIONS.assertEqual(actions, [
+        {"action": "unchanged", "id": "temporal-data@motlin-claude-code-plugins"},
+        {
+            "action": "set-enabled",
+            "id": "temporal-data@motlin-claude-code-plugins",
+            "enabled": True,
+        },
+    ])
+
+
+def test_declared_marketplace_keeps_listed_plugins_disabled():
+    actions = compute_actions(
+        config_with_disabled(["investigation-report"], ["investigation-report"]),
+        [marketplace()],
+        [installed_plugin("investigation-report")],
+        {"enabledPlugins": {"investigation-report@motlin-claude-code-plugins": True}},
+        {},
+    )
+
+    ASSERTIONS.assertEqual(actions, [
+        {"action": "unchanged", "id": "investigation-report@motlin-claude-code-plugins"},
+        {
+            "action": "set-enabled",
+            "id": "investigation-report@motlin-claude-code-plugins",
+            "enabled": False,
+        },
+    ])
+
+
+def test_declared_marketplace_leaves_correct_enabled_state_alone():
+    actions = compute_actions(
+        config_with_disabled(["temporal-data", "investigation-report"], ["investigation-report"]),
+        [marketplace()],
+        [installed_plugin("temporal-data"), installed_plugin("investigation-report")],
+        {
+            "enabledPlugins": {
+                "temporal-data@motlin-claude-code-plugins": True,
+                "investigation-report@motlin-claude-code-plugins": False,
+            },
+        },
+        {},
+    )
+
+    ASSERTIONS.assertEqual(actions, [
+        {"action": "unchanged", "id": "temporal-data@motlin-claude-code-plugins"},
+        {"action": "unchanged", "id": "investigation-report@motlin-claude-code-plugins"},
+    ])
+
+
+def test_settings_reconciliation_applies_set_enabled_over_restored_values():
+    module = load_sync_module()
+    original = {
+        "enabledPlugins": {
+            "temporal-data@motlin-claude-code-plugins": False,
+            "investigation-report@motlin-claude-code-plugins": True,
+        },
+    }
+    actions = [
+        {"action": "set-enabled", "id": "temporal-data@motlin-claude-code-plugins", "enabled": True},
+        {"action": "set-enabled", "id": "investigation-report@motlin-claude-code-plugins", "enabled": False},
+    ]
+
+    with (
+        mock.patch.object(module.os.path, "exists", return_value=True),
+        mock.patch.object(module, "read_json", return_value=original),
+        mock.patch.object(module, "write_settings_atomic", return_value=True) as write_settings,
+    ):
+        module.reconcile_settings(actions, original, "/tmp/test/settings.json")
+
+    ASSERTIONS.assertEqual(
+        write_settings.mock_calls,
+        [
+            mock.call(
+                {
+                    "enabledPlugins": {
+                        "temporal-data@motlin-claude-code-plugins": True,
+                        "investigation-report@motlin-claude-code-plugins": False,
+                    },
+                },
+                "/tmp/test/settings.json",
+            ),
+        ],
+    )
+
+
+def test_set_enabled_runs_without_a_terminal_and_is_counted_in_the_report():
+    module = load_sync_module()
+    actions = [{"action": "set-enabled", "id": "a@m", "enabled": True}]
+
+    ASSERTIONS.assertIn("set-enabled", module.UNATTENDED_ACTIONS)
+    ASSERTIONS.assertIn("Enable state: 1 enabledPlugins keys to add", module.format_report(actions))
+
+
 def test_github_marketplace_repo_mismatch_raises():
     with ASSERTIONS.assertRaisesRegex(
         ValueError,
@@ -978,6 +1086,11 @@ TEST_FUNCTIONS = (
     test_installed_declared_plugin_is_unchanged,
     test_orphaned_enabled_plugin_key_is_forgotten,
     test_existing_false_enabled_plugin_value_is_preserved,
+    test_declared_marketplace_enables_a_plugin_that_was_switched_off,
+    test_declared_marketplace_keeps_listed_plugins_disabled,
+    test_declared_marketplace_leaves_correct_enabled_state_alone,
+    test_settings_reconciliation_applies_set_enabled_over_restored_values,
+    test_set_enabled_runs_without_a_terminal_and_is_counted_in_the_report,
     test_github_marketplace_repo_mismatch_raises,
     test_default_report_summarizes_plugins_and_settings_actions,
     test_verbose_report_lists_every_plugin_action,
