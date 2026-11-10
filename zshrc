@@ -1,3 +1,12 @@
+# History config must come first. Ctrl-C during startup aborts the rest of this file, and a shell
+# left with macOS /etc/zshrc's SAVEHIST=1000 rewrites ~/.zsh_history down to 1000 lines on exit.
+# https://unix.stackexchange.com/a/670027
+# HISTSIZE must be set: macOS /etc/zshrc defaults it to 2000, causing
+# multi-second startup delays when the history file is large.
+export HISTSIZE=1200000
+export SAVEHIST=1000000
+setopt EXTENDED_HISTORY INC_APPEND_HISTORY
+
 # direnv export must run BEFORE instant prompt (it produces console output)
 emulate zsh -c "$(direnv export zsh)"
 
@@ -85,13 +94,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
-# History config
-# https://unix.stackexchange.com/a/670027
-# HISTSIZE must be set: macOS /etc/zshrc defaults it to 2000, causing
-# multi-second startup delays when the history file is large.
-export HISTSIZE=1200000
-export SAVEHIST=1000000
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
