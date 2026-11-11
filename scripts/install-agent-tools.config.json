@@ -48,6 +48,11 @@
 			"plugins": ["mattpocock-skills"]
 		},
 		{
+			"name": "workflowy-gtd",
+			"source": "motlin/outlinedb",
+			"plugins": ["gtd", "workflowy"]
+		},
+		{
 			"name": "skills-curated",
 			"source": "trailofbits/skills-curated",
 			"plugins": ["humanizer", "skill-extractor"]
