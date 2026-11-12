@@ -40,11 +40,11 @@ alias lg='lazygit'
 alias j='just --global-justfile'
 alias simple-prompt="p10k display '1/*'=hide '1/left/prompt_char'=show"
 
-alias c='claude --chrome'
+alias c='claude --chrome --dangerously-skip-permissions'
 alias cc='c --continue'
 alias cr='c --resume'
 alias rc='claude rc --permission-mode auto --spawn worktree'
-alias yolo='c --dangerously-skip-permissions'
+alias yolo='c'
 # alias yolo='codex'
 alias lite='yolo --model sonnet'
 # alias lite='yolo --model gpt-6.1-sol'
