@@ -4,20 +4,24 @@ set -euo pipefail
 
 # Modes:
 #   read-only - the checkout mirrors upstream and nothing local is worth keeping,
-#               so it is reset to origin/HEAD. Refuses when the checkout holds
-#               commits origin/HEAD does not, because the reset would drop them.
+#               so it is reset to origin/HEAD, or to <ref> when one is given. Pin a
+#               ref when the checkout must match an installed release (delta's
+#               themes.gitconfig on master can use styles the released binary rejects).
+#               Refuses when the checkout holds commits origin/HEAD does not,
+#               because the reset would drop them.
 #   writable  - the checkout is edited in place (~/.claude symlinks into
 #               claude-code-prompts, and Claude Code rewrites settings.json), so
 #               it only fast-forwards and never touches the working tree.
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <base-directory> <repository-url> <read-only|writable>" >&2
+if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
+    echo "Usage: $0 <base-directory> <repository-url> <read-only|writable> [ref]" >&2
     exit 1
 fi
 
 BASE_DIR="$1"
 REPO_URL="$2"
 MODE="$3"
+REF="${4:-origin/HEAD}"
 
 case "$MODE" in
     read-only | writable) ;;
@@ -27,6 +31,11 @@ case "$MODE" in
         ;;
 esac
 
+if [ "$MODE" = "writable" ] && [ "$#" -eq 4 ]; then
+    echo "A ref can only be pinned in read-only mode." >&2
+    exit 1
+fi
+
 # Extract org/repo from URL (handles https://host/org/repo and git@host:org/repo)
 ORG_REPO=$(echo "$REPO_URL" | sed -E -e 's|^https?://[^/]+/||' -e 's|^[^:]+:||' -e 's|\.git$||')
 TARGET_DIR="$BASE_DIR/$ORG_REPO"
@@ -34,10 +43,13 @@ TARGET_DIR="$BASE_DIR/$ORG_REPO"
 if [ ! -d "$TARGET_DIR/.git" ]; then
     mkdir -p "$(dirname "$TARGET_DIR")"
     git clone "$REPO_URL" "$TARGET_DIR"
+    if [ "$MODE" = "read-only" ]; then
+        git -C "$TARGET_DIR" reset --hard "$REF"
+    fi
     exit 0
 fi
 
-git -C "$TARGET_DIR" fetch origin
+git -C "$TARGET_DIR" fetch --tags origin
 
 if [ "$MODE" = "writable" ]; then
     if ! git -C "$TARGET_DIR" merge --ff-only origin/HEAD; then
@@ -57,4 +69,4 @@ if [ "$unpushed" -ne 0 ]; then
     exit 1
 fi
 
-git -C "$TARGET_DIR" reset --hard origin/HEAD
+git -C "$TARGET_DIR" reset --hard "$REF"

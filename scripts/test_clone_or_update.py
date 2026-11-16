@@ -70,5 +70,43 @@ class WritableModeTest(unittest.TestCase):
             )
 
 
+class ReadOnlyModeTest(unittest.TestCase):
+    def test_pinned_ref_resets_to_that_ref_instead_of_origin_head(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = pathlib.Path(directory, "clones")
+            origin = pathlib.Path(directory, "origin.git")
+            seed = pathlib.Path(directory, "seed")
+            target = base / "example-org" / "example-repo"
+            repository_url = "git@example.com:example-org/example-repo.git"
+
+            origin.mkdir(parents=True)
+            git(origin, "init", "--bare", "--initial-branch=main")
+            git(directory, "clone", str(origin), str(seed))
+            git(seed, "commit", "--allow-empty", "--message", "Released commit.")
+            git(seed, "tag", "1.0.0")
+            git(seed, "commit", "--allow-empty", "--message", "Unreleased commit.")
+            git(seed, "push", "origin", "main", "1.0.0")
+            target.parent.mkdir(parents=True)
+            git(target.parent, "clone", str(origin), str(target))
+
+            result = subprocess.run(
+                ["bash", str(CLONE_SCRIPT), str(base), repository_url, "read-only", "1.0.0"],
+                capture_output=True,
+                text=True,
+                env=GIT_ENVIRONMENT,
+            )
+            subject = subprocess.run(
+                ["git", "-C", str(target), "log", "-1", "--format=%s"],
+                capture_output=True,
+                text=True,
+                env=GIT_ENVIRONMENT,
+            ).stdout
+
+            self.assertEqual(
+                (result.returncode, result.stderr, subject),
+                (0, "", "Released commit.\n"),
+            )
+
+
 if __name__ == "__main__":
     unittest.main()

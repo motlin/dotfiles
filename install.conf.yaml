@@ -20,7 +20,7 @@
         description: 📦 Installing dotbot
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
-            https://github.com/dandavison/delta.git read-only
+            https://github.com/dandavison/delta.git read-only 0.20.1
         description: 📥 Cloning/updating Delta themes
       - command: >-
             ./scripts/run-quietly.sh ./scripts/clone-or-update.sh git-clones
