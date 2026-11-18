@@ -20,6 +20,10 @@
 		{
 			"source": "maxim-saplin/goal-sloc",
 			"skills": ["goal-sloc"]
+		},
+		{
+			"source": "trailofbits/skills",
+			"skills": ["review-walkthrough"]
 		}
 	],
 	"claudeMarketplaces": [

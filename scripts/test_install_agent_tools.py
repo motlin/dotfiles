@@ -36,6 +36,8 @@ class InstallClaudeSkillsTest(unittest.TestCase):
                     "wrangler --yes",
                     "--yes skills add maxim-saplin/goal-sloc --global --agent claude-code "
                     "--skill goal-sloc --yes",
+                    "--yes skills add trailofbits/skills --global --agent claude-code "
+                    "--skill review-walkthrough --yes",
                     "--yes skills update --global --yes",
                 ],
             )
